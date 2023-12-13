@@ -1,0 +1,140 @@
+.about-me-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  margin-bottom: 50px;
+}
+
+.background-image{
+    content: "";
+    position: absolute;
+    top: 600px;
+    left: 270px;
+    right: 0;
+    bottom: 0;
+    width: 174px;
+    height: 156px;
+    z-index: -1;
+    @media (max-width: 1024px) {
+            left: 5px;
+            top: 800px;
+            width: 133px;
+            height: 119px;
+      }
+}
+
+.hello-heading-1 {
+  color: #000;
+
+  /* Title 1 */
+  font-family: sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.1;
+  align-items: center;
+}
+
+.box {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+}
+
+.left-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 391.192px;
+  height: 570.32px;
+  background: #E3868E;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-fill {
+  display: flex;
+  width: 70%;
+  height: 70%;
+  padding: 24px 27px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  background: #FDC21E;
+  border: 3px solid rgb(0, 0, 0);
+  border-radius: 12px;
+}
+
+.body-1 {
+  color: rgb(0, 0, 0);
+
+  /* Body 1 */
+//   font-family: Jura;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.right-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 391.192px;
+  height: 570.32px;
+  background: #017F7E;
+  justify-content: center;
+  align-items: center;
+  
+  
+}
+
+.right-fill {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 70%;
+  padding: 24px 27px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  background: #a4f3de;
+  border-radius: 12px;
+  border: 3px solid rgb(0, 0, 0);
+}
+
+.image-container-me {
+  width: 273px;
+  height: 383px;
+  stroke-width: 1px;
+  stroke: #000;
+  border-radius: 12px;
+}
+
+.button-container-me {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+  margin-left: 10px;
+}
+
+.button-me {
+  width: 26px;
+  height: 25px;
+  border-radius: 100px;
+  background: #EF81A4;
+  transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition for color change */
+  cursor: pointer; /* Change cursor to hand on hover */
+}
+
+.button-me:hover {
+    background: #ecb4c6; /* Change color on hover */
+    transform: scale(1.05); /* Scale up by 5% on hover */
+  }

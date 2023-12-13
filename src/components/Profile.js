@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "../assets/scss/Profile.scss";
-import { useTypewriter, Cursor } from "react-simple-typewriter";
 import { Typewriter } from "react-simple-typewriter";
 
 function Profile() {

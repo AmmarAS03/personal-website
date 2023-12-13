@@ -1,0 +1,117 @@
+.navbar-container {
+  display: flex;
+  width: screen;
+  padding: 23px 52px;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 0px 0px 50px 50px;
+  background: #ffe9d2;
+  
+}
+
+.navbar-logo {
+  width: 68px;
+  height: 61px;
+  
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: flex-end;
+  gap: 36px;
+}
+
+.navbar-home {
+  display: flex;
+  height: 36px;
+  padding: 1px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: #71e4d2;
+  transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition for color change */
+  cursor: pointer; /* Change cursor to hand on hover */
+}
+.navbar-home:hover {
+    background: #93fffa; /* Change color on hover */
+    transform: scale(1.05); /* Scale up by 5% on hover */
+  }
+
+.home-title {
+  color: var(--Purple, #611ff3);
+  /* Body 1 */
+    font-family: Jura;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.me-title {
+    color: var(--Purple, #611ff3);
+    /* Body 1 */
+      font-family: Jura;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 100px;
+  }
+
+.navbar-me {
+  display: flex;
+  height: 34px;
+  padding: 1px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: #71e4d2;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
+  cursor: pointer; /* Change cursor to hand on hover */
+}
+
+.navbar-me:hover {
+    background: #93fffa; /* Change color on hover */
+    transform: scale(1.05); /* Scale up by 5% on hover */
+  }
+
+.navbar-project {
+  display: flex;
+  height: 36px;
+  padding: 1px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: #71e4d2;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
+  cursor: pointer; /* Change cursor to hand on hover */
+}
+.navbar-project:hover {
+    background: #93fffa; /* Change color on hover */
+    transform: scale(1.05); /* Scale up by 5% on hover */
+  }
+
+.navbar-connect {
+  display: flex;
+  height: 36px;
+  padding: 1px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 12px;
+  background: #71e4d2;
+  transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition for color change */
+  cursor: pointer; /* Change cursor to hand on hover */
+}
+
+.navbar-connect:hover {
+    background: #93fffa; /* Change color on hover */
+    transform: scale(1.05); /* Scale up by 5% on hover */
+  }
+
+
+  

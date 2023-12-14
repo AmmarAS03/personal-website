@@ -10,7 +10,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-//   gap: 35px;
+  gap: 35px;
+  width: 100%;
 }
 
 .header-work-1 {
@@ -28,7 +29,27 @@
   align-items: center;
   gap: 70px;
   flex-direction: row;
+  @media (max-width: 1024px) {
+    gap:10px;
+    flex-direction: column;
+    border-top: 1px solid grey;
+    width: 500px;
 }
+}
+
+.card-2 {
+    display: flex;
+    width: 907px;
+    align-items: center;
+    gap: 70px;
+    flex-direction: row;
+    @media (max-width: 1024px) {
+      gap:10px;
+      flex-direction:column-reverse;
+      border-top: 2px solid grey;
+      width: 500px;
+  }
+  }
 
 .image-box-card {
   display: flex;
@@ -46,18 +67,28 @@
   font-style: bold;
   font-weight: 700;
   line-height: normal;
+  margin-bottom: 0;
 }
 
 .card-image {
   width: 405px;
-  height: 315px;
+  height: 317px;
 }
+// .card-image-2 {
+//     width: 330px;
+//     height: 317px;
+//   }
 
 .text-box-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 20px;
+  @media (max-width: 1024px) {
+    align-items: center;
+    margin-right: 20%;
+    margin-left: 20%;
+}
 }
 
 .date-title {
@@ -67,6 +98,11 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  @media (max-width: 1024px) {
+    margin-bottom: 0;
+    // margin-right: 20%;
+    // margin-left: 20%;
+}
   
 }
 
@@ -74,12 +110,48 @@
   color: #000;
   text-align: left;
 
-  /* Body 1 */
-  //   font-family: Jura;
-  font-size: 20px;
+//   font-size: clamp(1rem, 2.5vw, 2rem); 
+font-size: 22px; 
   font-style: normal;
   //   font-weight: 700;
   line-height: normal;
   text-align: justify;
   text-justify: inter-word;
+  @media (max-width: 1024px) {
+    align-items: center;
+    margin-top: 0;
+}
+}
+
+.title-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.card-company{
+    color: rgb(124, 124, 124);
+    //   font-family: Jura;
+    font-size: 22px;
+    margin-bottom: 15px;
+    margin-top: 0px;
+}
+
+
+.background-image-2{
+    content: "";
+    position: absolute;
+    top: 1500px;
+    left: 1000px;
+    right: 0pxpx;
+    bottom: 0;
+    width: 154px;
+    height: 156px;
+    z-index: -1;
+    @media (max-width: 1024px) {
+            left: 5px;
+            top: 2100px;
+            width: 133px;
+            height: 119px;
+      }
+    
 }

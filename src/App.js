@@ -4,6 +4,7 @@ import Profile from "./components/Profile";
 import AboutMe from "./components/AboutMe";
 import WorkExperience from "./components/WorkExperience";
 import Project from "./components/Project";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
       <WorkExperience />
       <div className="separator" />
       <Project/>
+      <div className="separator" />
+      <Footer/>
     </div>
   );
 }

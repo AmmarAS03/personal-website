@@ -73,6 +73,12 @@
 .card-image {
   width: 405px;
   height: 317px;
+  cursor: pointer;
+  transition: transform 0.4s ease;
+}
+
+.card-image:hover{
+  transform: scale(1.05)
 }
 // .card-image-2 {
 //     width: 330px;
@@ -141,14 +147,14 @@ font-size: 22px;
     content: "";
     position: absolute;
     top: 1500px;
-    left: 1000px;
-    right: 0pxpx;
+    // left: 1000px;
+    right: 230px;
     bottom: 0;
     width: 154px;
     height: 156px;
     z-index: -1;
     @media (max-width: 1024px) {
-            left: 5px;
+      right: 5px;
             top: 2100px;
             width: 133px;
             height: 119px;

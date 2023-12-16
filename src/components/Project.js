@@ -3,7 +3,55 @@ import "../assets/scss/Project.scss";
 
 function Project() {
   return (
-    <div className='hello-heading-1'>Project</div>
+    <div className='project-container'>
+       <div className='hello-heading-1'>Project</div>
+
+       <div className='card-project-container'>
+
+        <div className='card-project-1'>
+            <img className='project-image' src="/images/acb.png" />
+
+            <div className='bottom-container'>
+              <div className='vector-project'/>
+              <div className='project-text-container'>
+                <p className='project-title'>Fine Later</p>
+                <p className='project-paragraph'>Fine Later</p>
+              </div>
+            </div>
+        </div>
+
+
+        <div className='card-project-1'>
+            <img className='project-image' src="/images/digipets.png" />
+
+            <div className='bottom-container'>
+              <div className='vector-project'/>
+              <div className='project-text-container'>
+                <p className='project-title'>Fine Later</p>
+                <p className='project-paragraph'>Fine Later</p>
+              </div>
+            </div>
+        </div>
+
+        <div className='card-project-1'>
+            <img className='project-image' src="/images/fine-later.png" />
+
+            <div className='bottom-container'>
+              <div className='vector-project'/>
+              <div className='project-text-container'>
+                <p className='project-title'>Fine Later</p>
+                <p className='project-paragraph'>Fine Later aisugieyqsufb aisufgcudyfgbe yasvduysd iyuasduysad hqvwsudyw aysuyasg aiusgduiwyq</p>
+              </div>
+            </div>
+        </div>
+
+        
+        
+
+
+       </div>
+    </div>
+
   )
 }
 

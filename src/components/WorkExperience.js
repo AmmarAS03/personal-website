@@ -14,7 +14,9 @@ function WorkExperience() {
             <p className="card-company">Naf Karya Indonesia</p>
             </div>
 
-            <img src="/images/fullstack.png" className="card-image" />
+            <a href="https://jesara.co.id/" target="_blank" rel="noopener noreferrer">
+            <img src="/images/fullstack.png" className="card-image"/>
+            </a>
           </div>
           <div className="text-box-card">
             <p className="date-title">Sept 2023 – Nov 2023</p>

@@ -4,7 +4,7 @@ import "../assets/scss/WorkExperience.scss";
 function WorkExperience() {
   return (
     <div className="work-container">
-       <img  src="/images/Flower.png" className="background-image-2"/>
+       <img  src="/images/Flower.png" className="background-image-2" alt=""/>
       <p className="header-work-1">Work Experience</p>
       <div className="card-container">
         <div className="card-1">
@@ -15,7 +15,7 @@ function WorkExperience() {
             </div>
 
             <a href="https://jesara.co.id/" target="_blank" rel="noopener noreferrer">
-            <img src="/images/fullstack.png" className="card-image"/>
+            <img src="/images/fullstack.png" className="card-image" alt=""/>
             </a>
           </div>
           <div className="text-box-card">
@@ -39,7 +39,7 @@ function WorkExperience() {
             </div>
 
             <a href="https://www.netsistem.co.id/" target="_blank" rel="noopener noreferrer">
-            <img src="/images/Network.png" className="card-image" />
+            <img src="/images/Network.png" className="card-image" alt=""/>
             </a>
           </div>
         </div>
@@ -51,7 +51,7 @@ function WorkExperience() {
             <p className="card-company">Faculty of Computer Science UI</p>
             </div>
             <a href="https://cs.ui.ac.id/" target="_blank" rel="noopener noreferrer">
-            <img src="/images/TA.png" className="card-image" />
+            <img src="/images/TA.png" className="card-image" alt="" />
             </a>
 
           </div>
@@ -77,7 +77,7 @@ function WorkExperience() {
             </div>
 
             <a href="https://www.linkedin.com/company/ddp0fasilkomui/about/" target="_blank" rel="noopener noreferrer">
-            <img src="/images/mentor.png" className="card-image" />
+            <img src="/images/mentor.png" className="card-image" alt="" />
             </a>
 
           </div>

@@ -27,7 +27,7 @@ function WorkExperience() {
         </div>
         <div className="card-2">
           <div className="text-box-card">
-            <p className="date-title">Sept 2023 – Nov 2023</p>
+            <p className="date-title">Apr 2023 – June 2023</p>
             <p className="paragraph-text">
             Netsistem is a government-focused outsourcing company. I have the chance to work with BIN, where I learned valuable understanding about 7-layer OSI which strengthen my computer science foundation.
             </p>
@@ -56,7 +56,7 @@ function WorkExperience() {
 
           </div>
           <div className="text-box-card">
-            <p className="date-title">Sept 2023 – Nov 2023</p>
+            <p className="date-title">Jan 2023 – June 2023</p>
             <p className="paragraph-text">
             As a Teaching Assistant for Foundation of Programming 2 (Java), I mentored 8 students over 4 months. I conducted lab sessions, assisting in understanding programming concepts and their Java assignments.
             </p>
@@ -65,7 +65,7 @@ function WorkExperience() {
 
         <div className="card-2">
           <div className="text-box-card">
-            <p className="date-title">Sept 2023 – Nov 2023</p>
+            <p className="date-title">July 2022 – Aug 2022</p>
             <p className="paragraph-text">
               Also known as DDP-0, is a yearly event with a purpose to introduce the fundamentals of programming using Python. I guided 4 new faculty students by providing them mentoring, evaluations, and consultations.
             </p>

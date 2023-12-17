@@ -56,7 +56,7 @@ const data = [
     id: 1,
     name: `Siasisten`,
     img: `/images/Siasisten.png`,
-    description: `Siasisten is a web app that efficiently manages teaching assistant tasks for admin, finance, lecturers, and students. made with Python REST and reactJS.`,
+    description: `Siasisten is a web app that efficiently manages teaching assistant related works for admin, finance, lecturers, and students. made with Python REST and reactJS.`,
   },
   {
     id: 2,

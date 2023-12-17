@@ -12,11 +12,11 @@ function App() {
       <Navbar />
       <div className="separator" />
       <Profile />
-      <div className="separator" />
+      <div id="about-me-section" className="separator" />
       <AboutMe />
-      <div className="separator" />
+      <div id="work-experience-section" className="separator" />
       <WorkExperience />
-      <div className="separator" />
+      <div id="project-section" className="separator" />
       <Project/>
       <div className="separator" />
       <Footer/>

@@ -1,12 +1,16 @@
 import React from 'react'
 import "../assets/scss/Project.scss";
+import Carousel from './Carousel';
 
 function Project() {
   return (
     <div className='project-container'>
+      {/* <img className='background-image-project' src="/images/cat.gif" /> */}
        <div className='hello-heading-1'>Project</div>
 
-       <div className='card-project-container'>
+      <Carousel/>
+
+       {/* <div className='card-project-container'>
 
         <div className='card-project-1'>
             <img className='project-image' src="/images/acb.png" />
@@ -49,7 +53,7 @@ function Project() {
         
 
 
-       </div>
+       </div> */}
     </div>
 
   )

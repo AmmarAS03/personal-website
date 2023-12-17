@@ -8,11 +8,11 @@ function Profile() {
       <div className="name-container">
         <div className="upper-container">
           <div className="hello-container">
-            <p className="hello-heading-1">Hello folks!</p>
-            <p className="hello-heading-1">I'm Ammar</p>
+            <p className="hello-heading-1-profile">Hello Folks!</p>
+            <p className="hello-heading-1-profile">I'm Ammar</p>
           </div>
           <div className="text-container">
-            <p className="hello-heading-2">
+            <p className="hello-heading-2-profile">
               <Typewriter
                 words={[
                   "CompSci Student",

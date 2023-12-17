@@ -41,7 +41,10 @@ function WorkExperience() {
             <p className="card-title">Network Engineer</p>
             <p className="card-company">Netsistem Infotama</p>
             </div>
+
+            <a href="https://www.netsistem.co.id/" target="_blank" rel="noopener noreferrer">
             <img src="/images/Network.png" className="card-image" />
+            </a>
           </div>
         </div>
 
@@ -51,7 +54,10 @@ function WorkExperience() {
             <p className="card-title">Teaching Assistant</p>
             <p className="card-company">Faculty of Computer Science UI</p>
             </div>
+            <a href="https://cs.ui.ac.id/" target="_blank" rel="noopener noreferrer">
             <img src="/images/TA.png" className="card-image" />
+            </a>
+
           </div>
           <div className="text-box-card">
             <p className="date-title">Sept 2023 – Nov 2023</p>
@@ -77,7 +83,11 @@ function WorkExperience() {
             <p className="card-title">Python Mentor</p>
             <p className="card-company">Dasar-dasar Pemrograman 0</p>
             </div>
+
+            <a href="https://www.linkedin.com/company/ddp0fasilkomui/about/" target="_blank" rel="noopener noreferrer">
             <img src="/images/mentor.png" className="card-image" />
+            </a>
+
           </div>
         </div>
         {/* <img src="/images/box.png" className="card-image-2" /> */}

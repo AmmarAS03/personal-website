@@ -5,7 +5,7 @@ function AboutMe() {
     <div className="about-me-container">
     <img  src="/images/Sun.png" className="background-image"/>
 
-      <p className="hello-heading-1">About Me</p>
+      <p className="hello-heading-1-about-me">About Me</p>
       <div className="box">
         <div className="left-box">
           <div className="left-fill">

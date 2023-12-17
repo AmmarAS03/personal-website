@@ -4,20 +4,16 @@ import "../assets/scss/Footer.scss";
 function Footer() {
   return (
     <div className="footer-container">
+      <div className="footer-copyright-container">
+      <div className="footer-copyright">2023 Ammar Ash Shiddiq. All right Reserved.</div>
+      <div className="footer-copyright">Created with love and passion by Ammar Ash Shiddiq</div>
+      </div>
 
-        <img src="/images/letter-a.png" className="navbar-logo" />
-        <div className="navbar-menu">
-            <div className="navbar-home">
-                <p className="home-title">Home</p>
-            </div>
-            <div className="navbar-me">
-                <p className="me-title">About Me</p>
-            </div>
-            <div className="navbar-project">
-                <p className="home-title">Project</p>
-            </div>
-            <div className="navbar-connect">
-                <p className="home-title">Connect!</p>
+
+        <img src="/images/letter-a.png" className="footer-logo" />
+        <div className="footer-menu">
+            <div className="footer-home">
+                <p className="footer-title">Home</p>
             </div>
 
       </div>

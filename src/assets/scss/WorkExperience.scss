@@ -15,12 +15,12 @@
 }
 
 .header-work-1 {
+  font-family: Jura;
   color: #000;
   font-size: 40px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  //   font-family: Jura;
 }
 
 .card-1 {
@@ -60,7 +60,7 @@
 
 .card-title {
   color: #000;
-  //   font-family: Jura;
+    font-family: Jura;
 
   /* Title 2 */
   font-size: 26px;
@@ -75,6 +75,7 @@
   height: 317px;
   cursor: pointer;
   transition: transform 0.4s ease;
+  
 }
 
 .card-image:hover{
@@ -99,7 +100,7 @@
 
 .date-title {
   color: #000;
-  //   font-family: Jura;
+    font-family: Jura;
   font-size: 26px;
   font-style: normal;
   font-weight: 700;
@@ -117,6 +118,7 @@
   text-align: left;
 
 //   font-size: clamp(1rem, 2.5vw, 2rem); 
+font-family: Jura;
 font-size: 22px; 
   font-style: normal;
   //   font-weight: 700;
@@ -136,7 +138,7 @@ font-size: 22px;
 
 .card-company{
     color: rgb(124, 124, 124);
-    //   font-family: Jura;
+      font-family: Jura;
     font-size: 22px;
     margin-bottom: 15px;
     margin-top: 0px;

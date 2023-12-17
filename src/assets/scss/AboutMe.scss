@@ -12,10 +12,10 @@
     top: 600px;
     left: 270px;
     right: 0;
-    bottom: 0;
+    bottom: 0px;
     width: 174px;
     height: 156px;
-    z-index: -1;
+    z-index: -2;
     @media (max-width: 1024px) {
             left: 5px;
             top: 800px;
@@ -24,11 +24,11 @@
       }
 }
 
-.hello-heading-1 {
+.hello-heading-1-about-me {
   color: #000;
 
   /* Title 1 */
-  font-family: sans-serif;
+  font-family: Jura;
   font-size: 40px;
   font-style: normal;
   font-weight: 700;
@@ -77,7 +77,7 @@
   color: rgb(0, 0, 0);
 
   /* Body 1 */
-//   font-family: Jura;
+  font-family: Jura;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;

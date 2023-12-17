@@ -62,6 +62,40 @@ function AboutMe() {
           </div>
         </div>
       </div>
+
+      <div className="footer-menu">
+        <a
+          href="https://www.instagram.com/ammarshddq/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="footer-logo" src="/images/instagram.png" alt="" />
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/ammar-ash-shiddiq-b0b00a212/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="footer-logo" src="/images/linkedin.png" alt="" />
+        </a>
+
+        <a
+          href="mailto:Ammarashshiddiq2@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="footer-logo" src="/images/gmail.png" alt="" />
+        </a>
+
+        <a
+          href="https://github.com/AmmarAS03"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img className="footer-logo" src="/images/github.png" alt="" />
+        </a>
+      </div>
     </div>
   );
 }

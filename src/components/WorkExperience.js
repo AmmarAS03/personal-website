@@ -21,9 +21,7 @@ function WorkExperience() {
           <div className="text-box-card">
             <p className="date-title">Sept 2023 – Nov 2023</p>
             <p className="paragraph-text">
-              all i ask is if this is my last night with you, hold me like im
-              more than just a friend. lets make a memory i can use. uuuuuuu
-              yeeaa adele lets go mbaaamore than just a friend. 
+            As a remote intern, I played a key role in developing Jesara Koin, focusing on the back-end using NodeJS, MySQL, and PassportJS, while also handled front-end tasks in accordance with the BRD.
             </p>
           </div>
         </div>
@@ -31,9 +29,7 @@ function WorkExperience() {
           <div className="text-box-card">
             <p className="date-title">Sept 2023 – Nov 2023</p>
             <p className="paragraph-text">
-              all i ask is if this is my last night with you, hold me like im
-              more than just a friend. lets make a memory i can use. uuuuuuu
-              yeeaa adele lets go mbaaa
+            Netsistem is a government-focused outsourcing company. I have the chance to work with BIN, where I learned valuable understanding about 7-layer OSI which strengthen my computer science foundation.
             </p>
           </div>
           <div className="image-box-card">
@@ -62,9 +58,7 @@ function WorkExperience() {
           <div className="text-box-card">
             <p className="date-title">Sept 2023 – Nov 2023</p>
             <p className="paragraph-text">
-              all i ask is if this is my last night with you, hold me like im
-              more than just a friend. lets make a memory i can use. uuuuuuu
-              yeeaa adele lets go mbaaa
+            As a Teaching Assistant for Foundation of Programming 2 (Java), I mentored 8 students over 4 months. I conducted lab sessions, assisting in understanding programming concepts and their Java assignments.
             </p>
           </div>
         </div>
@@ -73,9 +67,7 @@ function WorkExperience() {
           <div className="text-box-card">
             <p className="date-title">Sept 2023 – Nov 2023</p>
             <p className="paragraph-text">
-              all i ask is if this is my last night with you, hold me like im
-              more than just a friend. lets make a memory i can use. uuuuuuu
-              yeeaa adele lets go mbaaa
+              Also known as DDP-0, is a yearly event with a purpose to introduce the fundamentals of programming using Python. I guided 4 new faculty students by providing them mentoring, evaluations, and consultations.
             </p>
           </div>
           <div className="image-box-card">

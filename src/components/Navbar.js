@@ -11,7 +11,7 @@ function Navbar() {
   return (
     <div className="navbar-container">
 
-        <img src="/images/letter-a.png" className="navbar-logo" />
+        <img src="/images/letter-a.png" className="navbar-logo" alt="" />
         <div className="navbar-menu">
             <div className="navbar-me" onClick={() => scrollToSection("about-me-section")}>
                 <p className="me-title">About Me</p>

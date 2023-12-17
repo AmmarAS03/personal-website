@@ -12,12 +12,19 @@ function App() {
       <Navbar />
       <div className="separator" />
       <Profile />
-      <div id="about-me-section" className="separator" />
+      <div className="separator" />
+      <div id="about-me-section">
       <AboutMe />
-      <div id="work-experience-section" className="separator" />
+      </div>
+      <div className="separator" />
+      <div id="work-experience-section">
       <WorkExperience />
-      <div id="project-section" className="separator" />
+      </div>
+      <div className="separator" />
+      <div id="project-section">
       <Project/>
+      </div>
+      <div className="separator" />
       <div className="separator" />
       <Footer/>
     </div>

@@ -39,6 +39,16 @@
     transform: scale(1.05); /* Scale up by 5% on hover */
   }
 
+  @media (max-width: 750px) {
+    .navbar-menu {
+      display: none; /* Hide menu items below 750px */
+    }
+
+    .navbar-logo {
+      margin: 0 auto; /* Center the logo below 750px */
+    }
+  }
+
 .home-title {
   color: var(--Purple, #611ff3);
   /* Body 1 */

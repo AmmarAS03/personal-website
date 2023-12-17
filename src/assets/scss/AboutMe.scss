@@ -82,6 +82,8 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  text-align:start;
+  // text-justify: inter-word;
 }
 
 .right-box {
@@ -127,6 +129,7 @@
   align-items: flex-start;
   gap: 12px;
   margin-left: 10px;
+  transition: transform 0.3s ease;
 }
 
 .button-me {

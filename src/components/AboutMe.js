@@ -10,34 +10,32 @@ function AboutMe() {
 
   const getDescriptionById = (id) => {
     const selectedData = data.find((item) => item.id === id);
-    console.log(selectedData)
-    return selectedData ? (
-      <>
-        <p className="body-1">{selectedData.description}</p>
-      </>
-    ) : null;
+    return selectedData ?    <p className="body-1" dangerouslySetInnerHTML={{ __html: selectedData.description }} /> : null;
   };
-
 
   const getImageById = (id) => {
     const selectedData = data.find((item) => item.id === id);
-    console.log(selectedData)
-    return selectedData ? (
-      <>
-        <img className="image-container-me" src={selectedData.img}/>
-      </>
-    ) : null;
+    return selectedData ? <img className="image-container-me" src={selectedData.img} alt={`Profile ${id}`} /> : null;
   };
 
   useEffect(() => {
-    // Initialize the content to be based on id equal to 1
-    getDescriptionById(1);
-    getImageById(1);
-  }, []); // Empty dependency array ensures this effect runs once on mount
+
+    getDescriptionById(selectedButton);
+    getImageById(selectedButton);
+
+
+    const intervalId = setInterval(() => {
+      const nextId = selectedButton % data.length + 1;
+      handleButtonClick(nextId);
+    }, 20000);
+
+
+    return () => clearInterval(intervalId);
+  }, [selectedButton]);
 
   return (
     <div className="about-me-container">
-      <img src="/images/Sun.png" className="background-image" />
+      <img src="/images/Sun.png" className="background-image" alt="" />
 
       <p className="hello-heading-1-about-me">About Me</p>
       <div className="box">
@@ -54,10 +52,11 @@ function AboutMe() {
             <div className="button-container-me">
               {data.map((item) => (
                 <div
-                  key={item.id}
-                  className={`button-me ${selectedButton === item.id ? "active" : ""}`}
-                  onClick={() => handleButtonClick(item.id)}
-                />
+                key={item.id}
+                className={`button-me ${selectedButton === item.id ? "active" : ""}`}
+                style={{ backgroundColor: selectedButton === item.id ? "#017F7E" : "" }}
+                onClick={() => handleButtonClick(item.id)}
+              />
               ))}
             </div>
           </div>
@@ -71,22 +70,37 @@ const data = [
   {
     id: 1,
     img: "/images/ui.png",
-    description: "Hello everyone, saya akan membawa ... journey saya",
+    description: "Hello everyone, <br /> I'm Ammar Ash Shiddiq. I am a passionate and highly motivated computer science student at Universitas Indonesia, where I have gained extensive knowledge and insights in various fields of computer science. <br />   <br /> I'm going to bring you to my learning journey over the years so we can get to know each other!",
   },
   {
     id: 2,
     img: "/images/people.png",
-    description: "dimana saya ketemu banyak beautiful people that ",
+    description: "In Universitas Indonesia, I met so many amazing beautiful people. The CompSci students here embraced a strong hustle culture where there seemed to be no rest days. <br /> <br />  Despite the heavy assignment load and demanding environment, the constant push to work harder has contributed significantly to my personal growth, and for that, I am truly grateful. ",
   },
   {
     id: 3,
-    img: "/images/gunung.png",
-    description: "Saya menggunakan basket sebagai to expand my network",
+    img: "/images/basket.png",
+    description: "I use basketball to expand my network and joined the university basketball team. Through this experience, I met exceptional individuals who excelled at maintaining a healthy work-life balance. <br /> <br /> Learning from them, I adopted effective time management skills as a student-athlete. I also participated in nationwide competitions among universities.",
   },
   {
     id: 4,
+    img: "/images/mentee.png",
+    description: "As I realized my time at UI was limited, I took on the role of a mentor for new students, offering support and guidance to help them navigate the challenges of college life. <br /> <br /> The photo on the right captures a special moment with my lovely mentees, highlighting the meaningful connections through mentorship. ",
+  },
+  {
+    id: 5,
+    img: "/images/gunung.png",
+    description: "Outdoor activities is a huge part of my life. In my daily routine, I often encounter things that are only 30cm away from my eyes. However, the beauty of nature allows us to appreciate the beauty of the world around us.<br /> <br /> The photo on the right captures a memorable moment at the summit of Mount Rinjani, the most challenging mountain I've conquered.",
+  },
+  {
+    id: 6,
     img: "/images/gunung2.png",
-    description: "Gunung pun menjadi sebuah adiksi",
+    description: "Hiking has become an addiction for me, and conquering Mount Fuji stands out as my proudest achievement. The journey was tough, cold, and long, but my determination didn't give in until I reached the summit. <br /> <br /> Everest, 🫵🏼 you're next on my list.",
+  },
+  {
+    id: 7,
+    img: "/images/bali.png",
+    description: "I also have a passion for meeting new people and spontaneous journeys. On the right is a picture of my new friends from a trip to Bali where I had no solid plans—just booked a hostel and went for it. I ended up spending half the week exploring Bali with them.  <br /> <br /> I think that's all from me for now, please don't hesitate to contact me anytime, Cheers!",
   },
 ];
 

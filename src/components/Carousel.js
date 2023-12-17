@@ -1,24 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../assets/scss/Project.scss";
 
 function Carousel() {
-    const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [numVisibleCards, setNumVisibleCards] = useState(3);
 
-    const handlePrev = () => {
-      setCurrentIndex((prevIndex) => (prevIndex - 1 + data.length) % data.length);
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + data.length) % data.length);
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
+  };
+
+  const calculateIndex = (offset) => (currentIndex + offset + data.length) % data.length;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1300 && window.innerWidth >= 1024) {
+        setNumVisibleCards(2);
+      } else if (window.innerWidth < 1024) {
+        setNumVisibleCards(1);
+      } else {
+        setNumVisibleCards(3);
+      }
     };
-  
-    const handleNext = () => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
+
+    // Initial setup
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
     };
-  
-    const calculateIndex = (offset) => (currentIndex + offset + data.length) % data.length;
-  
-    const slicedData =
-      data.length >= 3
-        ? [calculateIndex(0), calculateIndex(1), calculateIndex(2)].map((index) => data[index])
-        : [...data.slice(currentIndex), ...data.slice(0, Math.max(0, 3 - data.length))];
-  
+  }, [currentIndex]); // Run the effect when currentIndex changes
+
+  const slicedData = Array.from({ length: numVisibleCards }, (_, index) =>
+    data[calculateIndex(index)]
+  );
+
 
   return (
     <div className="carousel-container">
@@ -27,10 +50,11 @@ function Carousel() {
           src="/images/left-arrow.png"
           className="arrow"
           onClick={handlePrev}
+          alt=""
         />
         {slicedData.map((d) => (
            <div key={d.id} className="card-project-1">
-            <img className="project-image" src={d.img} alt={d.name} />
+            <img className="project-image" src={d.img} alt={d.name}/>
 
             <div className="bottom-container">
               <div className="vector-project" />
@@ -45,6 +69,7 @@ function Carousel() {
           src="/images/right-arrow.png"
           className="arrow"
           onClick={handleNext}
+          alt=""
         />
       </div>
     </div>

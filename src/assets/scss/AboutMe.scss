@@ -40,7 +40,6 @@
   display: flex;
   align-items: flex-start;
   flex-direction: row;
-  // gap: 1px;
   @media (max-width: 1024px) {
     flex-direction: column;
   }
@@ -57,7 +56,6 @@
   justify-content: center;
   align-items: center;
   border: 3px solid rgb(0, 0, 0);
-  // border-radius: 12px;
 }
 
 .left-fill {
@@ -83,7 +81,7 @@
   font-weight: 700;
   line-height: normal;
   text-align:start;
-  // text-justify: inter-word;
+  margin-top: 0;
 }
 
 .right-box {
@@ -138,10 +136,10 @@
   border-radius: 100px;
   background: #EF81A4;
   transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition for color change */
-  cursor: pointer; /* Change cursor to hand on hover */
+  cursor: pointer;
 }
 
 .button-me:hover {
-    background: #ecb4c6; /* Change color on hover */
-    transform: scale(1.05); /* Scale up by 5% on hover */
+    background: #ecb4c6; 
+    transform: scale(1.05);
   }

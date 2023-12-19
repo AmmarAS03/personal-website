@@ -17,8 +17,9 @@ function Profile() {
                 words={[
                   "CompSci Student",
                   "Developer",
+                  "Designer",
                   "Adventurer",
-                  "Baller.",
+                  "Baller",
                 ]}
                 loop={false}
                 cursor

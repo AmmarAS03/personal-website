@@ -124,7 +124,7 @@ const data = [
   {
     id: 5,
     img: "/images/gunung.png",
-    description: "Outdoor activities is a huge part of my life. In my daily routine, I often encounter things that are only 30cm away from my eyes. However, the beauty of nature allows us to appreciate the beauty of the world around us.<br /> <br /> The photo on the right captures a memorable moment at the summit of Mount Rinjani, the most challenging mountain I've conquered.",
+    description: "Outdoor activities is also a huge part of my life. In my daily routine, I often encounter things that are only 30cm away from my eyes. However, the beauty of nature allows us to appreciate the beauty of the world around us.<br /> <br /> The photo on the right captures a memorable moment at the summit of Mount Rinjani, the most challenging mountain I've conquered.",
   },
   {
     id: 6,

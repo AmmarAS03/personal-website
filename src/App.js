@@ -5,6 +5,7 @@ import AboutMe from "./components/AboutMe";
 import WorkExperience from "./components/WorkExperience";
 import Project from "./components/Project";
 import Footer from "./components/Footer";
+import Work from "./components/Work";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
       </div>
       <div className="separator" />
       <div id="work-experience-section">
-      <WorkExperience />
+      <Work />
       </div>
       <div className="separator" />
       <div id="project-section">

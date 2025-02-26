@@ -1,25 +1,24 @@
-.about-me-container {
+.aboutMeContainer {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 50px;
-
 }
 
 /* Use a more specific name for the keyframes */
 @keyframes floatSun {
   0% {
-      transform: translateY(0px);
+    transform: translateY(0px);
   }
   50% {
-      transform: translateY(-15px);
+    transform: translateY(-15px);
   }
   100% {
-      transform: translateY(0px);
+    transform: translateY(0px);
   }
 }
 
-.background-image {
+.backgroundImage {
   content: "";
   position: absolute;
   top: 600px;
@@ -30,16 +29,16 @@
   height: 156px;
   z-index: -2;
   animation: floatSun 4s ease-in-out infinite;
-  
+
   @media (max-width: 1024px) {
-      left: 5px;
-      top: 800px;
-      width: 133px;
-      height: 119px;
+    left: 5px;
+    top: 800px;
+    width: 133px;
+    height: 119px;
   }
 }
 
-.hello-heading-1-about-me {
+.helloHeading1AboutMe {
   color: #000;
 
   /* Title 1 */
@@ -60,20 +59,20 @@
   }
 }
 
-.left-box {
+.leftBox {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   width: 391.192px;
   height: 570.32px;
-  background: #E3868E;
+  background: #e3868e;
   justify-content: center;
   align-items: center;
   border: 3px solid rgb(0, 0, 0);
 }
 
-.left-fill {
+.leftFill {
   display: flex;
   width: 70%;
   height: 70%;
@@ -81,12 +80,12 @@
   justify-content: center;
   align-items: flex-start;
   gap: 10px;
-  background: #FDC21E;
+  background: #fdc21e;
   border: 2px solid rgb(0, 0, 0);
   border-radius: 12px;
 }
 
-.body-1 {
+.body1 {
   color: rgb(0, 0, 0);
 
   /* Body 1 */
@@ -95,26 +94,25 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  text-align:start;
+  text-align: start;
   margin-top: 0;
 }
 
-.right-box {
+.rightBox {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   width: 391.192px;
   height: 570.32px;
-  background: #017F7E;
+  background: #017f7e;
   justify-content: center;
   align-items: center;
   border: 3px solid rgb(0, 0, 0);
   // border-radius: 12px;
-  
 }
 
-.right-fill {
+.rightFill {
   display: flex;
   flex-direction: column;
   width: 70%;
@@ -128,7 +126,7 @@
   border: 2px solid rgb(0, 0, 0);
 }
 
-.image-container-me {
+.imageContainerMe {
   width: 273px;
   height: 383px;
   stroke-width: 1px;
@@ -137,7 +135,7 @@
   animation: none;
 }
 
-.button-container-me {
+.buttonContainerMe {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -146,16 +144,26 @@
   transition: transform 0.3s ease;
 }
 
-.button-me {
+.buttonMe {
   width: 26px;
   height: 25px;
   border-radius: 100px;
-  background: #EF81A4;
-  transition: background-color 0.3s ease, transform 0.3s ease;  /* Smooth transition for color change */
+  background: #ef81a4;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
   cursor: pointer;
 }
 
-.button-me:hover {
-    background: #ecb4c6; 
-    transform: scale(1.05);
-  }
+.buttonMe:hover {
+  background: #ecb4c6;
+  transform: scale(1.05);
+}
+
+.footerMenu {
+  display: flex;
+  align-items: flex-end;
+  gap: 36px;
+}
+.footerLogo {
+  width: 50px;
+  height: 50px;
+}

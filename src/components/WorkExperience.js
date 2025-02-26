@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/scss/WorkExperience.scss";
+import "../assets/scss/WorkExperience.module.scss";
 
 function WorkExperience() {
   return (

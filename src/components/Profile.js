@@ -1,18 +1,18 @@
 import React from "react";
-import "../assets/scss/Profile.scss";
+import styles from "../assets/scss/Profile.module.scss";
 import { Typewriter } from "react-simple-typewriter";
 
 function Profile() {
   return (
-    <div className="profile-container">
-      <div className="name-container">
-        <div className="upper-container">
-          <div className="hello-container">
-            <p className="hello-heading-1-profile">Hello Folks!</p>
-            <p className="hello-heading-1-profile">I'm Ammar</p>
+    <div className={styles.profileContainer}>
+      <div className={styles.nameContainer}>
+        <div className={styles.upperContainer}>
+          <div className={styles.helloContainer}>
+            <p className={styles.helloHeading1Profile}>Hello Folks!</p>
+            <p className={styles.helloHeading1Profile}>I'm Ammar</p>
           </div>
-          <div className="text-container">
-            <p className="hello-heading-2-profile">
+          <div className={styles.textContainer}>
+            <p className={styles.helloHeading2Profile}>
               <Typewriter
                 words={[
                   "CompSci Student",
@@ -27,16 +27,15 @@ function Profile() {
                 typeSpeed={100}
                 deleteSpeed={50}
                 delaySpeed={1000}
-                
               />
             </p>
           </div>
         </div>
       </div>
       <img
-        src="/images/Profile.svg" // Update the path based on your project structure
+        src="/images/Profile.svg"
         alt="Profile SVG"
-        className="image-container"
+        className={styles.imageContainer}
       />
     </div>
   );

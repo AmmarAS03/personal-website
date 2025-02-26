@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/scss/Footer.scss";
+import styles from "../assets/scss/Footer.module.scss";
 
 function Footer() {
   const handleDownloadClick = () => {
@@ -10,36 +10,36 @@ function Footer() {
     window.open(pdfUrl, "_blank");
   };
   return (
-    <div className="footer-container">
-      {/* <img src="/images/letter-a.png" className="footer-logo" /> */}
-      <div className="footer-copyright-container">
-        <div className="footer-copyright">
-          <img src="/images/copyright.png" className="copyright-logo" alt="" />{" "}
+    <div className={styles.footerContainer}>
+      {/* <img src="/images/letter-a.png" className={styles.footerLogo} /> */}
+      <div className={styles.footerCopyrightContainer}>
+        <div className={styles.footerCopyright}>
+          <img src="/images/copyright.png" className={styles.copyrightLogo} alt="" />{" "}
           2023 Ammar Ash Shiddiq. All Right Reserved.
         </div>
-        <div className="footer-copyright">
+        <div className={styles.footerCopyright}>
           Created with love and passion by Ammar Ash Shiddiq
         </div>
       </div>
 
-      <div className="footer-download">
-        <div className="footer-home" onClick={handleDownloadClick}>
+      <div className={styles.footerDownload}>
+        <div className={styles.footerHome} onClick={handleDownloadClick}>
           <img
-            className="footer-logo-download"
+            className={styles.footerLogoDownload}
             src="/images/downloads.png"
             alt=""
           />
-          <p className="footer-title">Download CV</p>
+          <p className={styles.footerTitle}>Download CV</p>
         </div>
       </div>
 
-      <div className="footer-menu">
+      <div className={styles.footerMenu}>
         <a
           href="https://www.instagram.com/ammarshddq/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/instagram.png" alt="" />
+          <img className={styles.footerLogo} src="/images/instagram.png" alt="" />
         </a>
 
         <a
@@ -47,7 +47,7 @@ function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/linkedin.png" alt="" />
+          <img className={styles.footerLogo} src="/images/linkedin.png" alt="" />
         </a>
 
         <a
@@ -55,7 +55,7 @@ function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/gmail.png" alt="" />
+          <img className={styles.footerLogo} src="/images/gmail.png" alt="" />
         </a>
 
         <a
@@ -63,7 +63,7 @@ function Footer() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/github.png" alt="" />
+          <img className={styles.footerLogo} src="/images/github.png" alt="" />
         </a>
       </div>
     </div>

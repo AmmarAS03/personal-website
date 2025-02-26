@@ -1,6 +1,6 @@
-// Updated Navbar.jsx
+// Navbar.jsx with CSS Modules
 import React, { useState } from "react";
-import "../assets/scss/Navbar.scss";
+import styles from "../assets/scss/Navbar.module.scss";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,38 +18,38 @@ function Navbar() {
   };
 
   return (
-    <div className={`navbar-container ${menuOpen ? 'menu-open' : ''}`}>
-      <img src="/images/letter-a.png" className="navbar-logo" alt="" />
+    <div className={`${styles.navbarContainer} ${menuOpen ? styles.menuOpen : ''}`}>
+      <img src="/images/letter-a.png" className={styles.navbarLogo} alt="" />
       
       {/* Hamburger Menu Icon */}
-      <div className="hamburger-icon" onClick={toggleMenu}>
-        <div className={`hamburger-line ${menuOpen ? 'open' : ''}`}></div>
-        <div className={`hamburger-line ${menuOpen ? 'open' : ''}`}></div>
-        <div className={`hamburger-line ${menuOpen ? 'open' : ''}`}></div>
+      <div className={styles.hamburgerIcon} onClick={toggleMenu}>
+        <div className={`${styles.hamburgerLine} ${menuOpen ? styles.open : ''}`}></div>
+        <div className={`${styles.hamburgerLine} ${menuOpen ? styles.open : ''}`}></div>
+        <div className={`${styles.hamburgerLine} ${menuOpen ? styles.open : ''}`}></div>
       </div>
 
       {/* Regular Menu (visible on desktop) */}
-      <div className="navbar-menu">
-        <div className="navbar-me" onClick={() => scrollToSection("about-me-section")}>
-          <p className="me-title">About Me</p>
+      <div className={styles.navbarMenu}>
+        <div className={styles.navbarMe} onClick={() => scrollToSection("about-me-section")}>
+          <p className={styles.meTitle}>About Me</p>
         </div>
-        <div className="navbar-project" onClick={() => scrollToSection("work-experience-section")}>
-          <p className="home-title">Work Experience</p>
+        <div className={styles.navbarProject} onClick={() => scrollToSection("work-experience-section")}>
+          <p className={styles.homeTitle}>Work Experience</p>
         </div>
-        <div className="navbar-connect" onClick={() => scrollToSection("project-section")}>
-          <p className="home-title">Project</p>
+        <div className={styles.navbarConnect} onClick={() => scrollToSection("project-section")}>
+          <p className={styles.homeTitle}>Project</p>
         </div>
       </div>
 
       {/* Mobile Menu (toggled by hamburger) */}
-      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <div className="mobile-menu-item" onClick={() => scrollToSection("about-me-section")}>
+      <div className={`${styles.mobileMenu} ${menuOpen ? styles.open : ''}`}>
+        <div className={styles.mobileMenuItem} onClick={() => scrollToSection("about-me-section")}>
           <p>About Me</p>
         </div>
-        <div className="mobile-menu-item" onClick={() => scrollToSection("work-experience-section")}>
+        <div className={styles.mobileMenuItem} onClick={() => scrollToSection("work-experience-section")}>
           <p>Work Experience</p>
         </div>
-        <div className="mobile-menu-item" onClick={() => scrollToSection("project-section")}>
+        <div className={styles.mobileMenuItem} onClick={() => scrollToSection("project-section")}>
           <p>Project</p>
         </div>
       </div>

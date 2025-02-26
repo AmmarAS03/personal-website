@@ -1,4 +1,4 @@
-.profile-container {
+.profileContainer {
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -18,7 +18,7 @@
   }
 }
 
-.name-container {
+.nameContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -31,7 +31,7 @@
   }
 }
 
-.upper-container {
+.upperContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +43,7 @@
   }
 }
 
-.hello-container {
+.helloContainer {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -62,7 +62,7 @@
   }
 }
 
-.hello-heading-1-profile {
+.helloHeading1Profile {
   color: #000;
   /* Title 1 */
   font-family: Jura;
@@ -85,7 +85,7 @@
 }
 
 
-.hello-heading-2-profile {
+.helloHeading2Profile {
   color: #e28123;
   /* Title 1 */
   font-family: Jura;
@@ -105,7 +105,7 @@
   }
 }
 
-.text-container {
+.textContainer {
   flex-direction: column;
   align-items: flex-start;
   
@@ -116,7 +116,7 @@
   }
 }
 
-.image-container {
+.imageContainer {
   display: flex;
   align-items: flex-start;
   gap: 10px;

@@ -1,4 +1,4 @@
-.footer-container {
+.footerContainer {
   display: flex;
   width: screen;
   padding: 23px 52px;
@@ -10,34 +10,34 @@
   background: #ffe9d2;
 }
 
-.footer-logo {
+.footerLogo {
   width: 50px;
   height: 50px;
 }
 
-.footer-logo-download {
+.footerLogoDownload {
   width: 20px;
   height: 20px;
 }
 
-.copyright-logo {
+.copyrightLogo {
   width: 10px;
   height: 10px;
 }
 
-.footer-copyright-container {
+.footerCopyrightContainer {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
 
-.footer-menu {
+.footerMenu {
   display: flex;
   align-items: flex-end;
   gap: 36px;
 }
 
-.footer-home {
+.footerHome {
   display: flex;
   height: 36px;
   padding: 1px 21px;
@@ -53,15 +53,15 @@
   cursor: pointer; /* Change cursor to hand on hover */
 }
 
-.footer-download {
+.footerDownload {
   padding-bottom: 50px;
 }
-.footer-home:hover {
+.footerHome:hover {
   background: #93fffa; /* Change color on hover */
   transform: scale(1.05); /* Scale up by 5% on hover */
 }
 
-.footer-title {
+.footerTitle {
   color: var(--Purple, #611ff3);
   /* Body 1 */
   font-family: Jura;
@@ -74,7 +74,7 @@
   }
 }
 
-.footer-copyright {
+.footerCopyright {
   color: var(--Purple, #000000);
   /* Body 1 */
   font-family: Jura;
@@ -84,7 +84,7 @@
   line-height: normal;
 }
 
-.me-title {
+.meTitle {
   color: var(--Purple, #611ff3);
   /* Body 1 */
   font-family: Jura;
@@ -95,7 +95,7 @@
   width: 100px;
 }
 
-.navbar-me {
+.navbarMe {
   display: flex;
   height: 34px;
   padding: 1px 21px;
@@ -108,12 +108,12 @@
   cursor: pointer; /* Change cursor to hand on hover */
 }
 
-.navbar-me:hover {
+.navbarMe:hover {
   background: #93fffa; /* Change color on hover */
   transform: scale(1.05); /* Scale up by 5% on hover */
 }
 
-.navbar-project {
+.navbarProject {
   display: flex;
   height: 36px;
   padding: 1px 21px;
@@ -125,12 +125,12 @@
   transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
   cursor: pointer; /* Change cursor to hand on hover */
 }
-.navbar-project:hover {
+.navbarProject:hover {
   background: #93fffa; /* Change color on hover */
   transform: scale(1.05); /* Scale up by 5% on hover */
 }
 
-.navbar-connect {
+.navbarConnect {
   display: flex;
   height: 36px;
   padding: 1px 21px;
@@ -143,19 +143,19 @@
   cursor: pointer; /* Change cursor to hand on hover */
 }
 
-.navbar-connect:hover {
+.navbarConnect:hover {
   background: #93fffa; /* Change color on hover */
   transform: scale(1.05); /* Scale up by 5% on hover */
 }
 
 
 @media (max-width: 1024px) {
-  .footer-menu,
-  .footer-copyright-container {
+  .footerMenu,
+  .footerCopyrightContainer {
     display: none; /* Hide menu items below 750px */
   }
 
-  .footer-download {
+  .footerDownload {
     margin: 0 auto; /* Center the logo below 750px */
   }
 }

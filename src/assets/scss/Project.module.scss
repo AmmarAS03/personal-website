@@ -1,4 +1,4 @@
-.hello-heading-1 {
+.helloHeading1 {
   color: #000;
   font-family: Jura;
   font-size: 40px;
@@ -18,7 +18,7 @@
   }
 }
 
-.project-container {
+.projectContainer {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -39,7 +39,7 @@
   }
 }
 
-.carousel-container {
+.carouselContainer {
   width: 100%;
   max-width: 1200px;
   overflow: hidden;
@@ -67,7 +67,7 @@
   transform: scale(1.05);
 }
 
-.card-project-container {
+.cardProjectContainer {
   display: flex;
   align-items: center;
   gap: 25px;
@@ -87,7 +87,7 @@
   }
 }
 
-.card-project-1 {
+.cardProject1 {
   display: flex;
   width: 350px;
   height: 468px;
@@ -116,11 +116,11 @@
   }
 }
 
-.card-project-1:hover {
+.cardProject1:hover {
   transform: scale(1.05);
 }
 
-.project-image {
+.projectImage {
   width: 335px;
   height: 180px;
   flex-shrink: 0;
@@ -137,7 +137,7 @@
   }
 }
 
-.bottom-container {
+.bottomContainer {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -149,7 +149,7 @@
   }
 }
 
-.vector-project {
+.vectorProject {
   width: 281px;
   height: 3px;
   background-color: #AFB3E0;
@@ -163,7 +163,7 @@
   }
 }
 
-.project-text-container {
+.projectTextContainer {
   display: flex;
   width: 326px;
   height: 250px;
@@ -184,7 +184,7 @@
   }
 }
 
-.project-title, .project-paragraph {
+.projectTitle, .projectParagraph {
   width: 300px;
   height: 38px;
   flex-shrink: 0;
@@ -207,7 +207,7 @@
   }
 }
 
-.project-paragraph {
+.projectParagraph {
   font-size: 20px;
   font-weight: 450;
   text-align: justify;
@@ -223,7 +223,7 @@
   }
 }
 
-.background-image-project {
+.backgroundImageProject {
   content: "";
   position: absolute;
   left: 300px;
@@ -250,7 +250,7 @@
 /* Add these styles to your Project.scss file */
 
 /* Mobile indicator dots */
-.carousel-indicators {
+.carouselIndicators {
   display: none;
   justify-content: center;
   gap: 8px;
@@ -261,7 +261,7 @@
   }
 }
 
-.indicator-dot {
+.indicatorDot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -270,13 +270,13 @@
   transition: background-color 0.3s ease;
 }
 
-.indicator-dot.active {
+.indicatorDot.active {
   background-color: #AFB3E0;
   transform: scale(1.2);
 }
 
 /* For better mobile performance */
-.card-project-1 {
+.cardProject1 {
   -webkit-tap-highlight-color: transparent;
   
   @media (max-width: 768px) {
@@ -292,12 +292,12 @@
 }
 
 /* Add smooth transition to cards for better swipe experience */
-.card-project-container {
+.cardProjectContainer {
   transition: transform 0.3s ease;
 }
 
 /* Make the carousel component have 100% width for mobile */
-.carousel-container {
+.carouselContainer {
   width: 100%;
   
   @media (max-width: 768px) {

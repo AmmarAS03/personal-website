@@ -1,5 +1,5 @@
 // Updated Navbar.scss with hamburger menu styles
-.navbar-container {
+.navbarContainer {
   display: flex;
   width: screen;
   padding: 23px 52px;
@@ -16,7 +16,7 @@
   }
   
   // Add this class for when menu is open
-  &.menu-open {
+  &.menuOpen {
     @media (max-width: 750px) {
       border-radius: 0px;
     }
@@ -24,7 +24,7 @@
 }
 
 // Also update the mobile menu to match the navbar when open
-.mobile-menu {
+.mobilMenu {
   display: none;
   position: absolute;
   top: 100%;
@@ -54,12 +54,12 @@
   }
 }
 
-.navbar-logo {
+.navbarLogo {
   width: 50px;
   height: 46px;
 }
 
-.navbar-menu {
+.navbarMenu {
   display: flex;
   align-items: flex-end;
   gap: 36px;
@@ -70,7 +70,7 @@
 }
 
 // Hamburger menu icon
-.hamburger-icon {
+.hamburgerIcon {
   display: none;
   flex-direction: column;
   justify-content: space-between;
@@ -84,7 +84,7 @@
   }
 }
 
-.hamburger-line {
+.hamburgerLine {
   width: 100%;
   height: 3px;
   background-color: #611ff3;
@@ -107,7 +107,7 @@
 }
 
 // Mobile menu
-.mobile-menu {
+.mobileMenu {
   display: none;
   position: absolute;
   top: 100%;
@@ -136,7 +136,7 @@
   }
 }
 
-.mobile-menu-item {
+.mobileMenuItem {
   width: 90%;
   padding: 15px;
   margin: 5px 0;
@@ -161,7 +161,7 @@
 }
 
 // Original button styles
-.navbar-home, .navbar-me, .navbar-project, .navbar-connect {
+.navbarHome, .navbarMe, .navbarProject, .navbarConnect {
   display: flex;
   height: 36px;
   padding: 1px 21px;
@@ -179,11 +179,11 @@
   }
 }
 
-.navbar-me {
+.navbarMe {
   height: 34px;
 }
 
-.home-title, .me-title {
+.homeTitle, .meTitle {
   color: #611ff3;
   font-family: Jura;
   font-size: 20px;
@@ -192,6 +192,6 @@
   line-height: normal;
 }
 
-.me-title {
+.meTitle {
   width: 100px;
 }

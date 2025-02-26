@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../assets/scss/Project.scss";
+import styles from "../assets/scss/Project.module.scss";
 
 function Carousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -71,45 +71,45 @@ function Carousel() {
   );
 
   return (
-    <div className="carousel-container">
+    <div className={styles.carouselContainer}>
       <div 
-        className="card-project-container"
+        className={styles.cardProjectContainer}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <img
           src="/images/left-arrow.png"
-          className="arrow"
+          className={styles.arrow}
           onClick={handlePrev}
           alt="Previous"
         />
         {slicedData.map((d) => (
-          <div key={d.id} className="card-project-1">
-            <img className="project-image" src={d.img} alt={d.name}/>
+          <div key={d.id} className={styles.cardProject1}>
+            <img className={styles.projectImage} src={d.img} alt={d.name}/>
 
-            <div className="bottom-container">
-              <div className="vector-project" />
-              <div className="project-text-container">
-                <p className="project-title">{d.name}</p>
-                <p className="project-paragraph">{d.description}</p>
+            <div className={styles.bottomContainer}>
+              <div className={styles.vectorProject} />
+              <div className={styles.projectTextContainer}>
+                <p className={styles.projectTitle}>{d.name}</p>
+                <p className={styles.projectParagraph}>{d.description}</p>
               </div>
             </div>
           </div>
         ))}
         <img
           src="/images/right-arrow.png"
-          className="arrow"
+          className={styles.arrow}
           onClick={handleNext}
           alt="Next"
         />
       </div>
       
       {/* Mobile indicator dots */}
-      <div className="carousel-indicators">
+      <div className={styles.carouselIndicators}>
         {data.map((_, index) => (
           <div 
             key={index} 
-            className={`indicator-dot ${index === currentIndex ? 'active' : ''}`}
+            className={`${styles.indicatorDot} ${index === currentIndex ? styles.active : ''}`}
             onClick={() => setCurrentIndex(index)}
           />
         ))}

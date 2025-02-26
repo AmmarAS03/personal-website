@@ -4,6 +4,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+  width: screen;
 }
 
 .card-container {
@@ -147,6 +148,18 @@ font-size: 22px;
     margin-top: 0px;
 }
 
+@keyframes floatFlower {
+  0% {
+      transform: translateY(0px);
+  }
+  50% {
+      transform: translateY(-15px);
+  }
+  100% {
+      transform: translateY(0px);
+  }
+}
+
 
 .background-image-2{
     content: "";
@@ -158,6 +171,7 @@ font-size: 22px;
     width: 154px;
     height: 156px;
     z-index: -1;
+    animation: floatSun 4s ease-in-out infinite;
     @media (max-width: 1024px) {
       right: 5px;
             top: 2100px;

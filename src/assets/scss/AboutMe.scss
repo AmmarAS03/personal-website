@@ -6,22 +6,37 @@
 
 }
 
-.background-image{
-    content: "";
-    position: absolute;
-    top: 600px;
-    left: 270px;
-    right: 0;
-    bottom: 0px;
-    width: 174px;
-    height: 156px;
-    z-index: -2;
-    @media (max-width: 1024px) {
-            left: 5px;
-            top: 800px;
-            width: 133px;
-            height: 119px;
-      }
+/* Use a more specific name for the keyframes */
+@keyframes floatSun {
+  0% {
+      transform: translateY(0px);
+  }
+  50% {
+      transform: translateY(-15px);
+  }
+  100% {
+      transform: translateY(0px);
+  }
+}
+
+.background-image {
+  content: "";
+  position: absolute;
+  top: 600px;
+  left: 270px;
+  right: 0;
+  bottom: 0px;
+  width: 174px;
+  height: 156px;
+  z-index: -2;
+  animation: floatSun 4s ease-in-out infinite;
+  
+  @media (max-width: 1024px) {
+      left: 5px;
+      top: 800px;
+      width: 133px;
+      height: 119px;
+  }
 }
 
 .hello-heading-1-about-me {
@@ -119,6 +134,7 @@
   stroke-width: 1px;
   stroke: #000;
   border-radius: 12px;
+  animation: none;
 }
 
 .button-container-me {

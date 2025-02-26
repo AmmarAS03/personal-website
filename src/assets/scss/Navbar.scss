@@ -1,3 +1,4 @@
+// Updated Navbar.scss with hamburger menu styles
 .navbar-container {
   display: flex;
   width: screen;
@@ -7,6 +8,50 @@
   gap: 10px;
   border-radius: 0px 0px 50px 50px;
   background: #ffe9d2;
+  position: relative; // Added for mobile menu positioning
+  transition: border-radius 0.3s ease; // Add transition for smooth radius change
+  
+  @media (max-width: 750px) {
+    padding: 23px 30px;
+  }
+  
+  // Add this class for when menu is open
+  &.menu-open {
+    @media (max-width: 750px) {
+      border-radius: 0px;
+    }
+  }
+}
+
+// Also update the mobile menu to match the navbar when open
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffe9d2;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 99;
+  
+  &.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    border-radius: 0 0 0 0; // Remove bottom radius when open
+  }
+  
+  @media (max-width: 750px) {
+    display: flex;
+  }
 }
 
 .navbar-logo {
@@ -18,9 +63,105 @@
   display: flex;
   align-items: flex-end;
   gap: 36px;
+  
+  @media (max-width: 750px) {
+    display: none; // Hide menu items below 750px
+  }
 }
 
-.navbar-home {
+// Hamburger menu icon
+.hamburger-icon {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  cursor: pointer;
+  z-index: 100;
+  
+  @media (max-width: 750px) {
+    display: flex;
+  }
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 3px;
+  background-color: #611ff3;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  
+  &.open {
+    &:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+    
+    &:nth-child(2) {
+      opacity: 0;
+    }
+    
+    &:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+  }
+}
+
+// Mobile menu
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffe9d2;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 99;
+  
+  &.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  @media (max-width: 750px) {
+    display: flex;
+  }
+}
+
+.mobile-menu-item {
+  width: 90%;
+  padding: 15px;
+  margin: 5px 0;
+  border-radius: 12px;
+  background: #71e4d2;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  
+  &:hover {
+    background: #93fffa;
+    transform: scale(1.03);
+  }
+  
+  p {
+    color: #611ff3;
+    font-family: Jura;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+// Original button styles
+.navbar-home, .navbar-me, .navbar-project, .navbar-connect {
   display: flex;
   height: 36px;
   padding: 1px 21px;
@@ -29,27 +170,21 @@
   gap: 10px;
   border-radius: 12px;
   background: #71e4d2;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
-  cursor: pointer; /* Change cursor to hand on hover */
-}
-.navbar-home:hover {
-  background: #93fffa; /* Change color on hover */
-  transform: scale(1.05); /* Scale up by 5% on hover */
-}
-
-@media (max-width: 750px) {
-  .navbar-menu {
-    display: none; /* Hide menu items below 750px */
-  }
-
-  .navbar-logo {
-    margin: 0 auto; /* Center the logo below 750px */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: #93fffa;
+    transform: scale(1.05);
   }
 }
 
-.home-title {
-  color: var(--Purple, #611ff3);
-  /* Body 1 */
+.navbar-me {
+  height: 34px;
+}
+
+.home-title, .me-title {
+  color: #611ff3;
   font-family: Jura;
   font-size: 20px;
   font-style: normal;
@@ -58,65 +193,5 @@
 }
 
 .me-title {
-  color: var(--Purple, #611ff3);
-  /* Body 1 */
-  font-family: Jura;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
   width: 100px;
-}
-
-.navbar-me {
-  display: flex;
-  height: 34px;
-  padding: 1px 21px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 12px;
-  background: #71e4d2;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
-  cursor: pointer; /* Change cursor to hand on hover */
-}
-
-.navbar-me:hover {
-  background: #93fffa; /* Change color on hover */
-  transform: scale(1.05); /* Scale up by 5% on hover */
-}
-
-.navbar-project {
-  display: flex;
-  height: 36px;
-  padding: 1px 21px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 12px;
-  background: #71e4d2;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
-  cursor: pointer; /* Change cursor to hand on hover */
-}
-.navbar-project:hover {
-  background: #93fffa; /* Change color on hover */
-  transform: scale(1.05); /* Scale up by 5% on hover */
-}
-
-.navbar-connect {
-  display: flex;
-  height: 36px;
-  padding: 1px 21px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border-radius: 12px;
-  background: #71e4d2;
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for color change */
-  cursor: pointer; /* Change cursor to hand on hover */
-}
-
-.navbar-connect:hover {
-  background: #93fffa; /* Change color on hover */
-  transform: scale(1.05); /* Scale up by 5% on hover */
 }

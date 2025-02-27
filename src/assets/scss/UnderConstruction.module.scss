@@ -9,54 +9,10 @@
 
 .cardContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
+  gap: 35px;
   width: 100%;
-  background-color: #57D8FF;
-  border-radius:10px;
-  padding: 20px 20px 20px 0px;
-}
-
-.leftSide {
-  display: flex;
-  flex-direction: column;
-  width: 20%;
-  background-color: #57D8FF;
-  border-radius: 10px 0px 0px 10px;
-  gap: 10px;
-}
-
-.rightSide {
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  height:fit-content;
-  background-color: #6477B3;
-}
-
-.buttonContainer{
-  display: flex;
-  background-color: #6477B3;
-  border-radius: 10px 0px 0px 10px;
-}
-
-.boxHeader{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  margin: 10px
-}
-
-.leftBar{
-  font-family: Jura;
-  display: flex;
-background-color: #7B99FD;
-}
-
-.rightBar{
-  font-family: Jura;
-  display: flex;
-  background-color: #AEC0FE;
 }
 
 .headerWork1 {

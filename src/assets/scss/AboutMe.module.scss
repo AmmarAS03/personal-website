@@ -27,7 +27,7 @@
   bottom: 0px;
   width: 174px;
   height: 156px;
-  z-index: -2;
+  z-index: 10;
   animation: floatSun 4s ease-in-out infinite;
 
   @media (max-width: 1024px) {
@@ -39,7 +39,7 @@
 }
 
 .helloHeading1AboutMe {
-  color: #000;
+  color: rgb(255, 255, 255);
 
   /* Title 1 */
   font-family: Jura;
@@ -162,8 +162,17 @@
   display: flex;
   align-items: flex-end;
   gap: 36px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ecb4c6;
 }
+
 .footerLogo {
   width: 50px;
   height: 50px;
+  transition: transform 0.3s ease;
+}
+
+.footerLogo:hover {
+  transform: scale(1.05);
 }

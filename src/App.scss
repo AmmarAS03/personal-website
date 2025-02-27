@@ -1,3 +1,10 @@
+$dark-bg: #121212;
+$dark-surface: #1e1e1e;
+$dark-text-primary: #ffffff;
+$dark-text-secondary: rgba(255, 255, 255, 0.7);
+$dark-accent: #BB86FC; // Purple accent color
+$dark-error: #CF6679;
+
 .App {
   text-align: center;
   width: screen;
@@ -27,7 +34,7 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: $dark-text-primary;
 }
 
 .App-link {

@@ -6,10 +6,12 @@ import WorkExperience from "./components/WorkExperience";
 import Project from "./components/Project";
 import Footer from "./components/Footer";
 import Work from "./components/Work";
+import BoxBackground from "./components/BoxBackground";
 
 function App() {
   return (
     <div className="App">
+      <BoxBackground />
       <Navbar />
       <div className="separator" />
       <Profile />

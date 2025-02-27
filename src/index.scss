@@ -1,3 +1,10 @@
+$dark-bg: #12121250;
+$dark-surface: #1e1e1e;
+$dark-text-primary: #ffffff;
+$dark-text-secondary: rgba(255, 255, 255, 0.7);
+$dark-accent: #BB86FC; // Purple accent color
+$dark-error: #CF6679;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,6 +12,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $dark-bg;
 }
 
 code {

@@ -32,11 +32,19 @@ function Profile() {
           </div>
         </div>
       </div>
-      <img
+      {/* <img
         src="/images/Profile.svg"
         alt="Profile SVG"
         className={styles.imageContainer}
-      />
+      /> */}
+            <div className={styles.layeredImageContainer}>
+        <div className={`${styles.photoFrame} ${styles.frame4}`}></div>
+        <div className={`${styles.photoFrame} ${styles.frame3}`}></div>
+        <div className={`${styles.photoFrame} ${styles.frame2}`}></div>
+        <div className={`${styles.photoFrame} ${styles.frame1}`}>
+          <img src="/images/Profile.JPG" alt="Ammar's photo" className={styles.actualPhoto} />
+        </div>
+      </div>
     </div>
   );
 }

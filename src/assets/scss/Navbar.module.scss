@@ -7,7 +7,10 @@
   align-items: flex-start;
   gap: 10px;
   border-radius: 0px 0px 50px 50px;
-  background: #ffe9d2;
+  background-color: #1E1E3F; // Dark purple-blue (retro computing feel)
+  // or #2C2C54 (deeper purple-blue)
+  // or #1A2C42 (dark teal-blue)
+  color: #ffffff;
   position: relative; // Added for mobile menu positioning
   transition: border-radius 0.3s ease; // Add transition for smooth radius change
   

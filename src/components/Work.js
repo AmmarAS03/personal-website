@@ -6,37 +6,54 @@ function Work() {
   const workExperiences = [
     {
       id: 1,
-      title: "Software Engineer",
-      company: "Techflouu",
-      period: "2022 - 2023",
+      title: "Web Developer",
+      company: "Newish Communications",
+      period: "Jan 2025 - Present",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra justo eu velit bibendum, at volutpat nibh pulvinar. Maecenas consectetur nisi vitae lacus finibus, vel tincidunt erat finibus. Suspendisse potenti. Donec congue, nisl non efficitur hendrerit.",
       project: "Developed a responsive web application using React and Node.js. Implemented user authentication, data visualization, and real-time updates. Collaborated with a team of 5 developers using agile methodologies.",
       projectImage: "/images/Flower.png" // Add your image path here
     },
     {
       id: 2,
-      title: "Full Stack Developer",
-      company: "Naf Karya Indonesia",
-      period: "2021 - 2022",
-      description: "Praesent eget dolor sed lectus ultrices vulputate. Vivamus id justo ut magna vehicula accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla nec est semper, ultrices metus ut.",
-      project: "Redesigned the company's flagship product, improving user satisfaction by 35%. Created wireframes, prototypes, and conducted user testing with over 50 participants. Implemented design system for consistent UI components.",
+      title: "Software Engineer",
+      company: "Techflouu",
+      period: " Feb 2024 - Present",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra justo eu velit bibendum, at volutpat nibh pulvinar. Maecenas consectetur nisi vitae lacus finibus, vel tincidunt erat finibus. Suspendisse potenti. Donec congue, nisl non efficitur hendrerit.",
+      project: "Developed a responsive web application using React and Node.js. Implemented user authentication, data visualization, and real-time updates. Collaborated with a team of 5 developers using agile methodologies.",
       projectImage: "/images/Flower.png" // Add your image path here
     },
     {
       id: 3,
-      title: "Network Engineer",
-      company: "Netsistem infotama",
-      period: "2020 - 2021",
-      description: "Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
-      project: "Built dashboards to visualize key business metrics. Conducted analysis that identified cost-saving opportunities worth $500,000 annually. Automated reporting processes that saved 20 hours of manual work per week."
-      // No projectImage for this one to demonstrate both with and without images
+      title: "Full Stack Developer Intern",
+      company: "Naf Karya Indonesia",
+      period: "Sept 2023 – Nov 2023",
+      description: "As a remote intern, I played a key role in developing Jesara Koin, focusing on the back-end using NodeJS, MySQL, and PassportJS, while also handled front-end tasks in accordance with the BRD.",
+      project: "Redesigned the company's flagship product, improving user satisfaction by 35%. Created wireframes, prototypes, and conducted user testing with over 50 participants. Implemented design system for consistent UI components.",
+      projectImage: "/images/Flower.png" // Add your image path here
     },
     {
       id: 4,
+      title: "Network Engineer Intern",
+      company: "Netsistem Infotama",
+      period: "Apr 2023 – June 2023",
+      description: "Netsistem is a government-focused outsourcing company. I have the chance to work with BIN, where I learned valuable understanding about 7-layer OSI which strengthen my computer science foundation.",
+      project: "I involved in a porject that handles the networking of govenment selection"
+      // No projectImage for this one to demonstrate both with and without images
+    },
+    {
+      id: 5,
       title: "Teaching Assistant",
-      company: "Innovate Inc.",
-      period: "2019 - 2020",
-      description: "Cras mattis consectetur purus sit amet fermentum. Donec ullamcorper nulla non metus auctor fringilla. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis.",
+      company: "Faculty of Computer Science UI",
+      period: "Jan 2023 – June 2023",
+      description: "As a Teaching Assistant for Foundation of Programming 2 (Java), I mentored 8 students over 4 months. I conducted lab sessions, assisting in understanding programming concepts and their Java assignments.",
+      project: "Led product development for a mobile application with over 100,000 users. Coordinated cross-functional teams and managed release cycles. Conducted market research to identify new feature opportunities."
+    },
+    {
+      id: 6,
+      title: "Python Mentor",
+      company: "Dasar-dasar Pemrograman 0",
+      period: "July 2022 - August 2022",
+      description: "As a Teaching Assistant for Foundation of Programming 2 (Java), I mentored 8 students over 4 months. I conducted lab sessions, assisting in understanding programming concepts and their Java assignments.",
       project: "Led product development for a mobile application with over 100,000 users. Coordinated cross-functional teams and managed release cycles. Conducted market research to identify new feature opportunities."
     }
   ];
@@ -74,6 +91,7 @@ function Work() {
               </p>
             </div>
           </div>
+          
         );
       } else {
         return (

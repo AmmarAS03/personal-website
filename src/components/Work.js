@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "../assets/scss/Work.module.scss";
 
 function Work() {
-  // Sample work experience data
+  // Updated work experience data with project images
   const workExperiences = [
     {
       id: 1,
@@ -10,7 +10,8 @@ function Work() {
       company: "Techflouu",
       period: "2022 - 2023",
       description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam viverra justo eu velit bibendum, at volutpat nibh pulvinar. Maecenas consectetur nisi vitae lacus finibus, vel tincidunt erat finibus. Suspendisse potenti. Donec congue, nisl non efficitur hendrerit.",
-      project: "Developed a responsive web application using React and Node.js. Implemented user authentication, data visualization, and real-time updates. Collaborated with a team of 5 developers using agile methodologies."
+      project: "Developed a responsive web application using React and Node.js. Implemented user authentication, data visualization, and real-time updates. Collaborated with a team of 5 developers using agile methodologies.",
+      projectImage: "/images/Flower.png" // Add your image path here
     },
     {
       id: 2,
@@ -18,7 +19,8 @@ function Work() {
       company: "Naf Karya Indonesia",
       period: "2021 - 2022",
       description: "Praesent eget dolor sed lectus ultrices vulputate. Vivamus id justo ut magna vehicula accumsan. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla nec est semper, ultrices metus ut.",
-      project: "Redesigned the company's flagship product, improving user satisfaction by 35%. Created wireframes, prototypes, and conducted user testing with over 50 participants. Implemented design system for consistent UI components."
+      project: "Redesigned the company's flagship product, improving user satisfaction by 35%. Created wireframes, prototypes, and conducted user testing with over 50 participants. Implemented design system for consistent UI components.",
+      projectImage: "/images/Flower.png" // Add your image path here
     },
     {
       id: 3,
@@ -27,6 +29,7 @@ function Work() {
       period: "2020 - 2021",
       description: "Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.",
       project: "Built dashboards to visualize key business metrics. Conducted analysis that identified cost-saving opportunities worth $500,000 annually. Automated reporting processes that saved 20 hours of manual work per week."
+      // No projectImage for this one to demonstrate both with and without images
     },
     {
       id: 4,
@@ -44,6 +47,43 @@ function Work() {
 
   // Find the currently selected experience
   const currentExperience = workExperiences.find(exp => exp.id === selectedExp);
+
+  // Render content based on whether there's a project image or not
+  const renderContent = () => {
+    if (activeView === 'description') {
+      return (
+        <p className={styles.contentText}>
+          {currentExperience.description}
+        </p>
+      );
+    } else {
+      // Check if there's a project image
+      if (currentExperience.projectImage) {
+        return (
+          <div className={styles.projectWithImage}>
+            <div className={styles.projectImageContainer}>
+              <img 
+                src={currentExperience.projectImage} 
+                alt={`${currentExperience.title} project`} 
+                className={styles.projectImage}
+              />
+            </div>
+            <div className={styles.projectTextContainer}>
+              <p className={styles.contentText}>
+                {currentExperience.project}
+              </p>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <p className={styles.contentText}>
+            {currentExperience.project}
+          </p>
+        );
+      }
+    }
+  };
 
   return (
     <div className={styles.workContainer}>
@@ -84,11 +124,7 @@ function Work() {
           </div>
           
           <div className={styles.boxBody}>
-            <p>
-              {activeView === 'description' 
-                ? currentExperience.description 
-                : currentExperience.project}
-            </p>
+            {renderContent()}
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ function Footer() {
       {/* <img src="/images/letter-a.png" className={styles.footerLogo} /> */}
       <div className={styles.footerCopyrightContainer}>
         <div className={styles.footerCopyright}>
-          <img src="/images/copyright.png" className={styles.copyrightLogo} alt="" />{" "}
+          {/* <img src="/images/copyright.png" className={styles.copyrightLogo} alt="" />{" "} */}
           2023 Ammar Ash Shiddiq. All Right Reserved.
         </div>
         <div className={styles.footerCopyright}>

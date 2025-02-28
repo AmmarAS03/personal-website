@@ -11,11 +11,15 @@ function Profile() {
             <p className={styles.helloHeading1Profile}>Hello Folks!</p>
             <p className={styles.helloHeading1Profile}>I'm Ammar</p>
           </div>
+          <div className={styles.helloContainer2}>
+            <p className={styles.helloHeading3Profile}>I'm a final year double degree student in</p>
+            <p className={styles.helloHeading3Profile}>Computer Science and Information Technology.</p>
+            <p className={styles.helloHeading3Profile}>I'm more than that, I'm a...</p>
+          </div>
           <div className={styles.textContainer}>
             <p className={styles.helloHeading2Profile}>
               <Typewriter
                 words={[
-                  "CompSci Student",
                   "Developer",
                   "Designer",
                   "Adventurer",

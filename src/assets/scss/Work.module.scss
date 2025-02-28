@@ -105,15 +105,16 @@
   }
 }
 
-.leftBar {
-  background-color: #7B99FD;
+.leftBar, .rightBar {
+  background-color: #AEC0FE; /* Default non-selected color */
+  cursor: pointer;
+  padding: 10px 15px; /* Add some padding for better appearance */
+  transition: background-color 0.3s ease; /* Smooth transition between states */
 }
 
-.rightBar {
-  background-color: #AEC0FE;
-}
-
+/* Active tab style */
 .activeTab {
+  background-color: #7B99FD; /* Selected tab color */
   font-weight: 600;
 }
 
@@ -200,6 +201,9 @@
 /* Add these new styles to your existing CSS file */
 
 /* Content text styling */
+/* Update these styles in your Work.module.scss file */
+
+/* Content text styling */
 .contentText {
   font-family: Jura;
   line-height: 1.5;
@@ -207,46 +211,84 @@
   text-align: left;
 }
 
-/* Project with image layout */
-.projectWithImage {
+/* Project content layout - changed from horizontal to vertical */
+.projectContent {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
   text-align: left;
   height: 100%;
 }
 
 .projectImageContainer {
-  flex: 0 0 40%;
   display: flex;
-  align-items: center;
   justify-content: center;
+  margin-bottom: 15px;
 }
 
 .projectImage {
   max-width: 100%;
-  max-height: 200px;
+  max-height: 250px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.workImageContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.workImage {
+  max-width: 100%;
+  max-height: 250px;
   border-radius: 8px;
   object-fit: contain;
 }
 
 .projectTextContainer {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 100%;
 }
 
-/* Responsive adjustments for images */
-@media (max-width: 768px) {
-  .projectWithImage {
-    flex-direction: column;
-  }
+/* Tab styles - update to handle single tab case */
+.boxHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.leftBar, .rightBar {
+  font-family: Jura;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #000;
+  font-weight: 500;
+  background-color: #AEC0FE; /* Default non-selected color */
+  transition: background-color 0.3s ease;
   
-  .projectImageContainer {
-    margin-bottom: 15px;
-  }
-  
-  .projectImage {
-    max-height: 150px;
+  &:hover {
+    opacity: 0.9;
   }
 }
+
+/* When there's only one tab (description only), make it full width */
+.rightBar {
+  width: 45%;
+}
+
+.leftBar {
+  width: 45%;
+}
+
+/* Active tab style */
+.activeTab {
+  background-color: #7B99FD; /* Selected tab color */
+  font-weight: 600;
+}
+
+/* Remove the existing .projectWithImage styles that are no longer needed */

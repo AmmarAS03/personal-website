@@ -1,0 +1,307 @@
+.helloHeading1 {
+  color: rgb(255, 255, 255);
+  font-family: Jura;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.1;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    font-size: 32px;
+    line-height: normal;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
+}
+
+.projectContainer {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 120px;
+  margin-bottom: 50px;
+  margin-top: 50px;
+  width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    gap: 60px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  
+  @media (max-width: 480px) {
+    gap: 40px;
+  }
+}
+
+.carouselContainer {
+  width: 100%;
+  max-width: 1200px;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0 10px;
+  
+  @media (max-width: 480px) {
+    padding: 0 5px;
+  }
+}
+
+.arrow {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+  @media (max-width: 480px) {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.arrow:hover {
+  transform: scale(1.05);
+}
+
+.cardProjectContainer {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  flex-direction: row;
+  justify-content: center;
+  
+  @media (max-width: 1024px) {
+    gap: 20px;
+  }
+  
+  @media (max-width: 768px) {
+    gap: 15px;
+  }
+  
+  @media (max-width: 480px) {
+    gap: 10px;
+  }
+}
+
+.cardProject1 {
+  display: flex;
+  width: 350px;
+  height: 468px;
+  padding: 29px 0px;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  border-radius: 25px;
+  border: 5px solid #AFB3E0;
+  background: #FFF;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  
+  @media (max-width: 768px) {
+    width: 300px;
+    height: 420px;
+    padding: 20px 0;
+    gap: 10px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 280px;
+    height: 400px;
+    border-width: 3px;
+  }
+}
+
+.cardProject1:hover {
+  transform: scale(1.05);
+}
+
+.projectImage {
+  width: 335px;
+  height: 180px;
+  flex-shrink: 0;
+  object-fit: cover;
+  
+  @media (max-width: 768px) {
+    width: 280px;
+    height: 150px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 260px;
+    height: 140px;
+  }
+}
+
+.bottomContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 17px;
+  
+  @media (max-width: 480px) {
+    gap: 10px;
+  }
+}
+
+.vectorProject {
+  width: 281px;
+  height: 3px;
+  background-color: #AFB3E0;
+  
+  @media (max-width: 768px) {
+    width: 240px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 220px;
+  }
+}
+
+.projectTextContainer {
+  display: flex;
+  width: 326px;
+  height: 250px;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  
+  @media (max-width: 768px) {
+    width: 280px;
+    height: 230px;
+    gap: 16px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 260px;
+    height: 210px;
+    gap: 12px;
+  }
+}
+
+.projectTitle, .projectParagraph {
+  width: 300px;
+  height: 38px;
+  flex-shrink: 0;
+  color: #000;
+  font-family: Jura;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+  
+  @media (max-width: 768px) {
+    width: 260px;
+    font-size: 28px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 240px;
+    font-size: 24px;
+  }
+}
+
+.projectParagraph {
+  font-size: 20px;
+  font-weight: 450;
+  text-align: justify;
+  text-justify: inter-word;
+  height: auto;
+  
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+}
+
+.backgroundImageProject {
+  content: "";
+  position: absolute;
+  left: 300px;
+  right: 0;
+  bottom: -2900px;
+  width: 174px;
+  height: 156px;
+  z-index: -1;
+  border-radius: 12px;
+  
+  @media (max-width: 1024px) {
+    left: 5px;
+    top: -3200px;
+    width: 133px;
+    height: 119px;
+  }
+  
+  @media (max-width: 480px) {
+    width: 100px;
+    height: 90px;
+  }
+}
+
+/* Add these styles to your Project.scss file */
+
+/* Mobile indicator dots */
+.carouselIndicators {
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  
+  @media (max-width: 768px) {
+    display: flex;
+  }
+}
+
+.indicatorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ddd;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.indicatorDot.active {
+  background-color: #AFB3E0;
+  transform: scale(1.2);
+}
+
+/* For better mobile performance */
+.cardProject1 {
+  -webkit-tap-highlight-color: transparent;
+  
+  @media (max-width: 768px) {
+    /* Disable hover effect on mobile - it's often troublesome */
+    &:hover {
+      transform: none;
+    }
+    /* Add active state for touch feedback instead */
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+/* Add smooth transition to cards for better swipe experience */
+.cardProjectContainer {
+  transition: transform 0.3s ease;
+}
+
+/* Make the carousel component have 100% width for mobile */
+.carouselContainer {
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    /* Add touch action for better scroll behavior */
+    touch-action: pan-y;
+  }
+}

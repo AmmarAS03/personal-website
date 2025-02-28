@@ -1,0 +1,279 @@
+.profileContainer {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  width: screen;
+  justify-content: space-between;
+  gap: 50px;
+  
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    padding: 0 20px;
+    gap: 30px;
+  }
+}
+
+.nameContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    width: 100%;
+    align-items: center;
+  }
+}
+
+.upperContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+}
+
+.helloContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 45px;
+  }
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    width: 100%;
+    gap: 0;
+    align-items: center;
+  }
+}
+
+.helloHeading1Profile {
+  color: rgb(255, 255, 255);
+  /* Title 1 */
+  font-family: Jura;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.1;
+  align-items: center;
+  
+  @media (max-width: 1024px) {
+    line-height: 1;
+    margin: 0;
+  }
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    font-size: 32px;
+    text-align: center;
+  }
+}
+
+
+.helloHeading2Profile {
+  color: #e28123;
+  /* Title 1 */
+  font-family: Jura;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 0.1;
+  width: 500px;
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    font-size: 28px;
+    width: 100%;
+    text-align: center;
+    line-height: 1.2;
+    min-height: 40px; /* Ensure space for typewriter text */
+  }
+}
+
+.textContainer {
+  flex-direction: column;
+  align-items: flex-start;
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    width: 100%;
+    align-items: center;
+  }
+}
+
+.imageContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 391.192px;
+  height: 392.32px;
+  margin-left: 100px;
+  
+  @media (max-width: 1024px) {
+    margin-left: 0px;
+  }
+  
+  /* Add mobile phone breakpoint */
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Maintain aspect ratio */
+    object-fit: contain;
+  }
+}
+
+// Add this to your existing Profile.module.scss
+
+.layeredImageContainer {
+  position: relative;
+  width: 330px;
+  height: 400px;
+  margin-right: 20px;
+}
+
+/* Keyframes for the floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Base styles for all frames */
+.photoFrame {
+  position: absolute;
+  border-radius: 10px;
+  background-color: #e2c9ff;
+  transition: all 0.3s ease;
+  /* Base animation properties */
+  animation: float 4s ease-in-out infinite;
+}
+
+.frame4 {
+  border: 1px solid black;
+  bottom: 0;
+  right: 0;
+  width: 90%;
+  height: 90%;
+  z-index: 1;
+  /* Highest amplitude and speed for the back frame */
+  animation-duration: 3.5s; /* Faster */
+  animation-delay: 0s;
+}
+
+.frame3 {
+  border: 1px solid black;
+  bottom: 15px;
+  right: 15px;
+  width: 90%;
+  height: 90%;
+  z-index: 2;
+  /* Medium-high amplitude */
+  animation-duration: 3.7s;
+  animation-delay: 0.1s; /* Slight delay creates wave effect */
+}
+
+.frame2 {
+  border: 1px solid black;
+  bottom: 30px;
+  right: 30px;
+  width: 90%;
+  height: 90%;
+  z-index: 3;
+  /* Medium-low amplitude */
+  animation-duration: 3.9s;
+  animation-delay: 0.2s;
+}
+
+.frame1 {
+  border: 1px solid black;
+  bottom: 45px;
+  right: 45px;
+  width: 90%;
+  height: 90%;
+  z-index: 4;
+  padding: 15px;
+  overflow: hidden;
+  /* Lowest amplitude and speed for the front frame */
+  animation-duration: 4s; /* Slowest */
+  animation-delay: 0.3s;
+}
+
+.actualPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+/* Custom amplitude keyframes - for more dramatic effect */
+@keyframes float-back {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Apply stronger floating animation to back frames */
+.frame4 {
+  animation-name: float-back;
+}
+
+.frame3 {
+  animation-name: float-back;
+  animation-duration: 3.8s;
+}
+
+/* Optional: Add some rotation for more dynamic movement */
+@keyframes slight-rotate {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+/* Apply to frame 4 for subtle rotation */
+.frame4 {
+  animation-name: slight-rotate;
+  transform-origin: center bottom;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .layeredImageContainer {
+    width: 250px;
+    height: 300px;
+  }
+}

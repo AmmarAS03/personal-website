@@ -1,12 +1,12 @@
 import React from 'react'
-import "../assets/scss/Project.scss";
+import styles from "../assets/scss/Project.module.scss";
 import Carousel from './Carousel';
 
 function Project() {
   return (
-    <div className='project-container'>
+    <div className={styles.projectContainer}>
       {/* <img className='background-image-project' src="/images/cat.gif" /> */}
-       <div className='hello-heading-1'>Project</div>
+       <div className={styles.helloHeading1}>Project</div>
 
       <Carousel/>
     </div>

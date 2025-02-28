@@ -1,5 +1,5 @@
 import React from "react";
-import "../assets/scss/WorkExperience.scss";
+import "../assets/scss/WorkExperience.module.scss";
 
 function WorkExperience() {
   return (
@@ -39,7 +39,7 @@ function WorkExperience() {
             </div>
 
             <a href="https://www.netsistem.co.id/" target="_blank" rel="noopener noreferrer">
-            <img src="/images/Network.png" className="card-image" alt=""/>
+            <img src="/images/Network.jpg" className="card-image" alt=""/>
             </a>
           </div>
         </div>

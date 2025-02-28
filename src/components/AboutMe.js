@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../assets/scss/AboutMe.scss";
+import styles from "../assets/scss/AboutMe.module.scss";
 
 function AboutMe() {
   const [selectedButton, setSelectedButton] = useState(1);
@@ -10,66 +10,62 @@ function AboutMe() {
 
   const getDescriptionById = (id) => {
     const selectedData = data.find((item) => item.id === id);
-    return selectedData ?    <p className="body-1" dangerouslySetInnerHTML={{ __html: selectedData.description }} /> : null;
+    return selectedData ? <p className={styles.body1} dangerouslySetInnerHTML={{ __html: selectedData.description }} /> : null;
   };
 
   const getImageById = (id) => {
     const selectedData = data.find((item) => item.id === id);
-    return selectedData ? <img className="image-container-me" src={selectedData.img} alt={`Profile ${id}`} /> : null;
+    return selectedData ? <img className={styles.imageContainerMe} src={selectedData.img} alt={`Profile ${id}`} /> : null;
   };
 
   useEffect(() => {
-
     getDescriptionById(selectedButton);
     getImageById(selectedButton);
-
 
     const intervalId = setInterval(() => {
       const nextId = selectedButton % data.length + 1;
       handleButtonClick(nextId);
     }, 20000);
 
-
     return () => clearInterval(intervalId);
   }, [selectedButton]);
 
   return (
-    <div className="about-me-container">
-      <img src="/images/Sun.png" className="background-image" alt="" />
+    <div className={styles.aboutMeContainer}>
+      <img src="/images/Sun.png" className={styles.backgroundImage} alt="" />
 
-      <p className="hello-heading-1-about-me">About Me</p>
-      <div className="box">
-        <div className="left-box">
-          <div className="left-fill">
+      <p className={styles.helloHeading1AboutMe}>About Me</p>
+      <div className={styles.box}>
+        <div className={styles.leftBox}>
+          <div className={styles.leftFill}>
             {getDescriptionById(selectedButton)}
           </div>
         </div>
 
-        <div className="right-box">
-          <div className="right-fill">
+        <div className={styles.rightBox}>
+          <div className={styles.rightFill}>
             {getImageById(selectedButton)}
-            {/* <img src="/images/gunung.jpg" className="image-container-me"/> */}
-            <div className="button-container-me">
+            <div className={styles.buttonContainerMe}>
               {data.map((item) => (
                 <div
-                key={item.id}
-                className={`button-me ${selectedButton === item.id ? "active" : ""}`}
-                style={{ backgroundColor: selectedButton === item.id ? "#017F7E" : "" }}
-                onClick={() => handleButtonClick(item.id)}
-              />
+                  key={item.id}
+                  className={`${styles.buttonMe} ${selectedButton === item.id ? styles.active : ""}`}
+                  style={{ backgroundColor: selectedButton === item.id ? "#017F7E" : "" }}
+                  onClick={() => handleButtonClick(item.id)}
+                />
               ))}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="footer-menu">
+      <div className={styles.footerMenu}>
         <a
           href="https://www.instagram.com/ammarshddq/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/instagram.png" alt="" />
+          <img className={styles.footerLogo} src="/images/instagram.png" alt="" />
         </a>
 
         <a
@@ -77,7 +73,7 @@ function AboutMe() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/linkedin.png" alt="" />
+          <img className={styles.footerLogo} src="/images/linkedin.png" alt="" />
         </a>
 
         <a
@@ -85,7 +81,7 @@ function AboutMe() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/gmail.png" alt="" />
+          <img className={styles.footerLogo} src="/images/gmail.png" alt="" />
         </a>
 
         <a
@@ -93,7 +89,7 @@ function AboutMe() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="footer-logo" src="/images/github.png" alt="" />
+          <img className={styles.footerLogo} src="/images/github.png" alt="" />
         </a>
       </div>
     </div>

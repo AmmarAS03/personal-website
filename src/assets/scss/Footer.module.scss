@@ -7,7 +7,7 @@
   align-items: flex-end;
   gap: 10px;
   border-radius: 50px 50px 0px 0px;
-  background: #ffe9d2;
+  background-color: #1E1E3F;
 }
 
 .footerLogo {
@@ -34,12 +34,18 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  // background-color: #ffe9d2;
+  // padding: 10px;
+  // border-radius: 10px;
 }
 
 .footerMenu {
   display: flex;
   align-items: flex-end;
   gap: 36px;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #71e4d2;
 }
 
 .footerHome {
@@ -80,7 +86,7 @@
 }
 
 .footerCopyright {
-  color: var(--Purple, #000000);
+  color: #fff;
   /* Body 1 */
   font-family: Jura;
   font-size: 14px;

@@ -246,6 +246,8 @@ app with `singleton: false`.
 | 5 | Window chrome polish + animation (Fable) | ✅ Done, browser-verified |
 | **6** | **Mobile / iOS-style fallback** | **⬜ NEXT** |
 | 7 | a11y + SEO | ⬜ Not started |
+| 9 | Content refresh — the stale facts in `src/data/` | ⬜ Not started, **needs the owner** |
+| 10 | Intro video app, hosted on Cloudflare R2 | ⬜ Not started, **needs the owner** |
 
 ### Completed work, in detail
 
@@ -461,6 +463,67 @@ This is the phase most likely to be skipped and most likely to matter.
   logical tab order, `prefers-reduced-motion` respected everywhere.
 - Audit colour contrast on the translucent chrome.
 
+### Phase 9 — Content refresh
+**Blocked on the owner: these are facts, not code.** An agent must not invent
+replacements. Every item is a one-line edit in `src/data/`:
+
+- Old footer said "2023".
+- `profile.js` says "final year double degree student" — is that still true?
+- Both Newish Communications and Techflouu are listed as `"Present"`. At most
+  one is presumably current.
+- The Techflouu entry says "I'm still in my 6th semester".
+
+While in here, also worth a pass: `projects.js` `tech` fields were deliberately
+limited to stacks *named in the original copy*, so several projects are missing
+stacks that were actually used. Adding them is safe only if the owner confirms.
+
+### Phase 10 — Intro video
+A short video of the owner introducing himself, to make the site feel personal.
+Hosted in a **public Cloudflare R2 bucket**, not committed to the repo.
+
+**Where it goes — owner's call.** Two viable spots:
+1. **Its own app** (recommended) — one new entry in `registry.js`, a
+   QuickTime-ish player window sized to the video's aspect ratio. This is the
+   most discoverable option: a recruiter sees a seventh dock icon and clicks it.
+   The registry is designed for exactly this; nothing else needs to change.
+2. **First slide of `AboutApp`** — less discoverable, and the About app is a
+   Photos-style *image* gallery, so a video wants different chrome.
+
+**Hosting notes (R2):**
+- R2 has no egress fees, which is the whole reason to use it over the repo.
+- The `pub-<hash>.r2.dev` URL is **development-only** and rate-limited by
+  Cloudflare. Put a custom domain in front of the bucket before this is real.
+- Set a long `Cache-Control` `max-age` on the object; the file is immutable.
+- CORS is **not** needed for a plain `<video src>`. It *is* needed the moment a
+  cross-origin `<track>` captions file is added, or if `crossorigin` is set on
+  the element. Configure the bucket then, not before.
+- The URL is public, so it belongs in `src/data/` with the rest of the content —
+  no env var, no secret.
+
+**Encoding:**
+- H.264 High + AAC in MP4, and **`-movflags +faststart`**. Without it the moov
+  atom sits at the end of the file and the browser must download the whole thing
+  before the first frame appears. This is the single most common self-hosted
+  video mistake.
+- 1080p is plenty. Export a poster frame too, so the window is not a black
+  rectangle before playback.
+
+**Player behaviour:**
+- `preload="metadata"`, never `auto` — the window only mounts when opened, but
+  once open it should not pull megabytes for someone who never presses play.
+- Click-to-play over a poster. Do **not** autoplay with sound; browsers block it
+  anyway, and muted autoplay of a talking-head video is pointless.
+- ⚠️ **Pause on minimize.** Per §8.7, minimized windows stay mounted — so a
+  minimized video window will keep playing audio with nothing visible on screen.
+  Wire `win.minimized` to `video.pause()`. Closing unmounts and is fine.
+- Respect `prefers-reduced-motion` for any autoplaying background, though
+  click-to-play sidesteps this.
+
+**Ties into phase 7:** add a WebVTT captions track, and put a plain-text
+transcript in the DOM. A video is completely invisible to crawlers, so the
+transcript is the only part of it that helps SEO — and captions are the
+difference between the video being watchable or not for a chunk of visitors.
+
 ### Unstarted nice-to-haves
 - Replace placeholder emoji dock icons with real icon art (`emoji`/`accent` in
   `registry.js` are the swap points).
@@ -474,14 +537,13 @@ This is the phase most likely to be skipped and most likely to matter.
 1. **Committed, not pushed.** `macos-revamp` now carries the completed phases as
    local commits. Nothing has been pushed and no PR exists — that is the owner's
    call. **Do not push or open a PR unprompted.**
-2. **Content is stale and was deliberately left alone** (facts are the owner's to
-   change, not an agent's to invent):
-   - Old footer said "2023".
-   - `profile.js` says "final year double degree student".
-   - Both Newish Communications and Techflouu are listed as "Present".
-   - The Techflouu entry says "I'm still in my 6th semester".
-   These are all one-line edits in `src/data/` now.
-3. **Magnification only tracks once the cursor is over the dock panel**, because
+2. **Content is stale and was deliberately left alone** — facts are the owner's
+   to change, not an agent's to invent. Now tracked as **phase 9**; the specific
+   lines are listed there.
+3. **The intro video (phase 10) needs three things from the owner** before any
+   code is worth writing: the video file itself, the public R2 URL, and a
+   decision on whether it gets its own dock app or lives inside About Me.
+4. **Magnification only tracks once the cursor is over the dock panel**, because
    `.dock` is `pointer-events: none` and only `.panel` re-enables it. Real macOS
    behaves similarly, so it was left as-is. No anticipatory growth on approach.
 

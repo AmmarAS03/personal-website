@@ -1,10 +1,19 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { motion, useIsPresent, useReducedMotion } from "framer-motion";
 import styles from "./Window.module.scss";
 import { usePointerDrag } from "./hooks/usePointerDrag";
 import { useWindows } from "./state/windows";
 import { DEFAULT_MIN_SIZE, clamp, getDesktopBounds } from "./layout";
 
 const HANDLES = ["n", "s", "e", "w", "ne", "nw", "se", "sw"];
+
+// Fast, eased, not bouncy — see REVAMP.md §7. Each transition lives on the
+// variant it belongs to so framer picks the right one automatically for
+// whichever direction is playing (open/restore vs minimize vs close).
+const OPEN_TRANSITION = { duration: 0.2, ease: [0.16, 1, 0.3, 1] };
+const MINIMIZE_TRANSITION = { duration: 0.28, ease: [0.65, 0, 0.35, 1] };
+const CLOSE_TRANSITION = { duration: 0.15, ease: [0.4, 0, 1, 1] };
+const INSTANT = { duration: 0 };
 
 /** Keeps a dragged titlebar reachable: never under the menu bar, never fully off-screen. */
 function clampPosition(x, y, width, bounds) {
@@ -43,10 +52,32 @@ function resolveResize(handle, start, delta, min, bounds) {
   return { x, y, w, h };
 }
 
+/**
+ * Where should this window fly to/from when opening or minimizing? Points at
+ * the matching dock icon's on-screen centre so the animation reads as
+ * "this window lives in that icon." Falls back to a plain in-place scale
+ * (no translation) if the icon can't be found — e.g. mid-resize, or if the
+ * dock markup ever changes.
+ */
+function getDockIconCenter(appName) {
+  if (typeof document === "undefined") return null;
+  const buttons = document.querySelectorAll('nav[aria-label="Applications"] button');
+  for (const btn of buttons) {
+    if (btn.getAttribute("aria-label") === appName) {
+      const r = btn.getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) return null;
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    }
+  }
+  return null;
+}
+
 function Window({ win }) {
   const { getApp, activeId, focus, close, minimize, toggleMaximize, setRect } =
     useWindows();
   const app = getApp(win.appId);
+  const reduceMotion = useReducedMotion();
+  const isPresent = useIsPresent();
 
   // Live gesture rect. Kept in state rather than written straight to the DOM so
   // the commit on pointerup batches with the reset — writing the style directly
@@ -112,20 +143,82 @@ function Window({ win }) {
     },
   });
 
-  if (!app || win.minimized) return null;
+  // Where the "hidden" (minimized / not-yet-opened) pose should sit, expressed
+  // as an offset + scale from the window's own rect. Only recomputed when the
+  // window's committed rect changes (drag/resize commits, maximize) — not on
+  // every ghost update while a gesture is live.
+  const flyTarget = useMemo(() => {
+    if (!app) return { x: 0, y: 0, scale: 0.85 };
+    const target = getDockIconCenter(app.name);
+    if (!target) return { x: 0, y: 24, scale: 0.85 };
+    const centerX = win.x + win.w / 2;
+    const centerY = win.y + win.h / 2;
+    return { x: target.x - centerX, y: target.y - centerY, scale: 0.1 };
+  }, [app, win.x, win.y, win.w, win.h]);
+
+  // Presentation-only state machine layered on top of the reducer's
+  // `minimized` flag: three poses (hidden / visible / exit), each carrying its
+  // own transition so opening, minimizing, restoring and closing each get the
+  // right feel without extra wiring in WindowManager.
+  const variants = useMemo(
+    () => ({
+      hidden: {
+        opacity: 0,
+        scale: flyTarget.scale,
+        x: flyTarget.x,
+        y: flyTarget.y,
+        transition: reduceMotion ? INSTANT : MINIMIZE_TRANSITION,
+      },
+      visible: {
+        opacity: 1,
+        scale: 1,
+        x: 0,
+        y: 0,
+        transition: reduceMotion ? INSTANT : OPEN_TRANSITION,
+      },
+      exit: {
+        opacity: 0,
+        scale: 0.92,
+        transition: reduceMotion ? INSTANT : CLOSE_TRANSITION,
+      },
+    }),
+    [flyTarget, reduceMotion]
+  );
+
+  if (!app) return null;
 
   const rect = ghost ?? win;
   const Body = app.component;
+  const interactive = isPresent && !win.minimized;
 
   return (
-    <section
+    <motion.section
       className={`${styles.window} ${isActive ? styles.active : ""} ${
         ghost ? styles.gesturing : ""
       }`}
-      style={{ left: rect.x, top: rect.y, width: rect.w, height: rect.h, zIndex: win.z }}
-      onPointerDown={() => focus(win.instanceId)}
+      style={{
+        left: rect.x,
+        top: rect.y,
+        width: rect.w,
+        height: rect.h,
+        zIndex: win.z,
+        pointerEvents: interactive ? "auto" : "none",
+      }}
+      variants={variants}
+      initial="hidden"
+      animate={win.minimized ? "hidden" : "visible"}
+      exit="exit"
+      onPointerDown={interactive ? () => focus(win.instanceId) : undefined}
       role="dialog"
       aria-label={app.name}
+      aria-hidden={interactive ? undefined : "true"}
+      // Minimized/closing windows stay mounted so they have something to
+      // animate, but they must leave the tab order too — `pointer-events:none`
+      // and `aria-hidden` do not do that on their own, and `aria-hidden` over
+      // focusable descendants is an ARIA violation (focus lands in a subtree
+      // screen readers are told to ignore). `inert` removes both at once.
+      // Empty string, not `true`: React 18 warns on non-boolean attributes.
+      inert={interactive ? undefined : ""}
     >
       <header
         className={styles.titlebar}
@@ -175,7 +268,7 @@ function Window({ win }) {
             }}
           />
         ))}
-    </section>
+    </motion.section>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import Window from "./Window";
 import { useWindows } from "./state/windows";
 
@@ -35,7 +36,13 @@ function WindowManager() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [activeId, close, minimize]);
 
-  return stack.map((win) => <Window key={win.instanceId} win={win} />);
+  return (
+    <AnimatePresence>
+      {stack.map((win) => (
+        <Window key={win.instanceId} win={win} />
+      ))}
+    </AnimatePresence>
+  );
 }
 
 export default WindowManager;

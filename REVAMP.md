@@ -2,8 +2,8 @@
 
 > **For an AI agent picking this up in a fresh session:** read this whole file
 > before touching anything. It is the single source of truth for what is done,
-> what is next, and what must not be broken. Phases 0–4 and phase 2 are complete
-> and verified. **Start at Phase 5.**
+> what is next, and what must not be broken. Phases 0–5 and phase 8 are complete
+> and verified. **Start at Phase 6.**
 
 ---
 
@@ -217,8 +217,8 @@ app with `singleton: false`.
 | 4 | The six apps | ✅ Done, browser-verified |
 | 2 | OS shell visuals (Fable) | ✅ Done, browser-verified |
 | 8 | Delete old components | ✅ Done early |
-| **5** | **Window chrome polish + animation (Fable)** | **⬜ NEXT** |
-| 6 | Mobile / iOS-style fallback | ⬜ Not started |
+| 5 | Window chrome polish + animation (Fable) | ✅ Done, browser-verified |
+| **6** | **Mobile / iOS-style fallback** | **⬜ NEXT** |
 | 7 | a11y + SEO | ⬜ Not started |
 
 ### Completed work, in detail
@@ -254,51 +254,47 @@ magnification on real layout width so neighbours reflow; boot screen gated on
 `sessionStorage`, skippable, bypassed under `prefers-reduced-motion`.
 Deliberately skipped: desktop icons, dock icon bounce-on-launch.
 
+**Phase 5 — Window chrome + animation (Fable).** Three files touched:
+`Window.module.scss` (full restyle — gradient titlebar, hairlines, two-tier
+shadow that flattens when unfocused, dimmed traffic lights + title on
+background windows, ×/−/+ hover glyphs on the active window only),
+`Window.jsx` (framer-motion variants: open 200ms, minimize 280ms, close 150ms,
+all eased tweens, no springs; windows fly to/from their dock icon's measured
+centre with a centre-scale fallback), and `WindowManager.jsx` (`AnimatePresence`
+so `CLOSE` can play an exit). `useReducedMotion()` collapses every transition to
+zero. `Dock.module.scss` / `MenuBar.module.scss` were left alone — phase 2 held
+up. See §8.7 for the one regression this introduced and how it was fixed.
+
 ---
 
-## 7. NEXT UP — Phase 5: window chrome polish + animation
+## 7. NEXT UP — Phase 6: mobile / iOS-style fallback
 
-**Owner: Fable.** Dispatch with the `Agent` tool using `model: "fable"`,
-`subagent_type: "claude"`.
-
-### Files Fable OWNS in this phase
-- `src/os/Window.module.scss` — full restyle allowed.
-- Animation wiring inside `src/os/Window.jsx` and `src/os/WindowManager.jsx`
-  — **presentation only.** Wrapping windows in `motion.section` / `AnimatePresence`
-  is fine. Changing drag, resize, focus or reducer *behaviour* is not.
-- May refine `Dock.module.scss` / `MenuBar.module.scss` from phase 2.
-
-### Files Fable MUST NOT touch
-- `src/os/state/windows.jsx` — the state machine.
-- `src/os/hooks/usePointerDrag.js` — the gesture primitive.
-- `src/os/layout.js` — unless deliberately changing the reserved bands.
-- `src/apps/**`, `src/data/**`, `src/App.jsx`.
+**Owner: main agent.** Below `MOBILE_BREAKPOINT` (768px, already in
+`layout.js`):
 
 ### Scope
-1. **Window open animation** — scale + fade up from the dock icon's position if
-   feasible, otherwise from centre. Fast (~180–220ms), eased, not bouncy.
-2. **Close animation** — quick scale-down + fade.
-3. **Minimize** — genie-ish or scale-toward-dock-icon. The window is currently
-   removed from the DOM the moment `minimized` becomes true, so this needs
-   `AnimatePresence` (or an exit-state flag) to have anything to animate.
-4. **Window chrome fidelity** — titlebar gradient, hairline borders, the real
-   macOS two-tier shadow, and a clear focused-vs-unfocused treatment
-   (unfocused windows should dim their traffic lights and flatten their shadow).
-5. **Traffic light hover glyphs** — ×, −, + appear inside the dots on hover of
-   the light cluster, as in macOS.
-6. `prefers-reduced-motion: reduce` must disable all of it.
+1. Windows render **fullscreen, one at a time** — no drag, no resize, no traffic
+   lights (or close-only).
+2. The dock becomes an **iOS-style bottom bar**; add a back-to-desktop
+   affordance.
+3. A `useMediaQuery`-style hook is needed. There is no such hook yet.
+4. Decide whether `getDesktopBounds()` should return the full viewport on mobile.
 
 ### Non-negotiable constraints
-- Do **not** break: drag, 8-way resize, min-size clamping, maximize flushness,
-  focus/z-ordering, `⌘W`/`⌘M`/`Esc`.
-- `box-sizing: border-box` must stay on `.window` (see §8).
-- Resize handles must stay **inside** the frame (see §8).
-- No new dependencies. `framer-motion` is already available.
+- **Reuse the same app registry and the same app components.** Only the *shell*
+  changes. Do **not** fork the six apps — that would double the maintenance
+  surface and is the single easiest way to wreck this architecture.
+- Do not regress desktop behaviour above the breakpoint.
+- Phase 5's animations must degrade sanely: a fullscreen mobile window should
+  not try to fly to a dock icon that no longer exists in the same place. The
+  `getDockIconCenter()` fallback in `Window.jsx` already handles a missing icon,
+  but verify rather than assume.
+- No new dependencies.
 
 ### Definition of done
-`npm run build` passes; no console errors; screenshots taken of open/close/
-minimize mid-animation and of focused-vs-unfocused windows; a maximized window
-still measures `top === 28` and `bottom === innerHeight - 92`.
+`npm run build` passes; no console errors; verified at 375×667 and 768×1024 as
+well as desktop; a window opened on mobile fills the viewport; the desktop path
+above 768px is unchanged.
 
 ---
 
@@ -364,20 +360,33 @@ this stays cheap.
 - Menu bar: `header`; menu items are `[role="menuitem"]`.
 - Boot screen: `[role="presentation"]`; session key is `sessionStorage['os-booted']`.
 
+### 8.7 Hiding a window is not the same as removing it from the tab order
+Phase 5 needed minimized windows to stay mounted so the minimize animation has
+something to animate. The first cut hid them with `opacity: 0`,
+`pointer-events: none` and `aria-hidden="true"`. **None of those remove an
+element from the tab order.** A minimized About Me kept **12 focusable
+descendants**, and focus genuinely landed on the close button of a window the
+user could not see — a focus black hole. `aria-hidden` over focusable content is
+also an ARIA spec violation for exactly this reason.
+
+Fixed with the **`inert`** attribute on `.window` whenever
+`!(isPresent && !win.minimized)`. `inert` removes the subtree from the tab order
+*and* the accessibility tree in one move.
+
+Two things to keep in mind:
+- Pass `inert={cond ? undefined : ""}` — an **empty string**, not `true`.
+  React 18 warns "Received `true` for a non-boolean attribute" on the boolean
+  form. (React 19 supports the boolean; this repo is on 18.3.)
+- Verify with an actual focus attempt, not by reading styles:
+  ```js
+  el.focus(); document.activeElement === el   // false when correctly inert
+  ```
+  Any future change that keeps a window mounted while invisible — phase 6's
+  one-at-a-time mobile shell is the obvious candidate — needs the same treatment.
+
 ---
 
-## 9. Remaining phases after 5
-
-### Phase 6 — Mobile / iOS-style fallback
-Below `MOBILE_BREAKPOINT` (768px):
-- Windows render fullscreen, one at a time; no drag, no resize, no traffic lights
-  (or close-only).
-- Dock becomes an iOS-style bottom bar; add a back-to-desktop affordance.
-- Reuse the **same** app registry and the same app components — only the shell
-  changes. Do not fork the apps.
-- A `useMediaQuery`-style hook will be needed; `MOBILE_BREAKPOINT` already exists
-  in `layout.js` for this purpose.
-- Consider whether `getDesktopBounds()` should return the full viewport on mobile.
+## 9. Remaining phases after 6
 
 ### Phase 7 — Accessibility + SEO
 This is the phase most likely to be skipped and most likely to matter.
@@ -399,10 +408,9 @@ This is the phase most likely to be skipped and most likely to matter.
 
 ## 10. Open items for the owner (not blockers)
 
-1. **Nothing is committed.** All six completed phases sit in one working tree on
-   `macos-revamp`. Recommended: checkpoint before phase 5 starts rewriting window
-   chrome. The owner was asked and has not yet answered — **ask again before
-   assuming**, and do not commit unprompted.
+1. **Committed, not pushed.** `macos-revamp` now carries the completed phases as
+   local commits. Nothing has been pushed and no PR exists — that is the owner's
+   call. **Do not push or open a PR unprompted.**
 2. **Content is stale and was deliberately left alone** (facts are the owner's to
    change, not an agent's to invent):
    - Old footer said "2023".

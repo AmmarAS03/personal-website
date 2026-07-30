@@ -127,6 +127,32 @@ screen. If you need a new full-screen overlay, put it inside `Desktop`, not `App
 (`/images/foo.png`). Several unused duplicate `.jpg`/`.png` pairs remain in
 `public/images/` — pruning them is an unstarted nice-to-have.
 
+### The wallpaper
+
+`public/images/wallpaper-sequoia-{2560,1440}.webp` is macOS Sequoia's "Sequoia
+Sunrise", re-encoded from the copy that ships on any Sequoia Mac at
+`/System/Library/Desktop Pictures/.wallpapers/Sequoia Sunrise/`. That path is
+worth remembering: the `.madesktop` files in the parent directory are 500-byte
+plists, and the `.thumbnails/` copies are 214×130 — the real 3840×2160 assets
+are only in the hidden `.wallpapers/` folder.
+
+To regenerate (WebP is ~⅓ the size of JPEG here; `magick` cannot decode HEIC on
+this machine, so `sips` does the decode):
+
+```bash
+SRC="/System/Library/Desktop Pictures/.wallpapers/Sequoia Sunrise/Sequoia Sunrise.heic"
+sips -s format png "$SRC" --out /tmp/wp.png
+for w in 2560 1440; do
+  magick /tmp/wp.png -resize ${w}x -strip /tmp/wp-$w.png
+  cwebp -q 74 -m 6 /tmp/wp-$w.png -o public/images/wallpaper-sequoia-$w.webp
+done
+```
+
+⚠️ **This is Apple's copyrighted artwork.** It is fine locally, but it ships to
+every visitor once this site is deployed. Swapping in a CC-licensed or
+self-shot redwood photo is a one-line change in `Desktop.module.scss` — the
+owner has been told and has not yet decided.
+
 ---
 
 ## 5. Contracts you must not break
@@ -246,13 +272,16 @@ shortcuts in `WindowManager`.
 `help`, `whoami`, `ls`, `cat <file>`, `open <app>`, `apps`, `socials`, `clear`,
 `sudo`, with up/down history.
 
-**Phase 2 — Shell visuals (Fable).** Layered mesh-gradient wallpaper with SVG
-`feTurbulence` grain; menu bar with inline SVG Apple mark and working dropdown
+**Phase 2 — Shell visuals (Fable).** Menu bar with inline SVG Apple mark and working dropdown
 menus (File › Close Window and Window › Minimize/Zoom are wired to real
 actions, the rest are intentionally inert); dock with framer-motion
 magnification on real layout width so neighbours reflow; boot screen gated on
 `sessionStorage`, skippable, bypassed under `prefers-reduced-motion`.
 Deliberately skipped: desktop icons, dock icon bounce-on-launch.
+
+Phase 2's original layered mesh-gradient wallpaper (plus its `feTurbulence`
+grain, which existed only to stop the gradients banding) was later **replaced by
+the real macOS "Sequoia Sunrise" photo** at the owner's request — see §4.
 
 **Phase 5 — Window chrome + animation (Fable).** Three files touched:
 `Window.module.scss` (full restyle — gradient titlebar, hairlines, two-tier

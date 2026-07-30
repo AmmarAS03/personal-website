@@ -1,0 +1,379 @@
+// Shared app-content styling. Imported by all six apps so they read as one
+// system; class names are scoped per importing file by CSS modules.
+
+$text: rgba(255, 255, 255, 0.92);
+$muted: rgba(255, 255, 255, 0.55);
+$dim: rgba(255, 255, 255, 0.38);
+$hairline: rgba(255, 255, 255, 0.1);
+$surface: #1e1e1e;
+$raised: #262628;
+$selection: #3b6fd4;
+
+.appRoot {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  color: $text;
+  background: $surface;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.split {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  border-bottom: 1px solid $hairline;
+  background: $raised;
+}
+
+.toolbarTitle {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.toolbarSpacer {
+  flex: 1;
+}
+
+// ---- sidebar list (Experience) ----
+
+.sidebar {
+  flex: 0 0 246px;
+  min-width: 190px;
+  overflow-y: auto;
+  padding: 8px;
+  border-right: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.sidebarItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 11px;
+  margin-bottom: 2px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.sidebarItemActive {
+  background: $selection;
+
+  &:hover {
+    background: $selection;
+  }
+
+  .itemMeta {
+    color: rgba(255, 255, 255, 0.8);
+  }
+}
+
+.itemTitle {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.itemMeta {
+  font-size: 11.5px;
+  color: $muted;
+}
+
+// ---- detail pane ----
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.detailScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px 22px 24px;
+}
+
+.detailHeading {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.detailSub {
+  font-size: 13px;
+  color: $muted;
+  margin: 2px 0 0;
+}
+
+.prose {
+  margin: 0;
+
+  & + & {
+    margin-top: 12px;
+  }
+}
+
+// ---- tabs ----
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  flex: 0 0 auto;
+  padding: 8px 14px 0;
+}
+
+.tab {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 7px 7px 0 0;
+  background: transparent;
+  color: $muted;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    color: $text;
+  }
+}
+
+.tabActive {
+  background: rgba(255, 255, 255, 0.09);
+  color: $text;
+}
+
+// ---- images ----
+
+.imageFrame {
+  overflow: hidden;
+  border-radius: 9px;
+  border: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.3);
+  margin-bottom: 16px;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+// ---- grid (Projects) ----
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+  padding: 14px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  align-content: start;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 8px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.tileSelected {
+  background: rgba(59, 111, 212, 0.32);
+
+  &:hover {
+    background: rgba(59, 111, 212, 0.32);
+  }
+}
+
+.tileImage {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 7px;
+  border: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.tileLabel {
+  font-size: 12.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+// ---- chips ----
+
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 12px 0 0;
+}
+
+.chip {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+// ---- buttons ----
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 13px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+}
+
+.buttonPrimary {
+  background: $selection;
+  border-color: transparent;
+
+  &:hover {
+    background: #4a7ce0;
+  }
+}
+
+// ---- form fields (Contact) ----
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-bottom: 1px solid $hairline;
+}
+
+.fieldLabel {
+  flex: 0 0 62px;
+  color: $muted;
+  font-size: 12.5px;
+}
+
+.input,
+.textarea {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: $text;
+  font: inherit;
+  resize: none;
+
+  &::placeholder {
+    color: $dim;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.textarea {
+  padding: 14px 16px;
+  flex: 1;
+  min-height: 0;
+  line-height: 1.6;
+}
+
+// ---- misc ----
+
+.emptyState {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: $muted;
+  text-align: center;
+}
+
+.rail {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  overflow-x: auto;
+  border-top: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.thumb {
+  flex: 0 0 auto;
+  width: 62px;
+  height: 46px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.thumbActive {
+  border-color: #6f9df5;
+}
+
+.hint {
+  font-size: 11.5px;
+  color: $dim;
+}

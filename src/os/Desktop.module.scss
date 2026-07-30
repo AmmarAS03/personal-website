@@ -1,0 +1,48 @@
+// --menubar-height / --dock-height are published by Desktop.jsx from os/layout.js.
+
+.desktop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+// A layered mesh-gradient wallpaper in the Big Sur / Sonoma vein: a handful of
+// soft colour pools on a dark base, a top/bottom vignette so the menu bar and
+// dock stay legible over any of them, and a faint procedural grain (inline
+// SVG feTurbulence — no network fetch) to keep the gradients from banding.
+.wallpaper {
+  position: absolute;
+  inset: 0;
+  background-color: #0a0b16;
+  background-image:
+    radial-gradient(ellipse 75% 60% at 12% 12%, rgba(126, 97, 255, 0.55), transparent 60%),
+    radial-gradient(ellipse 65% 55% at 88% 6%, rgba(41, 172, 226, 0.42), transparent 55%),
+    radial-gradient(ellipse 85% 70% at 78% 92%, rgba(217, 70, 130, 0.4), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 95%, rgba(255, 158, 68, 0.2), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 45%, rgba(120, 84, 200, 0.18), transparent 65%),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.3) 0%,
+      transparent 16%,
+      transparent 78%,
+      rgba(0, 0, 0, 0.4) 100%
+    ),
+    linear-gradient(160deg, #14152c 0%, #1c1130 45%, #0b1420 100%);
+  background-blend-mode: screen, screen, screen, screen, screen, normal, normal;
+}
+
+.wallpaper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+.windowLayer {
+  position: absolute;
+  inset: 0;
+}

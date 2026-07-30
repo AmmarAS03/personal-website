@@ -265,6 +265,12 @@ so `CLOSE` can play an exit). `useReducedMotion()` collapses every transition to
 zero. `Dock.module.scss` / `MenuBar.module.scss` were left alone — phase 2 held
 up. See §8.7 for the one regression this introduced and how it was fixed.
 
+Maximize/restore was added afterwards, when the owner reported the zoom was not
+smooth: it moves the *rect*, which framer-motion does not drive, so it snapped
+in a single frame. It is now a 250ms Web Animations API zoom in a layout effect
+in `Window.jsx` — **not** a CSS transition, for reasons that are worth reading
+before touching it (§8.8).
+
 ---
 
 ## 7. NEXT UP — Phase 6: mobile / iOS-style fallback
@@ -383,6 +389,34 @@ Two things to keep in mind:
   ```
   Any future change that keeps a window mounted while invisible — phase 6's
   one-at-a-time mobile shell is the obvious candidate — needs the same treatment.
+
+### 8.8 You cannot animate the window rect with a CSS transition from React
+Maximize/restore moves `left/top/width/height`, not a transform, so
+framer-motion (which drives opacity/scale/x/y) does not touch it. The obvious
+fix — add a transient `.zooming` class that transitions geometry — **does not
+work**, and failed in two different ways worth knowing about:
+
+- **From an effect:** by the time any effect runs, React has already committed
+  the new rect. There is no "before" value left, so the transition has nothing
+  to animate.
+- **From render (the derived-state pattern):** setting the flag during render so
+  the class and the new rect land in the same commit *looks* right, but React
+  coalesces the true→false pair into a single commit. Instrumented, the
+  component rendered three times in 3ms — flag off, on, off — the effect never
+  ran at all, and the class never reached the DOM. Zero `transitionstart`
+  events, zero class mutations.
+
+**What works: the Web Animations API in `useLayoutEffect`.** `el.animate()`
+takes an explicit `from` keyframe, so it does not care that the committed style
+is already the destination. Keep the previous rect in a ref and animate from it.
+See the zoom effect in `Window.jsx`.
+
+Two guards that effect needs, both load-bearing:
+- Only animate when the size actually changed. Dragging a maximized window by
+  the titlebar also flips `maximized` (via `SET_RECT`), but only moves it — with
+  no size guard, every such drag plays a bogus zoom.
+- Cancel any in-flight zoom in `beginGesture`, or a grab during the animation
+  fights the interpolated geometry.
 
 ---
 

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, useIsPresent, useReducedMotion } from "framer-motion";
 import styles from "./Window.module.scss";
 import { usePointerDrag } from "./hooks/usePointerDrag";
@@ -14,6 +14,11 @@ const OPEN_TRANSITION = { duration: 0.2, ease: [0.16, 1, 0.3, 1] };
 const MINIMIZE_TRANSITION = { duration: 0.28, ease: [0.65, 0, 0.35, 1] };
 const CLOSE_TRANSITION = { duration: 0.15, ease: [0.4, 0, 1, 1] };
 const INSTANT = { duration: 0 };
+
+// Maximize/restore moves the *rect* (left/top/width/height), not a transform,
+// so framer-motion — which drives opacity/scale/x/y — can't animate it.
+const ZOOM_MS = 250;
+const ZOOM_EASING = "cubic-bezier(0.32, 0.72, 0, 1)";
 
 /** Keeps a dragged titlebar reachable: never under the menu bar, never fully off-screen. */
 function clampPosition(x, y, width, bounds) {
@@ -88,10 +93,19 @@ function Window({ win }) {
   const boundsRef = useRef(null);
   const handleRef = useRef(null);
 
+  // Zoom animation bookkeeping — see the layout effect below.
+  const nodeRef = useRef(null);
+  const zoomAnim = useRef(null);
+  const prevRect = useRef({ x: win.x, y: win.y, w: win.w, h: win.h });
+  const prevMaximized = useRef(win.maximized);
+
   const isActive = activeId === win.instanceId;
   const min = app?.minSize ?? DEFAULT_MIN_SIZE;
 
   const beginGesture = useCallback(() => {
+    // A grab always wins over an in-flight zoom, so the window tracks the
+    // cursor instead of fighting the animation's interpolated geometry.
+    zoomAnim.current?.cancel();
     focus(win.instanceId);
     startRect.current = { x: win.x, y: win.y, w: win.w, h: win.h };
     boundsRef.current = getDesktopBounds();
@@ -185,6 +199,40 @@ function Window({ win }) {
     [flyTarget, reduceMotion]
   );
 
+  // Zoom (maximize/restore). React has already committed the new rect by the
+  // time any effect runs, so there is no "before" value left for a CSS
+  // transition to animate from — the first attempt at this used a transient
+  // class and never fired for exactly that reason. The Web Animations API does
+  // not care: it animates from an explicit `from` keyframe regardless of what
+  // the element's committed style already is.
+  //
+  // Driven off `win.maximized` rather than off a click handler so every route
+  // into the zoom animates — green traffic light, titlebar double-click, and
+  // the menu bar's Window › Zoom.
+  useLayoutEffect(() => {
+    const el = nodeRef.current;
+    const from = prevRect.current;
+    const to = { x: win.x, y: win.y, w: win.w, h: win.h };
+    const maximizedChanged = prevMaximized.current !== win.maximized;
+    prevRect.current = to;
+    prevMaximized.current = win.maximized;
+
+    // A titlebar drag off a maximized window also flips `maximized`, but it
+    // only moves the window — the size is untouched. Requiring a size change
+    // keeps that from being animated as a zoom.
+    const sizeChanged = from.w !== to.w || from.h !== to.h;
+    if (!el || !maximizedChanged || !sizeChanged || reduceMotion) return;
+
+    zoomAnim.current?.cancel();
+    zoomAnim.current = el.animate(
+      [
+        { left: `${from.x}px`, top: `${from.y}px`, width: `${from.w}px`, height: `${from.h}px` },
+        { left: `${to.x}px`, top: `${to.y}px`, width: `${to.w}px`, height: `${to.h}px` },
+      ],
+      { duration: ZOOM_MS, easing: ZOOM_EASING, fill: "none" }
+    );
+  }, [win.maximized, win.x, win.y, win.w, win.h, reduceMotion]);
+
   if (!app) return null;
 
   const rect = ghost ?? win;
@@ -193,6 +241,7 @@ function Window({ win }) {
 
   return (
     <motion.section
+      ref={nodeRef}
       className={`${styles.window} ${isActive ? styles.active : ""} ${
         ghost ? styles.gesturing : ""
       }`}

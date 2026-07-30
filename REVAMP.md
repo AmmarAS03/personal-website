@@ -32,6 +32,7 @@ them without being told to.
 | Mobile | **iOS-style fallback** below 768px: windows fullscreen one at a time, dock becomes an iOS bottom bar. Same app registry, different shell. |
 | Theme | **Dark only.** Do not add a light-mode toggle. |
 | Phase ownership | Phases **2 and 5** (visual fidelity) are done by the **Fable** model. All other phases by the main agent. |
+| Animation library | **Keep `framer-motion`.** The bundle cost (57KB → 103KB gzipped) was raised with the owner on 2026-07-30 and accepted. Do not propose replacing it with hand-rolled CSS. |
 
 ---
 
@@ -393,10 +394,6 @@ This is the phase most likely to be skipped and most likely to matter.
   `registry.js` are the swap points).
 - Prune unused duplicate images in `public/images/`.
 - Update `README.md` — it still describes the old scrolling portfolio.
-- Reconsider `framer-motion`: it tripled the bundle (172KB → 310KB raw,
-  57KB → 103KB gzipped), bought largely for dock magnification. The same curve is
-  achievable with a `mousemove` handler plus CSS custom properties. Owner has been
-  told; awaiting a decision.
 
 ---
 

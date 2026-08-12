@@ -50,6 +50,15 @@ $grab: 6px;
   }
 }
 
+// Mobile: the window is the screen. No rounded corners, border or shadow —
+// those exist to separate overlapping desktop windows, and mobile windows
+// never overlap (only the frontmost one is interactive).
+.mobile {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
 .titlebar {
   position: relative;
   z-index: 1;

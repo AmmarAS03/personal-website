@@ -2,8 +2,8 @@
 
 > **For an AI agent picking this up in a fresh session:** read this whole file
 > before touching anything. It is the single source of truth for what is done,
-> what is next, and what must not be broken. Phases 0–5 and phase 8 are complete
-> and verified. **Start at Phase 6.**
+> what is next, and what must not be broken. Phases 0–6 and phase 8 are complete
+> and verified. **Start at Phase 7.**
 
 ---
 
@@ -98,11 +98,12 @@ src/
     Window.module.scss
     WindowManager.jsx       renders the stack, owns keyboard shortcuts
     hooks/usePointerDrag.js pointer-gesture primitive
+    hooks/useMediaQuery.js  useMediaQuery + useIsMobile (the phase-6 branch point)
     Desktop.jsx             desktop surface: wallpaper, chrome, boot gate
     Desktop.module.scss
     MenuBar.jsx             menu bar + dropdown menus + clock
     MenuBar.module.scss
-    Dock.jsx                dock with magnification
+    Dock.jsx                dock with magnification; iOS-style MobileBar below 768px
     Dock.module.scss
     BootScreen.jsx          boot animation, sessionStorage-gated
     BootScreen.module.scss
@@ -163,10 +164,13 @@ owner has been told and has not yet decided.
 MENUBAR_HEIGHT = 28
 DOCK_HEIGHT    = 92
 MOBILE_BREAKPOINT = 768
+MOBILE_DOCK_HEIGHT = 76        // iOS-style bar below the breakpoint
 CASCADE_STEP = 28, CASCADE_WRAP = 6
 DEFAULT_MIN_SIZE = { w: 420, h: 320 }
 clamp(value, min, max)
 getDesktopBounds() -> { top, left, right, bottom, width, height }
+  // viewport-aware: below MOBILE_BREAKPOINT, no menu bar and the reserved
+  // strip is MOBILE_DOCK_HEIGHT, not DOCK_HEIGHT
 ```
 
 The window system reserves **exactly** this space when centring, maximizing and
@@ -244,8 +248,8 @@ app with `singleton: false`.
 | 2 | OS shell visuals (Fable) | ✅ Done, browser-verified |
 | 8 | Delete old components | ✅ Done early |
 | 5 | Window chrome polish + animation (Fable) | ✅ Done, browser-verified |
-| **6** | **Mobile / iOS-style fallback** | **⬜ NEXT** |
-| 7 | a11y + SEO | ⬜ Not started |
+| 6 | Mobile / iOS-style fallback | ✅ Done, browser-verified |
+| **7** | **a11y + SEO** | **⬜ NEXT** |
 | 9 | Content refresh — the stale facts in `src/data/` | ⬜ Not started, **needs the owner** |
 | 10 | Intro video app, hosted on Cloudflare R2 | ⬜ Not started, **needs the owner** |
 
@@ -285,8 +289,7 @@ Phase 2's original layered mesh-gradient wallpaper (plus its `feTurbulence`
 grain, which existed only to stop the gradients banding) was later **replaced by
 the real macOS "Sequoia Sunrise" photo** at the owner's request — see §4.
 
-**Phase 5 — Window chrome + animation (Fable).** Three files touched:
-`Window.module.scss` (full restyle — gradient titlebar, hairlines, two-tier
+**Phase 5 — Window chrome + animation (Fable).** Three files touched:`Window.module.scss` (full restyle — gradient titlebar, hairlines, two-tier
 shadow that flattens when unfocused, dimmed traffic lights + title on
 background windows, ×/−/+ hover glyphs on the active window only),
 `Window.jsx` (framer-motion variants: open 200ms, minimize 280ms, close 150ms,
@@ -302,36 +305,48 @@ in a single frame. It is now a 250ms Web Animations API zoom in a layout effect
 in `Window.jsx` — **not** a CSS transition, for reasons that are worth reading
 before touching it (§8.8).
 
+**Phase 6 — Mobile / iOS-style fallback.** Same registry, same app components —
+only the shell branches, via `useIsMobile()` (`(max-width: 767px)`) from the new
+`src/os/hooks/useMediaQuery.js`. What changes below the breakpoint:
+
+- `layout.js` gains `MOBILE_DOCK_HEIGHT = 76`, and `getDesktopBounds()` becomes
+  viewport-aware: on mobile it returns the full viewport minus the 76px bar
+  (no menu bar). The bounds function is the single place that knows this.
+- `Window.jsx`: the committed desktop rect is bypassed entirely — mobile
+  geometry is `left:0, top:0, width:100%, height:calc(100% - 76px)` in
+  percentages so rotation/resize re-layouts for free. No drag, no resize
+  handles, no double-click zoom, close-only traffic light. `flyTarget` is
+  measured from the fullscreen centre, not the stale committed rect.
+  Non-frontmost windows are *covered*, and covered gets the exact §8.7
+  treatment (inert + aria-hidden) — verified with a real focus attempt.
+- `Dock.jsx` renders `MobileBar`: a full-width translucent strip (home button,
+  separator, the six icons — no magnification, trash or tooltips; they're
+  meaningless on touch). Icon taps still route through `openApp`. Two mobile-
+  specific behaviours: tapping the **frontmost** app's icon minimizes it
+  (revealing whatever is underneath, like an app switcher), while the **home
+  button minimizes ALL visible windows** — iOS home never reveals the previous
+  app, and an earlier version that minimized only the frontmost did exactly
+  that. Home is disabled when nothing is open.
+- `Desktop.jsx` hides `MenuBar` on mobile and publishes `--mobile-dock-height`
+  alongside the existing CSS vars.
+
+Verified with a scripted CDP pass (17/17) at 375×667, 768×1024 and 1280×800
+plus screenshots: fullscreen window above the bar, one window at a time, home
+button semantics, restore-instead-of-duplicate through the bar, and the
+desktop path (dock, 8 handles, maximize reserving 28/92 exactly) unchanged.
+
 ---
 
-## 7. NEXT UP — Phase 6: mobile / iOS-style fallback
+## 7. NEXT UP — Phase 7: accessibility + SEO
 
-**Owner: main agent.** Below `MOBILE_BREAKPOINT` (768px, already in
-`layout.js`):
-
-### Scope
-1. Windows render **fullscreen, one at a time** — no drag, no resize, no traffic
-   lights (or close-only).
-2. The dock becomes an **iOS-style bottom bar**; add a back-to-desktop
-   affordance.
-3. A `useMediaQuery`-style hook is needed. There is no such hook yet.
-4. Decide whether `getDesktopBounds()` should return the full viewport on mobile.
-
-### Non-negotiable constraints
-- **Reuse the same app registry and the same app components.** Only the *shell*
-  changes. Do **not** fork the six apps — that would double the maintenance
-  surface and is the single easiest way to wreck this architecture.
-- Do not regress desktop behaviour above the breakpoint.
-- Phase 5's animations must degrade sanely: a fullscreen mobile window should
-  not try to fly to a dock icon that no longer exists in the same place. The
-  `getDockIconCenter()` fallback in `Window.jsx` already handles a missing icon,
-  but verify rather than assume.
-- No new dependencies.
-
-### Definition of done
-`npm run build` passes; no console errors; verified at 375×667 and 768×1024 as
-well as desktop; a window opened on mobile fills the viewport; the desktop path
-above 768px is unchanged.
+**Owner: main agent.** The full spec lives in §9 ("Phase 7 — Accessibility +
+SEO"). The short version: this JS desktop currently has no crawlable text
+(semantic markup inside windows, a `<noscript>` plain-text résumé, real
+`<meta>`/OG tags), and the a11y pass covers per-window focus traps,
+`aria-modal`, keyboard-reachable dock, logical tab order,
+`prefers-reduced-motion` everywhere, and a contrast audit on the translucent
+chrome. Phase 6's inert handling for covered/minimized windows is already in
+place and is the pattern to follow.
 
 ---
 
@@ -449,9 +464,23 @@ Two guards that effect needs, both load-bearing:
 - Cancel any in-flight zoom in `beginGesture`, or a grab during the animation
   fights the interpolated geometry.
 
+### 8.9 Measuring an animating window in a test is a trap (two traps, actually)
+Phase 6's browser pass failed twice on measurement bugs, not app bugs:
+
+- **`getBoundingClientRect()` includes framer-motion's transform.** A window
+  mid open/minimize flight reports a rect interpolated between the fly poses
+  (a 375px window measured 302px, then 37.5px = 375 × the 0.1 minimize scale).
+  Combined with §8.5's stalled-rAF problem, the flight may be frozen at any
+  point. To assert *committed geometry*, read `getComputedStyle(el)` — it
+  resolves the layout (including `calc()`) and ignores transforms.
+- **JS `.click()` bypasses `inert` and `pointer-events: none`.** A minimized
+  window's traffic lights are still clickable from injected JS, so a test can
+  "maximize" a window that is conceptually hidden and then measure garbage.
+  Drive the UI the way a user would: restore via the dock first, then assert.
+
 ---
 
-## 9. Remaining phases after 6
+## 9. Remaining phases
 
 ### Phase 7 — Accessibility + SEO
 This is the phase most likely to be skipped and most likely to matter.

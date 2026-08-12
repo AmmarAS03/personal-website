@@ -2,8 +2,9 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, useIsPresent, useReducedMotion } from "framer-motion";
 import styles from "./Window.module.scss";
 import { usePointerDrag } from "./hooks/usePointerDrag";
+import { useIsMobile } from "./hooks/useMediaQuery";
 import { useWindows } from "./state/windows";
-import { DEFAULT_MIN_SIZE, clamp, getDesktopBounds } from "./layout";
+import { DEFAULT_MIN_SIZE, MOBILE_DOCK_HEIGHT, clamp, getDesktopBounds } from "./layout";
 
 const HANDLES = ["n", "s", "e", "w", "ne", "nw", "se", "sw"];
 
@@ -83,6 +84,7 @@ function Window({ win }) {
   const app = getApp(win.appId);
   const reduceMotion = useReducedMotion();
   const isPresent = useIsPresent();
+  const isMobile = useIsMobile();
 
   // Live gesture rect. Kept in state rather than written straight to the DOM so
   // the commit on pointerup batches with the reset — writing the style directly
@@ -161,14 +163,21 @@ function Window({ win }) {
   // as an offset + scale from the window's own rect. Only recomputed when the
   // window's committed rect changes (drag/resize commits, maximize) — not on
   // every ghost update while a gesture is live.
+  //
+  // On mobile the committed rect is ignored (the window renders fullscreen),
+  // so the offset is measured from the fullscreen rect's centre instead —
+  // otherwise the flight would start from wherever the stale desktop rect
+  // happened to be and miss the icon entirely.
   const flyTarget = useMemo(() => {
     if (!app) return { x: 0, y: 0, scale: 0.85 };
     const target = getDockIconCenter(app.name);
     if (!target) return { x: 0, y: 24, scale: 0.85 };
-    const centerX = win.x + win.w / 2;
-    const centerY = win.y + win.h / 2;
+    const centerX = isMobile ? window.innerWidth / 2 : win.x + win.w / 2;
+    const centerY = isMobile
+      ? (window.innerHeight - MOBILE_DOCK_HEIGHT) / 2
+      : win.y + win.h / 2;
     return { x: target.x - centerX, y: target.y - centerY, scale: 0.1 };
-  }, [app, win.x, win.y, win.w, win.h]);
+  }, [app, isMobile, win.x, win.y, win.w, win.h]);
 
   // Presentation-only state machine layered on top of the reducer's
   // `minimized` flag: three poses (hidden / visible / exit), each carrying its
@@ -237,19 +246,26 @@ function Window({ win }) {
 
   const rect = ghost ?? win;
   const Body = app.component;
-  const interactive = isPresent && !win.minimized;
+  // On mobile only the frontmost window is visible — it covers the others
+  // entirely. A covered window is exactly like a minimized one (§8.7): still
+  // mounted, but it must leave the tab order and the accessibility tree.
+  const interactive = isPresent && !win.minimized && !(isMobile && !isActive);
+
+  // Mobile windows fill the viewport above the iOS-style bar and cannot be
+  // dragged or resized, so the committed desktop rect is bypassed entirely.
+  // Percentages (not window.inner*) so rotation/resize re-layouts for free.
+  const geometry = isMobile
+    ? { left: 0, top: 0, width: "100%", height: `calc(100% - ${MOBILE_DOCK_HEIGHT}px)` }
+    : { left: rect.x, top: rect.y, width: rect.w, height: rect.h };
 
   return (
     <motion.section
       ref={nodeRef}
       className={`${styles.window} ${isActive ? styles.active : ""} ${
         ghost ? styles.gesturing : ""
-      }`}
+      } ${isMobile ? styles.mobile : ""}`}
       style={{
-        left: rect.x,
-        top: rect.y,
-        width: rect.w,
-        height: rect.h,
+        ...geometry,
         zIndex: win.z,
         pointerEvents: interactive ? "auto" : "none",
       }}
@@ -271,8 +287,8 @@ function Window({ win }) {
     >
       <header
         className={styles.titlebar}
-        onPointerDown={onTitlebarDrag}
-        onDoubleClick={() => toggleMaximize(win.instanceId)}
+        onPointerDown={isMobile ? undefined : onTitlebarDrag}
+        onDoubleClick={isMobile ? undefined : () => toggleMaximize(win.instanceId)}
       >
         <div className={styles.lights}>
           <button
@@ -282,20 +298,27 @@ function Window({ win }) {
             onPointerDown={(e) => e.stopPropagation()}
             onClick={() => close(win.instanceId)}
           />
-          <button
-            type="button"
-            className={`${styles.light} ${styles.minLight}`}
-            aria-label={`Minimize ${app.name}`}
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={() => minimize(win.instanceId)}
-          />
-          <button
-            type="button"
-            className={`${styles.light} ${styles.maxLight}`}
-            aria-label={`${win.maximized ? "Restore" : "Maximize"} ${app.name}`}
-            onPointerDown={(e) => e.stopPropagation()}
-            onClick={() => toggleMaximize(win.instanceId)}
-          />
+          {/* Minimize and zoom are desktop-only gestures — a fullscreen mobile
+              window has nothing to zoom to, and "back to desktop" lives in the
+              bottom bar. Close-only, per the phase-6 spec. */}
+          {!isMobile && (
+            <>
+              <button
+                type="button"
+                className={`${styles.light} ${styles.minLight}`}
+                aria-label={`Minimize ${app.name}`}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => minimize(win.instanceId)}
+              />
+              <button
+                type="button"
+                className={`${styles.light} ${styles.maxLight}`}
+                aria-label={`${win.maximized ? "Restore" : "Maximize"} ${app.name}`}
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => toggleMaximize(win.instanceId)}
+              />
+            </>
+          )}
         </div>
         <span className={styles.title}>{app.name}</span>
         {/* Balances the traffic lights so the title stays optically centred. */}
@@ -306,7 +329,8 @@ function Window({ win }) {
         <Body />
       </div>
 
-      {!win.maximized &&
+      {!isMobile &&
+        !win.maximized &&
         HANDLES.map((handle) => (
           <div
             key={handle}

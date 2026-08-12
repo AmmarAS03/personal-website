@@ -87,3 +87,23 @@ export function TrashGlyph(props) {
     </svg>
   );
 }
+
+/** iOS-style house, for the mobile bar's back-to-desktop button. */
+export function HomeGlyph(props) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      {...props}
+    >
+      <path d="M3.5 11.2L12 4l8.5 7.2" />
+      <path d="M5.8 9.8V19a1 1 0 0 0 1 1h10.4a1 1 0 0 0 1-1V9.8" />
+      <path d="M9.8 20v-5.4h4.4V20" />
+    </svg>
+  );
+}

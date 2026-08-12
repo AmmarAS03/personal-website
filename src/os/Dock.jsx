@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import styles from "./Dock.module.scss";
 import { useWindows } from "./state/windows";
-import { TrashGlyph } from "./icons";
+import { useIsMobile } from "./hooks/useMediaQuery";
+import { HomeGlyph, TrashGlyph } from "./icons";
 
 // Tuned to feel like the real dock: icons within ~1.5 icon-widths of the
 // cursor grow, falling off smoothly to BASE at DISTANCE px away.
@@ -86,6 +87,66 @@ function DockIcon({ mouseX, reduced, label, icon, accent, isOpen, onClick }) {
 }
 
 /**
+ * iOS-style bottom bar. Touch makes cursor magnification meaningless, so this
+ * is a plain strip: a back-to-desktop button, then the same six app icons.
+ * Clicks still route through openApp — restore-instead-of-duplicate is the
+ * same contract as the desktop dock — with one addition: tapping the
+ * *frontmost* app's icon minimizes it, doubling as a home gesture.
+ */
+function MobileBar() {
+  const { apps, openApp, openAppIds, activeId, activeAppId, minimize, windows } = useWindows();
+
+  // iOS semantics: "home" always lands on the desktop, never on the previous
+  // app — so every visible window minimizes, not just the frontmost. (Tapping
+  // the frontmost app's own icon below keeps the other behaviour: it reveals
+  // whatever was underneath, like an app switcher.)
+  const goHome = () => {
+    windows.filter((w) => !w.minimized).forEach((w) => minimize(w.instanceId));
+  };
+
+  return (
+    <nav className={styles.mobileBar} aria-label="Applications">
+      <button
+        type="button"
+        className={styles.mobileHome}
+        aria-label="Back to desktop"
+        disabled={!activeId}
+        onClick={goHome}
+      >
+        <HomeGlyph className={styles.mobileHomeGlyph} />
+      </button>
+      <span className={styles.mobileSeparator} aria-hidden="true" />
+      <ul className={styles.mobileItems}>
+        {apps.map((app) => (
+          <li key={app.id}>
+            <button
+              type="button"
+              className={`${styles.mobileItem} ${
+                activeAppId === app.id ? styles.mobileItemActive : ""
+              }`}
+              aria-label={app.name}
+              onClick={() =>
+                activeAppId === app.id && activeId ? minimize(activeId) : openApp(app.id)
+              }
+            >
+              <span className={styles.icon} style={{ background: app.accent }}>
+                <span className={`${styles.glyph} ${styles.mobileGlyph}`} aria-hidden="true">
+                  {app.emoji}
+                </span>
+              </span>
+              <span
+                className={`${styles.dot} ${openAppIds.has(app.id) ? styles.dotOn : ""}`}
+                aria-hidden="true"
+              />
+            </button>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+/**
  * Behaviour contract worth preserving: clicking an app with a minimized
  * window restores it rather than opening a duplicate — openApp already
  * handles that for singleton apps, so dock clicks always route through it.
@@ -94,6 +155,9 @@ function Dock() {
   const { apps, openApp, openAppIds } = useWindows();
   const reduced = usePrefersReducedMotion();
   const mouseX = useMotionValue(Infinity);
+  const isMobile = useIsMobile();
+
+  if (isMobile) return <MobileBar />;
 
   return (
     <nav

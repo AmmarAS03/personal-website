@@ -32,8 +32,10 @@ export const apps = [
     accent: "#3b82f6",
     component: AboutApp,
     singleton: true,
-    defaultSize: { w: 900, h: 580 },
-    minSize: { w: 560, h: 420 },
+    defaultSize: { w: 880, h: 620 },
+    // The story pane stacks below a 620px window width, so it stays readable
+    // well under the old 560px floor.
+    minSize: { w: 460, h: 400 },
   },
   {
     id: "experience",

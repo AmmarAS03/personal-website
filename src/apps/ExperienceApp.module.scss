@@ -1,0 +1,67 @@
+// Experience. The sidebar/detail split comes from apps.module.scss; what lives
+// here is the narrow-window behaviour.
+//
+// The shared sidebar is `flex: 0 0 246px`, which on a 375px phone left the
+// detail pane a ~68px column reading about ten characters a line. Below the
+// breakpoint the two panes stop sharing the width and become one screen at a
+// time, iOS-style: the role list, then push into the detail and back out.
+//
+// Which screen is showing is driven by `data-view` on the root rather than a
+// viewport check in JS, so the app still never reads useIsMobile — the
+// attribute is simply inert at desktop widths, where both panes always render.
+
+$hairline: rgba(255, 255, 255, 0.1);
+
+.root {
+  container-type: inline-size;
+}
+
+.back {
+  display: none;
+}
+
+// Sized off the content, not the device: two panes stop working once the
+// detail drops under ~340px, and 246 + 340 lands here. The window's own 620px
+// minimum sits just above it, so a desktop window never trips into this mode.
+@container (max-width: 600px) {
+  .roles {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    border-right: none;
+  }
+
+  .root[data-view="detail"] .roles {
+    display: none;
+  }
+
+  .root[data-view="list"] .detail {
+    display: none;
+  }
+
+  // `display: none` above the breakpoint also keeps it out of the tab order
+  // and the accessibility tree, so the desktop layout gains no phantom control.
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-right: 4px;
+    padding: 6px 10px 6px 6px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: #6f9df5;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.07);
+    }
+  }
+
+  .backChevron {
+    font-size: 17px;
+    line-height: 1;
+  }
+}

@@ -45,7 +45,7 @@ export const introVideo = {
   poster: "/images/intro-poster.jpg",
 
   title: "Hello, I'm Ammar",
-  caption: "A quick hello — because a CV only tells you so much.",
+  caption: "A quick hello, because a CV only tells you so much.",
 
   // Phase 7 slot (a11y + SEO). A video is invisible to crawlers, so this
   // transcript is the only part of it that helps search — and captions decide

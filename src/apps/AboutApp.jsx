@@ -1,8 +1,11 @@
 import { useState } from "react";
 import s from "./apps.module.scss";
+import a from "./AboutApp.module.scss";
 import { aboutSlides } from "../data/about";
 
-/** Photos-style walk through the life-story slides. */
+const pad = (n) => String(n).padStart(2, "0");
+
+/** One chapter at a time: the photo on the left, the story on the right. */
 function AboutApp() {
   const [index, setIndex] = useState(0);
   const slide = aboutSlides[index];
@@ -22,46 +25,64 @@ function AboutApp() {
 
   return (
     // tabIndex lets the arrow-key handler work once the window is clicked into.
-    <div className={s.appRoot} tabIndex={-1} onKeyDown={onKeyDown}>
+    <div className={`${s.appRoot} ${a.root}`} tabIndex={-1} onKeyDown={onKeyDown}>
       <div className={s.toolbar}>
-        <button type="button" className={s.button} onClick={() => step(-1)}>
+        <button
+          type="button"
+          className={s.button}
+          onClick={() => step(-1)}
+          aria-label="Previous chapter"
+        >
           ‹
         </button>
-        <button type="button" className={s.button} onClick={() => step(1)}>
+        <button
+          type="button"
+          className={s.button}
+          onClick={() => step(1)}
+          aria-label="Next chapter"
+        >
           ›
         </button>
         <span className={s.toolbarTitle}>{slide.title}</span>
         <span className={s.toolbarSpacer} />
-        <span className={s.hint}>
-          {index + 1} of {aboutSlides.length} · ← → to browse
-        </span>
+        <span className={`${s.hint} ${a.hint}`}>← → to browse</span>
       </div>
 
-      <div className={s.detailScroll}>
-        <div className={s.imageFrame}>
-          <img className={s.image} src={slide.image} alt={slide.title} />
-        </div>
-        {slide.paragraphs.map((text, i) => (
-          <p key={i} className={s.prose}>
-            {text}
+      {/* Keyed on the slide so switching chapters replays the fade. */}
+      <div key={slide.id} className={`${a.body} ${a.fade}`}>
+        <figure className={a.media}>
+          <div className={a.frame}>
+            <img className={a.photo} src={slide.image} alt={slide.title} />
+          </div>
+        </figure>
+
+        <div className={a.text}>
+          <p className={a.eyebrow}>
+            {pad(index + 1)} / {pad(aboutSlides.length)}
           </p>
-        ))}
+          <h2 className={a.title}>{slide.title}</h2>
+          {slide.paragraphs.map((text, i) => (
+            <p key={i} className={a.paragraph}>
+              {text}
+            </p>
+          ))}
+        </div>
       </div>
 
-      <div className={s.rail}>
+      <nav className={a.chapters} aria-label="Chapters">
         {aboutSlides.map((item, i) => (
           <button
             key={item.id}
             type="button"
-            className={`${s.thumb} ${i === index ? s.thumbActive : ""}`}
-            aria-label={item.title}
+            className={`${a.chapter} ${i === index ? a.chapterActive : ""}`}
             aria-current={i === index}
             onClick={() => setIndex(i)}
           >
-            <img src={item.image} alt="" />
+            <img className={a.chapterThumb} src={item.image} alt="" />
+            <span className={a.chapterLabel}>{item.title}</span>
           </button>
         ))}
-      </div>
+      </nav>
     </div>
   );
 }

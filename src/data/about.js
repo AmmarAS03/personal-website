@@ -59,7 +59,7 @@ export const aboutSlides = [
     title: "Bali",
     image: "/images/bali.png",
     paragraphs: [
-      "I also have a passion for meeting new people and spontaneous journeys. Pictured are my new friends from a trip to Bali where I had no solid plans—just booked a hostel and went for it. I ended up spending half the week exploring Bali with them.",
+      "I also have a passion for meeting new people and spontaneous journeys. Pictured are my new friends from a trip to Bali where I had no solid plans, just booked a hostel and went for it. I ended up spending half the week exploring Bali with them.",
       "I think that's all from me for now, please don't hesitate to contact me anytime, Cheers!",
     ],
   },

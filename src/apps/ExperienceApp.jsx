@@ -1,11 +1,15 @@
 import { useState } from "react";
 import s from "./apps.module.scss";
+import x from "./ExperienceApp.module.scss";
 import { experience } from "../data/experience";
 
 /** Mail-style sidebar of roles with a description/project detail pane. */
 function ExperienceApp() {
   const [selectedId, setSelectedId] = useState(experience[0].id);
   const [tab, setTab] = useState("description");
+  // Only consulted below the narrow breakpoint, where the panes show one at a
+  // time. At desktop widths the CSS ignores it and both panes stay up.
+  const [view, setView] = useState("list");
 
   const role = experience.find((item) => item.id === selectedId) ?? experience[0];
   const hasProject = Boolean(role.project);
@@ -16,9 +20,9 @@ function ExperienceApp() {
   const body = activeTab === "project" ? role.project : role.description;
 
   return (
-    <div className={s.appRoot}>
+    <div className={`${s.appRoot} ${x.root}`} data-view={view}>
       <div className={s.split}>
-        <nav className={s.sidebar} aria-label="Roles">
+        <nav className={`${s.sidebar} ${x.roles}`} aria-label="Roles">
           {experience.map((item) => (
             <button
               key={item.id}
@@ -30,6 +34,7 @@ function ExperienceApp() {
               onClick={() => {
                 setSelectedId(item.id);
                 setTab("description");
+                setView("detail");
               }}
             >
               <div className={s.itemTitle}>{item.role}</div>
@@ -39,8 +44,19 @@ function ExperienceApp() {
           ))}
         </nav>
 
-        <div className={s.detail}>
+        <div className={`${s.detail} ${x.detail}`}>
           <div className={s.tabs}>
+            <button
+              type="button"
+              className={x.back}
+              onClick={() => setView("list")}
+              aria-label="Back to roles"
+            >
+              <span className={x.backChevron} aria-hidden="true">
+                ‹
+              </span>
+              Roles
+            </button>
             <button
               type="button"
               className={`${s.tab} ${activeTab === "description" ? s.tabActive : ""}`}

@@ -3,9 +3,25 @@
 export const experience = [
   {
     id: 1,
+    role: "Software Engineer",
+    company: "Distrosub",
+    period: "June 2026 – Present",
+    description:
+      "Distrosub is a Brisbane based platform I work on under contract. I came in to take the product past its MVP stage, which mostly means moving it from a Next.js PWA into a proper React Native app. I also run sprint planning and set the technical direction for the short and long term work. Day to day I look into reported issues through Sentry, write up what I find for the team, and test releases before they go out so the platform stays stable for its 500+ active users. A good chunk of my time here goes into AI tooling. I built an AI code review agent into the CI/CD pipeline so bugs get caught before merge instead of in production, and I open sourced a Claude Code skill that generates interactive flow diagrams from the codebase. That one cut our onboarding time down a lot.",
+  },
+  {
+    id: 2,
+    role: "Founding Engineer",
+    company: "Meels",
+    period: "Sept 2025 – Present",
+    description:
+      "Meels is a Melbourne startup where I work remotely as the founding engineer. I built the platform from scratch, a social video and forum app, and took it through to production. The feature I own most closely is meal planning. Recipe ingredients sync straight into a shopping list, units get merged where they overlap, and every ingredient keeps a link back to the video it came from. The rest of my work sits on the data side for FMCG brand partners. I built an analytics dashboard that pulls usage data like recipe volume, ingredient pairings and seasonal trends, adds brand specific context, and runs it through an LLM to produce insights and partnership recommendations. There's also a lead generation pipeline that reads platform trends by itself to spot ingredient opportunities before they take off, then drafts outreach for them and fills in verified contact details for the brands worth approaching.",
+  },
+  {
+    id: 3,
     role: "Web Developer",
     company: "Newish Communications",
-    period: "Jan 2025 - Present",
+    period: "Jan 2025 – June 2025",
     description:
       "Newish is a communications agency run by students from the University of Queensland with the support and mentorship of industry professionals specializing in content creation, social media marketing, and digital platform. I work as a web dev team and learn how to work as a team and discuss with real clients from Brisbane.",
     project:
@@ -14,10 +30,10 @@ export const experience = [
     projectImage: "/images/newish_project.jpg",
   },
   {
-    id: 2,
+    id: 4,
     role: "Software Engineer",
     company: "Techflouu",
-    period: "Feb 2024 - Present",
+    period: "Feb 2024 – Mar 2025",
     description:
       "Techflouu is an IT Consulting startup based in Singapore with team from all over ASEAN countries. I started my journey with Techflouu as an intern and in my final month, I was offered a full time offer. I was quite suprised and scared because Im still in my 6th semester with a full time offer in front of my face. But, stepping back isn't really my thing so I took the offer and become a full time software engineer x full time student.",
     project:
@@ -26,7 +42,7 @@ export const experience = [
     projectImage: "/images/TechflouuProject.png",
   },
   {
-    id: 3,
+    id: 5,
     role: "Full Stack Developer Intern",
     company: "Naf Karya Indonesia",
     period: "Sept 2023 – Nov 2023",
@@ -38,7 +54,7 @@ export const experience = [
     projectImage: "/images/jesara-koin.png",
   },
   {
-    id: 4,
+    id: 6,
     role: "Network Engineer Intern",
     company: "Netsistem Infotama",
     period: "Apr 2023 – June 2023",
@@ -47,7 +63,7 @@ export const experience = [
     workImage: "/images/Network.jpg",
   },
   {
-    id: 5,
+    id: 7,
     role: "Teaching Assistant",
     company: "Faculty of Computer Science UI",
     period: "Jan 2023 – June 2023",
@@ -56,7 +72,7 @@ export const experience = [
     workImage: "/images/TA.jpg",
   },
   {
-    id: 6,
+    id: 8,
     role: "Python Mentor",
     company: "Dasar-dasar Pemrograman 0",
     period: "July 2022 - August 2022",

@@ -1,4 +1,4 @@
-// Shared app-content styling. Imported by all six apps so they read as one
+// Shared app-content styling. Imported by every app so they read as one
 // system; class names are scoped per importing file by CSS modules.
 
 $text: rgba(255, 255, 255, 0.92);
@@ -127,10 +127,19 @@ $selection: #3b6fd4;
 
 .prose {
   margin: 0;
+  // Detail panes get wide on a large window; without a cap the longer role
+  // descriptions ran to ~100 characters a line.
+  max-width: 60ch;
 
   & + & {
     margin-top: 12px;
   }
+}
+
+// A role with no image has its prose land directly under the company/period
+// line. Roles with one get the gap from .imageFrame's margin instead.
+.detailSub + .prose {
+  margin-top: 16px;
 }
 
 // ---- tabs ----
@@ -348,29 +357,6 @@ $selection: #3b6fd4;
   overflow-x: auto;
   border-top: 1px solid $hairline;
   background: rgba(0, 0, 0, 0.22);
-}
-
-.thumb {
-  flex: 0 0 auto;
-  width: 62px;
-  height: 46px;
-  padding: 0;
-  border: 2px solid transparent;
-  border-radius: 6px;
-  overflow: hidden;
-  background: none;
-  cursor: pointer;
-
-  img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-}
-
-.thumbActive {
-  border-color: #6f9df5;
 }
 
 .hint {

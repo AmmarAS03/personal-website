@@ -326,7 +326,12 @@ function Window({ win }) {
       </header>
 
       <div className={styles.body}>
-        <Body />
+        {/* Apps that own media need to know when their window has left the
+            screen: minimized windows stay mounted (§8.7), and on mobile a
+            covered window is mounted too, so either would keep playing audio
+            with nothing visible. `interactive` is already exactly that signal.
+            Apps with nothing to pause simply ignore the prop. */}
+        <Body visible={interactive} />
       </div>
 
       {!isMobile &&

@@ -1,6 +1,7 @@
 import AboutApp from "./AboutApp";
 import ContactApp from "./ContactApp";
 import ExperienceApp from "./ExperienceApp";
+import PhotoBoothApp from "./PhotoBoothApp";
 import ProjectsApp from "./ProjectsApp";
 import ResumeApp from "./ResumeApp";
 import TerminalApp from "./TerminalApp";
@@ -14,6 +15,10 @@ import TerminalApp from "./TerminalApp";
  *   icon assets later.
  * - `singleton: true` means a second dock click focuses the existing window
  *   instead of opening a duplicate.
+ * - `openOnBoot: true` opens the app automatically once the desktop is ready,
+ *   so a first-time visitor is greeted rather than left staring at a wallpaper.
+ *   Desktop.jsx reads this; keep it to one app, or they cascade on top of
+ *   each other.
  * - `minSize` overrides DEFAULT_MIN_SIZE from os/layout.js.
  *
  * Prefer reading `apps` / `getApp` off the window context; the direct exports
@@ -69,6 +74,17 @@ export const apps = [
     singleton: true,
     defaultSize: { w: 720, h: 560 },
     minSize: { w: 460, h: 420 },
+  },
+  {
+    id: "photobooth",
+    name: "Photo Booth",
+    emoji: "📸",
+    accent: "#e11d48",
+    component: PhotoBoothApp,
+    singleton: true,
+    openOnBoot: true,
+    defaultSize: { w: 820, h: 620 },
+    minSize: { w: 420, h: 340 },
   },
   {
     id: "terminal",

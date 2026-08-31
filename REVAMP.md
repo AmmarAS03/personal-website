@@ -226,10 +226,27 @@ A window instance is:
   emoji, accent,        // PLACEHOLDER icon art — swap for real assets later
   component,            // the React component rendered inside the window body
   singleton,            // true = focus existing window instead of duplicating
+  openOnBoot,           // true = launch automatically once the desktop is ready
   defaultSize: { w, h },
   minSize: { w, h },    // overrides DEFAULT_MIN_SIZE
 }
 ```
+
+**`openOnBoot`** is read by `Desktop.jsx`, which launches those apps when
+`booted` flips true — not on mount, because spawn rects come from
+`getDesktopBounds()` and the window would otherwise fly in from the dock *behind*
+the boot screen, where nobody sees it. Currently only `photobooth` sets it, so a
+visitor is greeted by the intro video instead of a bare wallpaper. Keep it to one
+app: several would cascade on top of each other.
+
+**`component` receives one prop: `visible: boolean`.** It is false when the
+window is minimized, closing, or (on mobile) covered by another window. Added
+for `PhotoBoothApp`, which must call `video.pause()` when its window leaves the
+screen — minimized windows stay mounted (§8.7), so without it the intro video
+keeps talking with nothing visible. Apps with nothing to pause ignore the prop.
+It is `interactive` in `Window.jsx`, the same value that already drives
+`inert` / `aria-hidden` / `pointer-events`, so there is only one notion of
+"this window is on screen" to keep in sync.
 
 Adding a section later = **one entry in this array**. Nothing else needs to change:
 the dock, menu bar and window manager all read from it. `terminal` is the only
@@ -251,7 +268,7 @@ app with `singleton: false`.
 | 6 | Mobile / iOS-style fallback | ✅ Done, browser-verified |
 | **7** | **a11y + SEO** | **⬜ NEXT** |
 | 9 | Content refresh — the stale facts in `src/data/` | ⬜ Not started, **needs the owner** |
-| 10 | Intro video app, hosted on Cloudflare R2 | ⬜ Not started, **needs the owner** |
+| 10 | Intro video app (Photo Booth), hosted on Cloudflare R2 | ✅ Done — **placeholder video, needs the real cut** |
 
 ### Completed work, in detail
 
@@ -506,52 +523,92 @@ While in here, also worth a pass: `projects.js` `tech` fields were deliberately
 limited to stacks *named in the original copy*, so several projects are missing
 stacks that were actually used. Adding them is safe only if the owner confirms.
 
-### Phase 10 — Intro video
-A short video of the owner introducing himself, to make the site feel personal.
-Hosted in a **public Cloudflare R2 bucket**, not committed to the repo.
+### Phase 10 — Intro video ✅ Done (placeholder video)
 
-**Where it goes — owner's call.** Two viable spots:
-1. **Its own app** (recommended) — one new entry in `registry.js`, a
-   QuickTime-ish player window sized to the video's aspect ratio. This is the
-   most discoverable option: a recruiter sees a seventh dock icon and clicks it.
-   The registry is designed for exactly this; nothing else needs to change.
-2. **First slide of `AboutApp`** — less discoverable, and the About app is a
-   Photos-style *image* gallery, so a video wants different chrome.
+Shipped as **Photo Booth** — a seventh dock app, named after the real macOS one.
+Option 1 from the original spec: its own registry entry, most discoverable, and
+a recruiter sees a seventh icon and clicks it.
 
-**Hosting notes (R2):**
-- R2 has no egress fees, which is the whole reason to use it over the repo.
-- The `pub-<hash>.r2.dev` URL is **development-only** and rate-limited by
-  Cloudflare. Put a custom domain in front of the bucket before this is real.
-- Set a long `Cache-Control` `max-age` on the object; the file is immutable.
-- CORS is **not** needed for a plain `<video src>`. It *is* needed the moment a
-  cross-origin `<track>` captions file is added, or if `crossorigin` is set on
-  the element. Configure the bucket then, not before.
-- The URL is public, so it belongs in `src/data/` with the rest of the content —
-  no env var, no secret.
+**Files:** `src/apps/PhotoBoothApp.jsx` + `.module.scss`, `src/data/intro.js`,
+`public/images/intro-poster.jpg`, one entry in `registry.js`, one prop in
+`Window.jsx`, one media query in `Dock.module.scss`.
 
-**Encoding:**
-- H.264 High + AAC in MP4, and **`-movflags +faststart`**. Without it the moov
-  atom sits at the end of the file and the browser must download the whole thing
-  before the first frame appears. This is the single most common self-hosted
-  video mistake.
-- 1080p is plenty. Export a poster frame too, so the window is not a black
-  rectangle before playback.
+**The video on R2 today is a PLACEHOLDER** and the owner will replace it. The
+full swap procedure and ffmpeg recipe live in the header comment of
+`src/data/intro.js` — that file is the single point of change. Summary: encode
+H.264 High + AAC to MP4 with **`-movflags +faststart`**, upload with
+`Content-Type: video/mp4` and a long immutable `Cache-Control`, use a **new
+filename per cut** (the immutable cache means overwriting strands viewers on the
+old file for a year), then set `src` and `type: "video/mp4"` and regenerate the
+poster.
 
-**Player behaviour:**
-- `preload="metadata"`, never `auto` — the window only mounts when opened, but
-  once open it should not pull megabytes for someone who never presses play.
-- Click-to-play over a poster. Do **not** autoplay with sound; browsers block it
-  anyway, and muted autoplay of a talking-head video is pointless.
-- ⚠️ **Pause on minimize.** Per §8.7, minimized windows stay mounted — so a
-  minimized video window will keep playing audio with nothing visible on screen.
-  Wire `win.minimized` to `video.pause()`. Closing unmounts and is fine.
-- Respect `prefers-reduced-motion` for any autoplaying background, though
-  click-to-play sidesteps this.
+**What the placeholder actually is** (probed with `ffprobe`, so nobody has to do
+it again): H.264 High 1080×720 @30fps, AAC-LC mono, 9.16s, 6.16 MB — but in a
+QuickTime container served as `video/quicktime`, with **`moov` at the end of the
+file**. Two consequences the code deliberately works around rather than hides:
 
-**Ties into phase 7:** add a WebVTT captions track, and put a plain-text
-transcript in the DOM. A video is completely invisible to crawlers, so the
-transcript is the only part of it that helps SEO — and captions are the
-difference between the video being watchable or not for a chunk of visitors.
+- `video/quicktime` is not a web container. Firefox refuses it; Chrome is
+  inconsistent. Hence `type: null` in `intro.js` — omitting the attribute lets
+  the browser sniff. `type="video/quicktime"` would make Chrome skip the file
+  without trying, and claiming `video/mp4` would be a lie that only happens to
+  work. An `onError` handler renders a "can't play, open it directly" fallback
+  so a Firefox visitor gets a message rather than a blank stage.
+- No faststart means `preload="metadata"` buys nothing — the whole file must
+  download before a frame paints. The committed poster frame is therefore doing
+  real work, not decoration. **Regenerate it whenever the video changes.**
+
+**Player behaviour, as built:** `preload="metadata"` (never `auto`), no
+autoplay, no `crossorigin` (which would need R2 CORS that isn't configured).
+Click-to-play over the poster via a red shutter overlay that unmounts after the
+first play so it can never swallow clicks meant for the video; after that,
+clicking the video toggles play. Click-to-play also sidesteps
+`prefers-reduced-motion` entirely — nothing moves until the visitor asks.
+
+**Native `controls` are OFF, and the control bar is hand-built.** The native
+strip duplicated the shutter button and dragged along a fullscreen button and an
+overflow menu that have no business inside a fake OS window. Everything it did
+that mattered is rebuilt in `PhotoBoothApp.jsx`: a full-bleed scrub bar on the
+seam between stage and controls (drag to seek, arrow keys to nudge, `role=
+"slider"` with live `aria-valuetext`), elapsed/total time in tabular figures,
+and a mute button plus an `<input type="range">` for volume — a real range input
+rather than a bespoke div, so it stays keyboard-operable and announced. The
+`<video>` element remains the single source of truth for volume and muted state;
+React just mirrors it via `onVolumeChange`, so OS-level changes stay in sync.
+
+Two traps worth not re-hitting there:
+- The shutter bar sizes itself with a **container query**, not a media query.
+  This window can sit at its 420px minimum on a 1440px screen, where a media
+  query still reports "desktop" and the caption would never collapse.
+- The pause glyph is one box with a transparent gradient stripe down the middle.
+  It must not also carry a background *colour* — that sits behind the gradient
+  and fills the gap back in, rendering a solid white block.
+
+**⚠️ The §8.7 trap, and the one shell change it forced.** Minimized windows stay
+mounted, so a minimized video window would keep playing audio to an empty
+screen. The app could not see its own window state: `<Body />` was rendered with
+no props and never learns its `instanceId`. `Window.jsx` now passes
+`visible={interactive}` (see §5.3) and `PhotoBoothApp` pauses on `visible: false`.
+`interactive` is the right signal rather than `!win.minimized` because it also
+covers the mobile case, where a covered window is mounted and would otherwise
+keep playing behind whatever is on top.
+
+**Mobile dock capacity.** The bar uses fixed 44px icons with `space-evenly`; six
+of them plus the home button came to ~357px, which fit a 375px phone only just.
+A seventh overflowed at ~401px. `Dock.module.scss` now shrinks icons to 38px
+below 400px (~359px for seven), which also leaves room for an eighth app.
+
+**It opens itself.** `photobooth` carries `openOnBoot: true`, so the window is
+already up when a visitor lands — the video is the site's welcome. It still does
+not autoplay (browsers block sound anyway); the poster and the shutter button are
+the invitation. To make this once-per-session instead of every load, gate the
+effect in `Desktop.jsx` on a `sessionStorage` key the way `BootScreen.jsx`
+already does.
+
+**Still outstanding:** the real video, and the phase 7 tie-in — a WebVTT captions
+track and a plain-text transcript. `intro.js` has a `transcript` slot that
+renders nothing while `null`; the owner chose to skip it for now. A video is
+completely invisible to crawlers, so that transcript is the only part of it that
+will ever help SEO.
 
 ### Unstarted nice-to-haves
 - Replace placeholder emoji dock icons with real icon art (`emoji`/`accent` in
@@ -569,9 +626,11 @@ difference between the video being watchable or not for a chunk of visitors.
 2. **Content is stale and was deliberately left alone** — facts are the owner's
    to change, not an agent's to invent. Now tracked as **phase 9**; the specific
    lines are listed there.
-3. **The intro video (phase 10) needs three things from the owner** before any
-   code is worth writing: the video file itself, the public R2 URL, and a
-   decision on whether it gets its own dock app or lives inside About Me.
+3. **The intro video (phase 10) is built, but the file on R2 is a placeholder.**
+   The Photo Booth app ships and works; it needs the real recording, encoded per
+   the recipe in `src/data/intro.js` (faststart is the flag that matters), plus a
+   regenerated poster frame. Captions/transcript were deliberately deferred to
+   phase 7 — they need the owner's words.
 4. **Magnification only tracks once the cursor is over the dock panel**, because
    `.dock` is `pointer-events: none` and only `.panel` re-enables it. Real macOS
    behaves similarly, so it was left as-is. No anticipatory growth on approach.

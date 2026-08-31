@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BootScreen, { shouldShowBootScreen } from "./BootScreen";
 import styles from "./Desktop.module.scss";
 import Dock from "./Dock";
 import MenuBar from "./MenuBar";
 import WindowManager from "./WindowManager";
 import { useIsMobile } from "./hooks/useMediaQuery";
+import { useWindows } from "./state/windows";
 import { DOCK_HEIGHT, MENUBAR_HEIGHT, MOBILE_DOCK_HEIGHT } from "./layout";
 
 /**
@@ -22,6 +23,24 @@ import { DOCK_HEIGHT, MENUBAR_HEIGHT, MOBILE_DOCK_HEIGHT } from "./layout";
 function Desktop() {
   const [booted, setBooted] = useState(() => !shouldShowBootScreen());
   const isMobile = useIsMobile();
+  const { apps, openApp } = useWindows();
+
+  // Greet the visitor: apps flagged `openOnBoot` in the registry launch
+  // themselves once the desktop is up, so an empty wallpaper is never the first
+  // thing anyone sees.
+  //
+  // Waits for `booted` rather than firing on mount, because window spawn
+  // positions are computed from getDesktopBounds() and the window would
+  // otherwise animate in from the dock behind the boot screen — the visitor
+  // would miss the one animation this app has. When the boot screen is skipped
+  // (reduced motion, or a repeat load in the same tab) `booted` starts true and
+  // this runs immediately.
+  const launched = useRef(false);
+  useEffect(() => {
+    if (!booted || launched.current) return;
+    launched.current = true;
+    apps.filter((app) => app.openOnBoot).forEach((app) => openApp(app.id));
+  }, [booted, apps, openApp]);
 
   return (
     <div

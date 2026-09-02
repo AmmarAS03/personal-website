@@ -5,9 +5,15 @@ export const aboutSlides = [
     title: "Hello",
     image: "/images/ui.png",
     paragraphs: [
-      "Hello everyone, I'm Ammar Ash Shiddiq. I am a passionate and highly motivated computer science student at Universitas Indonesia, where I have gained extensive knowledge and insights in various fields of computer science.",
-      "I'm going to bring you to my learning journey over the years so we can get to know each other!",
+      "Hello everyone, I'm Ammar Ash Shiddiq, a full stack developer based in Brisbane with 3 years of experience. I'm always looking for ways to put AI to good use in my workflow so I can build faster without losing quality.",
+      "I'm going to bring you to my journey over the years so we can get to know each other!",
     ],
+  },
+  {
+    id: 8,
+    title: "University of Queensland",
+    image: "/images/uq-graduation.jpg",
+    paragraphs: [],
   },
   {
     id: 2,

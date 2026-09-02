@@ -3,6 +3,24 @@ import s from "./apps.module.scss";
 import x from "./ExperienceApp.module.scss";
 import { experience } from "../data/experience";
 
+/** Mini browser chrome around a screenshot of the company's homepage, for
+ * roles with no work photo on hand. */
+function SiteFrame({ url, image, label }) {
+  return (
+    <div className={x.siteFrame}>
+      <div className={x.siteChrome}>
+        <div className={x.siteDots}>
+          <span className={`${x.siteDot} ${x.siteDotRed}`} />
+          <span className={`${x.siteDot} ${x.siteDotYellow}`} />
+          <span className={`${x.siteDot} ${x.siteDotGreen}`} />
+        </div>
+        <span className={x.siteUrl}>{url}</span>
+      </div>
+      <img className={x.siteImage} src={image} alt={`${label} website`} />
+    </div>
+  );
+}
+
 /** Mail-style sidebar of roles with a description/project detail pane. */
 function ExperienceApp() {
   const [selectedId, setSelectedId] = useState(experience[0].id);
@@ -18,6 +36,9 @@ function ExperienceApp() {
 
   const image = activeTab === "project" ? role.projectImage : role.workImage;
   const body = activeTab === "project" ? role.project : role.description;
+  // Most roles keep it to one paragraph; a couple read better split into a
+  // short "what it is" / "what I do" pair, so `description` may be an array.
+  const paragraphs = Array.isArray(body) ? body : [body];
 
   return (
     <div className={`${s.appRoot} ${x.root}`} data-view={view}>
@@ -81,13 +102,24 @@ function ExperienceApp() {
               {role.company} · {role.period}
             </p>
 
-            {image && (
+            {image ? (
               <div className={s.imageFrame} style={{ marginTop: 16 }}>
                 <img className={s.image} src={image} alt={`${role.company} — ${activeTab}`} />
               </div>
+            ) : (
+              activeTab === "description" &&
+              role.site && (
+                <div style={{ marginTop: 16, marginBottom: 16 }}>
+                  <SiteFrame url={role.site.url} image={role.site.image} label={role.company} />
+                </div>
+              )
             )}
 
-            <p className={s.prose}>{body}</p>
+            {paragraphs.map((paragraph, i) => (
+              <p key={i} className={s.prose}>
+                {paragraph}
+              </p>
+            ))}
           </div>
         </div>
       </div>

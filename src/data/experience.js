@@ -6,16 +6,22 @@ export const experience = [
     role: "Software Engineer",
     company: "Distrosub",
     period: "June 2026 – Present",
-    description:
-      "Distrosub is a Brisbane based platform I work on under contract. I came in to take the product past its MVP stage, which mostly means moving it from a Next.js PWA into a proper React Native app. I also run sprint planning and set the technical direction for the short and long term work. Day to day I look into reported issues through Sentry, write up what I find for the team, and test releases before they go out so the platform stays stable for its 500+ active users. A good chunk of my time here goes into AI tooling. I built an AI code review agent into the CI/CD pipeline so bugs get caught before merge instead of in production, and I open sourced a Claude Code skill that generates interactive flow diagrams from the codebase. That one cut our onboarding time down a lot.",
+    description: [
+      "Distrosub is a Brisbane based artist-first music streaming platform I work on under contract.",
+      "I came in to take the product past its MVP stage, which mostly means moving it from a Next.js PWA into a proper React Native app. I also run sprint planning and set the technical direction for the short and long term work. Day to day I look into reported issues through Sentry, write up what I find for the team, and test releases before they go out so the platform stays stable for its 500+ active users. A good chunk of my time here goes into AI tooling. I built an AI code review agent into the CI/CD pipeline so bugs get caught before merge instead of in production, and I open sourced a Claude Code skill that generates interactive flow diagrams from the codebase. That one cut our onboarding time down a lot.",
+    ],
+    site: { url: "distrosub.com/landing", image: "/images/distrosub-site.jpg" },
   },
   {
     id: 2,
     role: "Founding Engineer",
     company: "Meels",
     period: "Sept 2025 – Present",
-    description:
-      "Meels is a Melbourne startup where I work remotely as the founding engineer. I built the platform from scratch, a social video and forum app, and took it through to production. The feature I own most closely is meal planning. Recipe ingredients sync straight into a shopping list, units get merged where they overlap, and every ingredient keeps a link back to the video it came from. The rest of my work sits on the data side for FMCG brand partners. I built an analytics dashboard that pulls usage data like recipe volume, ingredient pairings and seasonal trends, adds brand specific context, and runs it through an LLM to produce insights and partnership recommendations. There's also a lead generation pipeline that reads platform trends by itself to spot ingredient opportunities before they take off, then drafts outreach for them and fills in verified contact details for the brands worth approaching.",
+    description: [
+      "Meels is a Melbourne startup that turns short-form food videos into recipes, shopping lists, and meal plans people actually use, built as a social video and forum app for home cooks.",
+      "I work remotely as the founding engineer, having built the platform from scratch and taken it through to production. The feature I own most closely is meal planning: recipe ingredients sync straight into a shopping list, units get merged where they overlap, and every ingredient keeps a link back to the video it came from. The rest of my work sits on the data side for FMCG brand partners, an analytics dashboard that pulls usage data like recipe volume, ingredient pairings, and seasonal trends, adds brand specific context, and runs it through an LLM to produce insights and partnership recommendations. There's also a lead generation pipeline that reads platform trends by itself to spot ingredient opportunities before they take off, then drafts outreach and fills in verified contact details for the brands worth approaching.",
+    ],
+    site: { url: "meelsapp.com", image: "/images/meels-site.jpg" },
   },
   {
     id: 3,
@@ -42,18 +48,6 @@ export const experience = [
     projectImage: "/images/TechflouuProject.png",
   },
   {
-    id: 5,
-    role: "Full Stack Developer Intern",
-    company: "Naf Karya Indonesia",
-    period: "Sept 2023 – Nov 2023",
-    description:
-      "As a remote intern, I played a key role in developing Jesara Koin, focusing on the back-end using NodeJS, MySQL, and PassportJS, while also handled front-end tasks in accordance with the BRD.",
-    project:
-      "I was heavily involved in the creation of a website prototype from scratch where I was in charge on the backend. I use nodejs and reactjs for this project",
-    workImage: "/images/fullstack.jpg",
-    projectImage: "/images/jesara-koin.png",
-  },
-  {
     id: 6,
     role: "Network Engineer Intern",
     company: "Netsistem Infotama",
@@ -62,6 +56,10 @@ export const experience = [
       "Netsistem is a government-focused outsourcing company. I have the chance to work with BIN, where I learned valuable understanding about 7-layer OSI which strengthen my computer science foundation.",
     workImage: "/images/Network.jpg",
   },
+];
+
+// Removed from display, kept for later reuse. Not rendered by ExperienceApp.
+export const experienceArchived = [
   {
     id: 7,
     role: "Teaching Assistant",

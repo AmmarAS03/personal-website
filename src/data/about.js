@@ -13,7 +13,10 @@ export const aboutSlides = [
     id: 8,
     title: "University of Queensland",
     image: "/images/uq-graduation.jpg",
-    paragraphs: [],
+    paragraphs: [
+      "Continuing my double degree, I did IT at the University of Queensland for 1.5 years where I studied deeper about software systems and understood more about UX from uni courses.",
+      "Didn't get much free time because I was also working full time remotely for Techflouu, so my day to day was either studying, working, and playing beach volleyball from time to time.",
+    ],
   },
   {
     id: 2,

@@ -58,6 +58,17 @@ function formatTime(seconds) {
 
 const clamp01 = (n) => Math.min(Math.max(n, 0), 1);
 
+/** Whichever line's `start` is the most recent one at or before `time`. */
+function activeTranscriptLine(transcript, time) {
+  if (!transcript?.length) return "";
+  let current = transcript[0];
+  for (const line of transcript) {
+    if (line.start > time) break;
+    current = line;
+  }
+  return current.text;
+}
+
 function PhotoBoothApp({ visible = true }) {
   const videoRef = useRef(null);
   const trackRef = useRef(null);
@@ -232,60 +243,48 @@ function PhotoBoothApp({ visible = true }) {
         </button>
 
         <div className={v.captionBlock}>
-          <p className={v.title}>{introVideo.title}</p>
-          <p className={v.caption}>{introVideo.caption}</p>
+          <p className={v.caption}>{activeTranscriptLine(introVideo.transcript, time)}</p>
         </div>
 
-        <span className={v.time}>
-          {formatTime(time)} / {formatTime(duration)}
-        </span>
+        <div className={v.metaGroup}>
+          <span className={v.time}>
+            {formatTime(time)} / {formatTime(duration)}
+          </span>
 
-        <div className={v.volume}>
-          <button
-            type="button"
-            className={v.volumeButton}
-            disabled={failed}
-            onClick={() => {
-              const el = videoRef.current;
-              if (el) el.muted = !el.muted;
-            }}
-            aria-label={muted ? "Unmute" : "Mute"}
-          >
-            <VolumeGlyph level={level} muted={muted || volume === 0} />
-          </button>
-          <input
-            type="range"
-            className={v.volumeSlider}
-            min={0}
-            max={1}
-            step={0.01}
-            value={level}
-            disabled={failed}
-            aria-label="Volume"
-            onChange={(e) => {
-              const el = videoRef.current;
-              if (!el) return;
-              el.volume = Number(e.target.value);
-              // Dragging the slider up is an unmute in every player worth
-              // copying.
-              if (el.muted && el.volume > 0) el.muted = false;
-            }}
-          />
+          <div className={v.volume}>
+            <button
+              type="button"
+              className={v.volumeButton}
+              disabled={failed}
+              onClick={() => {
+                const el = videoRef.current;
+                if (el) el.muted = !el.muted;
+              }}
+              aria-label={muted ? "Unmute" : "Mute"}
+            >
+              <VolumeGlyph level={level} muted={muted || volume === 0} />
+            </button>
+            <input
+              type="range"
+              className={v.volumeSlider}
+              min={0}
+              max={1}
+              step={0.01}
+              value={level}
+              disabled={failed}
+              aria-label="Volume"
+              onChange={(e) => {
+                const el = videoRef.current;
+                if (!el) return;
+                el.volume = Number(e.target.value);
+                // Dragging the slider up is an unmute in every player worth
+                // copying.
+                if (el.muted && el.volume > 0) el.muted = false;
+              }}
+            />
+          </div>
         </div>
       </div>
-
-      {/* Phase 7: a video is invisible to crawlers, so the transcript is the
-          only part of it that helps SEO. Absent until the words exist. */}
-      {introVideo.transcript && (
-        <div className={v.transcript}>
-          <h2 className={v.transcriptHeading}>Transcript</h2>
-          {introVideo.transcript.map((line, i) => (
-            <p key={i} className={s.prose}>
-              {line}
-            </p>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

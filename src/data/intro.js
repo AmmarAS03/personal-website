@@ -33,23 +33,31 @@
  * before this site is real.
  */
 export const introVideo = {
-  src: "https://pub-3479d06d572e48b384c17dc7a7921d8a.r2.dev/videos/Movie%20on%2012-08-26%20at%2021.11.mov",
+  src: "https://pub-3479d06d572e48b384c17dc7a7921d8a.r2.dev/videos/intro-v2.mp4",
 
-  // null = omit the attribute and let the browser sniff the response's
-  // Content-Type. Deliberate: `type="video/quicktime"` would make Chrome skip
-  // the file without trying it, and claiming `video/mp4` for a QuickTime
-  // container would be a lie that only happens to work. Set this to
-  // "video/mp4" once the real encode is up.
-  type: null,
+  // Real encode is up (faststart mp4, H.264 + AAC) — safe to assert the type.
+  type: "video/mp4",
 
   poster: "/images/intro-poster.jpg",
 
   title: "Hello, I'm Ammar",
-  caption: "A quick hello, because a CV only tells you so much.",
 
-  // Phase 7 slot (a11y + SEO). A video is invisible to crawlers, so this
-  // transcript is the only part of it that helps search — and captions decide
-  // whether the video is watchable at all for a chunk of visitors. Renders
-  // nothing while null; fill it in with what's actually said on camera.
-  transcript: null,
+  // Timed lines (seconds, from the start of playback) — the live caption.
+  // PhotoBoothApp shows whichever line's `start` is the most recent one at
+  // or before the current playhead.
+  transcript: [
+    { start: 0, text: "Hey guys, I'm Ammar" },
+    { start: 1.32, text: "welcome to my website." },
+    { start: 3.14, text: "I'm based in Brisbane," },
+    { start: 4.02, text: "currently working for Distrosub and Meels" },
+    { start: 6.74, text: "as their tech lead," },
+    { start: 8.02, text: "both are early-stage startups." },
+    { start: 10.94, text: "I have a passion in building products" },
+    { start: 12.48, text: "where I can be creative and technical" },
+    { start: 14.24, text: "at the same time." },
+    { start: 15.02, text: "So please feel free to look around" },
+    { start: 17.82, text: "to know more about me" },
+    { start: 18.78, text: "and connect with me." },
+    { start: 20.22, text: "Bye!" },
+  ],
 };

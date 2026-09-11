@@ -140,8 +140,14 @@ $shutter: #e11d48;
   }
 }
 
+// Three equal-width grid columns (shutter / caption / meta) so the caption
+// sits at the true center of the bar. A flex row would instead center it in
+// whatever space is left after the shutter button and the time+volume
+// group, which drifts off-center whenever those two sides are unequal
+// widths — grid's 1fr columns don't care how wide their content is.
 .shutterBar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   gap: 14px;
   flex: 0 0 auto;
@@ -221,7 +227,14 @@ $shutter: #e11d48;
 }
 
 .captionBlock {
-  flex: 1;
+  min-width: 0;
+}
+
+.metaGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
   min-width: 0;
 }
 
@@ -356,6 +369,7 @@ $shutter: #e11d48;
 .caption {
   margin: 2px 0 0;
   font-size: 12px;
+  text-align: center;
   color: rgba(255, 255, 255, 0.55);
 }
 

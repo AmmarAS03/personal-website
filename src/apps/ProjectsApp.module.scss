@@ -1,0 +1,214 @@
+// Projects. Medium-style card feed that morphs into an article-style detail
+// view. Image + title share a layoutId with their card so opening/closing
+// reads as one continuous shape change instead of a hard cut.
+
+$hairline: rgba(255, 255, 255, 0.1);
+$muted: rgba(255, 255, 255, 0.55);
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 20px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+// A stacked row, Medium home-feed style: text on the left, a fixed-size
+// thumbnail on the right, a hairline between entries rather than a boxed card.
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  text-align: left;
+  border: none;
+  border-bottom: 1px solid $hairline;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 20px 0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+// Fixed size so every card's photo occupies the same footprint regardless
+// of the source image's native size (a generated SVG banner vs. a screenshot).
+.cardImageFrame {
+  flex: 0 0 auto;
+  width: 112px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.cardImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.cardTitle {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.cardSubtitle {
+  font-size: 13px;
+  color: $muted;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.ghButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid $hairline;
+  background: rgba(255, 255, 255, 0.05);
+  flex: 0 0 auto;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  img {
+    width: 14px;
+    height: 14px;
+    display: block;
+    filter: invert(1);
+  }
+}
+
+// ---- article / detail ----
+
+.article {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.articleInner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 22px 24px 40px;
+}
+
+.articleHero {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+}
+
+.articleHeroImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.articleTitle {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.articleSubtitle {
+  font-size: 15px;
+  color: $muted;
+  margin: 8px 0 0;
+  line-height: 1.5;
+}
+
+.articleMeta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $hairline;
+}
+
+.articleProse {
+  margin: 22px 0 0;
+  font-size: 14.5px;
+  line-height: 1.75;
+
+  & + & {
+    margin-top: 16px;
+  }
+}
+
+.featuresHeading {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: $muted;
+  margin: 26px 0 10px;
+}
+
+.featuresList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+// ---- toolbar back button ----
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px 10px 6px 6px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: #6f9df5;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+.backChevron {
+  font-size: 17px;
+  line-height: 1;
+}

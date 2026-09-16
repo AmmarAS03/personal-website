@@ -1,0 +1,417 @@
+// Photo Booth chrome. Shared surface/typography come from apps.module.scss;
+// only the stage and the shutter live here.
+
+$hairline: rgba(255, 255, 255, 0.1);
+$shutter: #e11d48;
+
+.root {
+  background: #141416;
+  // The shutter bar adapts to the WINDOW's width, not the viewport's — this
+  // window can sit at its 420px minimum on a 1440px screen, where a media
+  // query would still report "desktop". Hence a container query below.
+  container-type: inline-size;
+}
+
+// Black, flexible, and deliberately aspect-ratio-free: `object-fit: contain`
+// letterboxes whatever shape the video happens to be, so swapping in a real
+// recording of different dimensions needs no code change.
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  background: #000;
+  overflow: hidden;
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  cursor: pointer;
+}
+
+// Sits over the poster until the first play, then unmounts so it can never
+// swallow clicks meant for the native controls.
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.28);
+  cursor: pointer;
+  transition: background 140ms ease;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.18);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: -4px;
+  }
+}
+
+.overlayShutter {
+  display: block;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: $shutter;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 140ms ease;
+
+  // The play triangle, drawn rather than shipped as an asset — nothing in this
+  // shell should depend on a network request for a glyph.
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 54%;
+    transform: translate(-50%, -50%);
+    border-style: solid;
+    border-width: 13px 0 13px 21px;
+    border-color: transparent transparent transparent #fff;
+  }
+
+  .overlay:hover & {
+    transform: scale(1.06);
+  }
+
+  .overlay:active & {
+    transform: scale(0.94);
+  }
+}
+
+// Scrub bar on the seam between stage and controls. Full-bleed and always
+// visible: it replaces the native control strip's only irreplaceable job, and a
+// bar that appears on hover would be invisible on touch.
+.track {
+  position: relative;
+  flex: 0 0 auto;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  touch-action: none;
+  transition: height 120ms ease;
+
+  &:hover,
+  &:focus-visible {
+    height: 8px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: -2px;
+  }
+}
+
+.trackFill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: $shutter;
+  // The knob rides the leading edge, so the fill must not clip it.
+  overflow: visible;
+}
+
+.trackKnob {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  transform: translate(50%, -50%) scale(0);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 120ms ease;
+
+  .track:hover &,
+  .track:focus-visible & {
+    transform: translate(50%, -50%) scale(1);
+  }
+}
+
+// Three equal-width grid columns (shutter / caption / meta) so the caption
+// sits at the true center of the bar. A flex row would instead center it in
+// whatever space is left after the shutter button and the time+volume
+// group, which drifts off-center whenever those two sides are unequal
+// widths — grid's 1fr columns don't care how wide their content is.
+.shutterBar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  gap: 14px;
+  flex: 0 0 auto;
+  padding: 12px 16px;
+  border-top: 1px solid $hairline;
+  background: #1e1e1e;
+}
+
+.shutter {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 120ms ease, transform 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+}
+
+// Red disc with a play triangle; becomes a pause bar pair while playing.
+.shutterInner {
+  position: relative;
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: $shutter;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent #fff;
+  }
+}
+
+.shutterPlaying::after {
+  left: 50%;
+  border: none;
+  width: 10px;
+  height: 12px;
+  // Two bars from one box, the gap being a hard-edged transparent stripe that
+  // lets the red disc through. No background-COLOR here: it would sit behind
+  // the gradient and fill that gap back in, rendering a solid block.
+  background: linear-gradient(
+    90deg,
+    #fff 0 3.5px,
+    transparent 3.5px 6.5px,
+    #fff 6.5px 10px
+  );
+}
+
+.captionBlock {
+  min-width: 0;
+}
+
+.metaGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  min-width: 0;
+}
+
+.title,
+.caption {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Tabular figures stop the bar twitching as the seconds tick over.
+.time {
+  flex: 0 0 auto;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.volumeButton {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 1px;
+  }
+}
+
+// A range input rather than a bespoke div: it is keyboard-operable and
+// screen-reader-announced for free, which the native controls used to provide.
+.volumeSlider {
+  width: 72px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+    border-radius: 8px;
+  }
+
+  &::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    margin-top: -4px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  }
+
+  &::-moz-range-track {
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  &::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+  }
+}
+
+// The caption is the first thing worth dropping when the window is at its
+// 420px minimum; the controls all stay reachable.
+@container (max-width: 520px) {
+  .caption,
+  .time {
+    display: none;
+  }
+
+  .volumeSlider {
+    width: 54px;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.caption {
+  margin: 2px 0 0;
+  font-size: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.transcript {
+  flex: 0 0 auto;
+  max-height: 38%;
+  overflow-y: auto;
+  padding: 14px 16px;
+  border-top: 1px solid $hairline;
+  background: #1a1a1c;
+}
+
+.transcriptHeading {
+  margin: 0 0 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.failure {
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.failureText {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .overlayShutter,
+  .shutter,
+  .track,
+  .trackKnob,
+  .volumeButton {
+    transition: none !important;
+  }
+}

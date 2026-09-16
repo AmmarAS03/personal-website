@@ -1,25 +1,34 @@
-$dark-bg: #12121250;
-$dark-surface: #1e1e1e;
-$dark-text-primary: #ffffff;
-$dark-text-secondary: rgba(255, 255, 255, 0.7);
-$dark-accent: #BB86FC; // Purple accent color
-$dark-error: #CF6679;
+html,
+body,
+#root {
+  height: 100%;
+}
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  // The desktop is a fixed viewport — the page itself never scrolls.
+  overflow: hidden;
+  background: #14121c;
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    "Roboto", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: $dark-bg;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+// Set by usePointerDrag for the duration of a window drag or resize. Stops the
+// gesture from selecting text or getting swallowed by embedded content.
+body.os-dragging {
+  user-select: none;
+  cursor: default;
+
+  iframe,
+  object,
+  embed {
+    pointer-events: none;
+  }
 }
 
-.slick-slide > div {
-  margin: 0 10px;
+button {
+  font-family: inherit;
 }

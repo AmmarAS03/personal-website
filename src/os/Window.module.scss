@@ -1,0 +1,263 @@
+// Window chrome — phase 5. Open/close/minimize motion itself lives in
+// Window.jsx (framer-motion variants); everything here is static chrome:
+// titlebar gradient, hairlines, the two-tier macOS shadow, and the
+// focused/unfocused treatment.
+
+$radius: 10px;
+$titlebar-height: 38px;
+$grab: 6px;
+
+.window {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  // The window system treats w/h as the full outer size, so the 1px border has
+  // to be inside it — otherwise every rect is 2px off and maximize overflows.
+  box-sizing: border-box;
+  border-radius: $radius;
+  background: #232326;
+  border: 1px solid rgba(0, 0, 0, 0.55);
+  color: #fff;
+
+  // Two-tier shadow: a tight "contact" shadow that grounds the window plus a
+  // soft ambient throw. Unfocused windows flatten to just the contact tier —
+  // the real macOS "this window is behind glass" read.
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.5),
+    0 1px 1px rgba(0, 0, 0, 0.18),
+    0 3px 8px rgba(0, 0, 0, 0.22);
+  transition: box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.active {
+  border-color: rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 0 0 0.5px rgba(0, 0, 0, 0.55),
+    0 1px 1px rgba(0, 0, 0, 0.12),
+    0 10px 24px rgba(0, 0, 0, 0.38),
+    0 24px 56px rgba(0, 0, 0, 0.4);
+}
+
+// While dragging or resizing, kill transitions so the window tracks the cursor
+// exactly, and stop the body from swallowing pointer events.
+.gesturing {
+  transition: none;
+  user-select: none;
+
+  .body {
+    pointer-events: none;
+  }
+}
+
+// Mobile: the window is the screen. No rounded corners, border or shadow —
+// those exist to separate overlapping desktop windows, and mobile windows
+// never overlap (only the frontmost one is interactive).
+.mobile {
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+}
+
+.titlebar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: $titlebar-height;
+  flex: 0 0 $titlebar-height;
+  padding: 0 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0) 60%),
+    #2c2c2e;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  cursor: default;
+  transition: background 180ms ease;
+}
+
+// Unfocused windows get a flatter, slightly darker titlebar — no gradient
+// sheen — to read as "behind" the active one at a glance.
+.window:not(.active) .titlebar {
+  background: #262628;
+  box-shadow: none;
+}
+
+.lights,
+.lightsSpacer {
+  display: flex;
+  gap: 8px;
+  flex: 0 0 auto;
+  width: 52px;
+}
+
+.light {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: #4a4a4c;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.15);
+  transition: background 120ms ease, opacity 120ms ease;
+
+  // Hover glyphs (×, −, +): macOS draws these inside the dots on hover of the
+  // whole cluster, only for the frontmost window. Present on every light via
+  // this shared ::after, glyph per-class below, opacity toggled by the
+  // `.lights:hover` rule further down.
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 100ms ease;
+  }
+}
+
+.closeLight {
+  background: #ff5f57;
+  &::after {
+    content: "\00D7"; // ×
+    font-size: 10px;
+  }
+}
+.minLight {
+  background: #febc2e;
+  &::after {
+    content: "\2212"; // −
+  }
+}
+.maxLight {
+  background: #28c840;
+  &::after {
+    content: "\002B"; // +
+    font-size: 8px;
+  }
+}
+
+// Hover glyphs and full-saturation dots are a frontmost-window privilege —
+// hovering a background window's traffic lights does nothing until it's
+// focused, matching real macOS.
+.active .lights:hover .light::after {
+  opacity: 1;
+}
+
+// Unfocused traffic lights dim to a uniform muted grey, same as real macOS.
+.window:not(.active) .light {
+  background: rgba(255, 255, 255, 0.16);
+
+  &::after {
+    opacity: 0 !important;
+  }
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 180ms ease;
+}
+
+.window:not(.active) .title {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+// Resize handles live entirely *inside* the frame: `overflow: hidden` (needed to
+// clip content to the rounded corners) would clip away any part that hung
+// outside, leaving half the grab strip dead.
+//
+// z-index puts them above the titlebar so the top edge resizes rather than
+// drags — matching macOS — and corners above edges so diagonals win.
+.handle {
+  position: absolute;
+  z-index: 2;
+}
+
+.handle_n,
+.handle_s {
+  left: $grab;
+  right: $grab;
+  height: $grab;
+  cursor: ns-resize;
+}
+.handle_n {
+  top: 0;
+}
+.handle_s {
+  bottom: 0;
+}
+
+.handle_e,
+.handle_w {
+  top: $grab;
+  bottom: $grab;
+  width: $grab;
+  cursor: ew-resize;
+}
+.handle_e {
+  right: 0;
+}
+.handle_w {
+  left: 0;
+}
+
+.handle_ne,
+.handle_nw,
+.handle_se,
+.handle_sw {
+  z-index: 3;
+  // Kept at 12px so the north-west corner stops short of the traffic lights,
+  // which start at the titlebar's 12px padding.
+  width: $grab * 2;
+  height: $grab * 2;
+}
+.handle_ne {
+  top: 0;
+  right: 0;
+  cursor: nesw-resize;
+}
+.handle_nw {
+  top: 0;
+  left: 0;
+  cursor: nwse-resize;
+}
+.handle_se {
+  bottom: 0;
+  right: 0;
+  cursor: nwse-resize;
+}
+.handle_sw {
+  bottom: 0;
+  left: 0;
+  cursor: nesw-resize;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window,
+  .titlebar,
+  .title,
+  .light,
+  .light::after {
+    transition: none !important;
+  }
+}

@@ -1,0 +1,36 @@
+<svg width="960" height="540" viewBox="0 0 960 540" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1330"/>
+      <stop offset="55%" stop-color="#2a1a4a"/>
+      <stop offset="100%" stop-color="#3d2263"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="80%" cy="15%" r="60%">
+      <stop offset="0%" stop-color="#c98fff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#c98fff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)"/>
+  <rect width="960" height="540" fill="url(#glow)"/>
+
+  <g opacity="0.5" font-family="'SF Mono', 'Menlo', monospace" font-size="15" fill="#c9a6ff">
+    <text x="64" y="120">&gt; trace code flow --repos ./api ./web</text>
+    <text x="64" y="146">&gt; render interactive diagram --dark-mode</text>
+  </g>
+
+  <text x="64" y="290" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif" font-size="54" font-weight="700" fill="#f4edff">
+    Claude Code
+  </text>
+  <text x="64" y="352" font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif" font-size="54" font-weight="700" fill="#f4edff">
+    Skills
+  </text>
+
+  <text x="64" y="400" font-family="-apple-system, 'SF Pro Text', sans-serif" font-size="19" fill="#c9b8e8">
+    Daily skills for tracing, learning, and reviewing code
+  </text>
+
+  <g stroke="#c9a6ff" stroke-opacity="0.5" fill="none" stroke-width="1.5">
+    <circle cx="850" cy="90" r="34"/>
+    <circle cx="850" cy="90" r="34" stroke-dasharray="4 6"/>
+  </g>
+</svg>

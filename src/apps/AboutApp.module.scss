@@ -1,0 +1,269 @@
+// About Me. Surface, toolbar and button styling come from apps.module.scss;
+// what lives here is the story layout — photo on the left, chapter text on the
+// right — and the chapter rail that replaced the old thumbnail strip.
+
+$hairline: rgba(255, 255, 255, 0.1);
+$muted: rgba(255, 255, 255, 0.55);
+$dim: rgba(255, 255, 255, 0.38);
+
+// Native pixel size of every slide photo. Nothing here is ever drawn larger:
+// the old layout stretched a 273px-wide source across a 900px window and then
+// cropped it to a 300px letterbox, which is what made the images look soft and
+// arbitrarily framed. These are full-body phone portraits — they want their
+// whole frame, not a crop.
+$photo-w: 273;
+$photo-h: 383;
+
+// The split adapts to the WINDOW's width, not the viewport's: this window can
+// sit at its minimum size on a 1440px screen, where a media query would still
+// report "desktop". Same reasoning as PhotoBoothApp.
+.root {
+  container-type: inline-size;
+}
+
+.body {
+  display: flex;
+  gap: 30px;
+  flex: 1;
+  min-height: 0;
+  padding: 26px 30px;
+}
+
+// Column width tracks the window but stops at the source's native width, so
+// the photo is only ever downscaled.
+.media {
+  flex: 0 0 clamp(150px, 30cqi, #{$photo-w}px);
+  align-self: stretch;
+  min-height: 0;
+  margin: 0;
+}
+
+.frame {
+  width: 100%;
+  aspect-ratio: #{$photo-w} / #{$photo-h};
+  // In a window too short for the full portrait the frame gives up height
+  // rather than overflowing, and `object-fit: cover` crops instead of squashing.
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// The chapters are short — top-aligning them next to a 380px portrait left a
+// dead half-column. `safe center` optically pairs the text with the photo but
+// falls back to top alignment (rather than clipping) once a chapter overflows.
+.text {
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.eyebrow {
+  margin: 0 0 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: $dim;
+}
+
+.title {
+  margin: 0 0 16px;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.paragraph {
+  margin: 0;
+  // Long measures are the other half of why the old pane read badly. ~62
+  // characters is the comfortable reading width regardless of window size.
+  max-width: 62ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
+
+  & + & {
+    margin-top: 15px;
+  }
+}
+
+// ---- chapter rail ----
+
+.chapters {
+  display: flex;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 9px 14px;
+  overflow-x: auto;
+  border-top: 1px solid $hairline;
+  background: rgba(0, 0, 0, 0.22);
+  scrollbar-width: thin;
+}
+
+.chapter {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 76px;
+  padding: 5px 4px 6px;
+  border: none;
+  border-radius: 9px;
+  background: transparent;
+  color: $muted;
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.chapterActive {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.95);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .chapterThumb {
+    border-color: #6f9df5;
+  }
+}
+
+// Portrait thumbnails, matching the source. The old rail used 62x46 landscape
+// tiles, which sliced a horizontal band out of the middle of every photo.
+.chapterThumb {
+  display: block;
+  width: 40px;
+  aspect-ratio: #{$photo-w} / #{$photo-h};
+  object-fit: cover;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.chapterLabel {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+// ---- narrow window / phone ----
+
+// Below this the two columns no longer both earn their width, so the story
+// stacks and the whole pane scrolls as one.
+@container (max-width: 620px) {
+  .body {
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px 20px 24px;
+    overflow-y: auto;
+  }
+
+  // A phone gives the pane roughly 420px of height. At the desktop's 273px the
+  // portrait alone ate all of it and pushed every word below the fold, so the
+  // photo becomes a card here and the title and opening lines stay visible.
+  .media {
+    flex: 0 0 auto;
+    align-self: center;
+    width: min(48cqi, 180px);
+  }
+
+  .frame {
+    max-height: none;
+    border-radius: 12px;
+  }
+
+  .text {
+    justify-content: flex-start;
+    overflow: visible;
+  }
+
+  .title {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+
+  .paragraph {
+    font-size: 13.5px;
+  }
+
+  // Thumbs only: the chapter's name is already in the toolbar and as the
+  // heading, and the labels cost height the story needs more.
+  .chapters {
+    gap: 8px;
+    padding: 9px 14px;
+    // Momentum scrolling with the thumbs snapping under the finger.
+    scroll-snap-type: x mandatory;
+  }
+
+  .chapter {
+    width: auto;
+    padding: 0;
+    border-radius: 6px;
+    scroll-snap-align: center;
+  }
+
+  // With no label to tint, the thumb's border carries the selection on its own.
+  .chapter,
+  .chapter:hover,
+  .chapterActive,
+  .chapterActive:hover {
+    background: none;
+  }
+
+  .chapterLabel {
+    display: none;
+  }
+
+  .chapterThumb {
+    width: 38px;
+  }
+
+  .chapterActive .chapterThumb {
+    border-color: #6f9df5;
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
+.fade {
+  animation: fade 260ms ease;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade {
+    animation: none;
+  }
+}

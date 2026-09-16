@@ -1,0 +1,301 @@
+.dock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: var(--dock-height);
+  padding-bottom: 10px;
+  // Without this the padding is added *outside* the declared height, so the
+  // element ends up 102px tall and no longer matches the DOCK_HEIGHT that the
+  // window system reserves. The panel's on-screen position is unaffected.
+  box-sizing: border-box;
+  // Magnified icons intentionally poke up above the reserved dock band, same
+  // as real macOS — the band itself (DOCK_HEIGHT) still governs where
+  // windows are allowed to sit.
+  overflow: visible;
+  pointer-events: none;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  pointer-events: auto;
+  padding: 8px 9px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(30px) saturate(1.8);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 12px 32px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  overflow: visible;
+}
+
+.items {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.separator {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 5px 4px 6px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.item {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  will-change: transform;
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 3px;
+    border-radius: 22%;
+  }
+}
+
+.icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 22%;
+  color: #fff;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3),
+    0 6px 14px rgba(0, 0, 0, 0.38),
+    0 1px 2px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.icon::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 55%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.glyph {
+  position: relative;
+  z-index: 1;
+  line-height: 1;
+}
+
+.trashGlyph {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+
+.dot {
+  margin-top: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 150ms ease;
+}
+
+.dotOn {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.7);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  translate: -50% 0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(44, 44, 48, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 6px 16px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+// ---------------------------------------------------------------------------
+// Mobile (phase 6): the dock becomes a full-width iOS-style strip. It must
+// measure exactly MOBILE_DOCK_HEIGHT — the window system reserves that strip
+// at the bottom of every fullscreen mobile window — hence border-box, same
+// contract as .dock on desktop.
+.mobileBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  height: var(--mobile-dock-height);
+  box-sizing: border-box;
+  padding: 0 14px;
+  gap: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(30px) saturate(1.8);
+  -webkit-backdrop-filter: blur(30px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+
+.mobileHome {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  transition: background 120ms ease, opacity 120ms ease;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  &:disabled {
+    opacity: 0.35;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 2px;
+  }
+}
+
+.mobileHomeGlyph {
+  width: 22px;
+  height: 22px;
+}
+
+.mobileSeparator {
+  width: 1px;
+  align-self: center;
+  height: 34px;
+  flex: 0 0 auto;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.mobileItems {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+  }
+}
+
+.mobileItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  .icon {
+    width: 44px;
+    height: 44px;
+    transition: transform 120ms ease, box-shadow 120ms ease;
+  }
+
+  &:active .icon {
+    transform: scale(0.88);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.85);
+    outline-offset: 3px;
+    border-radius: 12px;
+  }
+}
+
+// The frontmost app's icon gets a subtle ring so the bar also reads as a
+// "which app am I in" indicator.
+.mobileItemActive .icon {
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.3),
+    0 6px 14px rgba(0, 0, 0, 0.38),
+    0 0 0 2px rgba(255, 255, 255, 0.55);
+}
+
+.mobileGlyph {
+  font-size: 20px;
+}
+
+// Seven 44px icons plus the home button overflow a 375px phone
+// (44*7 + 44 + 1 + 28 padding + 20 gap ~= 401px). Shrink them on the narrowest
+// viewports rather than letting the bar scroll — it stays one tappable row, and
+// there is headroom for an eighth app.
+@media (max-width: 400px) {
+  .mobileItem .icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mobileGlyph {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileHome,
+  .mobileItem .icon {
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .tooltip {
+    transition: none !important;
+  }
+}
